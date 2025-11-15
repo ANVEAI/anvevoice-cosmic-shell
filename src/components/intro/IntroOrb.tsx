@@ -17,7 +17,7 @@ export const IntroOrb = ({ size = "large", className = "" }: IntroOrbProps) => {
       <motion.div
         className="absolute inset-0 rounded-full"
         style={{
-          background: "radial-gradient(circle, hsl(195 100% 50% / 0.3), transparent 70%)",
+          background: "radial-gradient(circle, hsl(165 100% 50% / 0.3), transparent 70%)",
           filter: `blur(${blurAmount}px)`,
         }}
         animate={{
@@ -47,7 +47,7 @@ export const IntroOrb = ({ size = "large", className = "" }: IntroOrbProps) => {
         <div
           className="absolute inset-0 rounded-full"
           style={{
-            background: "linear-gradient(135deg, hsl(195 100% 95%), hsl(195 100% 70%))",
+            background: "linear-gradient(135deg, hsl(165 100% 95%), hsl(165 100% 70%))",
           }}
         />
         
@@ -55,7 +55,7 @@ export const IntroOrb = ({ size = "large", className = "" }: IntroOrbProps) => {
         <motion.div
           className="absolute inset-0 rounded-full"
           style={{
-            background: "radial-gradient(circle at 30% 30%, hsl(195 100% 85% / 0.8), transparent 60%)",
+            background: "radial-gradient(circle at 30% 30%, hsl(165 100% 85% / 0.8), transparent 60%)",
           }}
           animate={{
             opacity: [0.6, 1, 0.6],
@@ -72,7 +72,7 @@ export const IntroOrb = ({ size = "large", className = "" }: IntroOrbProps) => {
         <motion.div
           className="absolute inset-0 rounded-full"
           style={{
-            background: "linear-gradient(145deg, transparent 30%, hsl(195 100% 50% / 0.4) 50%, transparent 70%)",
+            background: "linear-gradient(145deg, transparent 30%, hsl(165 100% 50% / 0.4) 50%, transparent 70%)",
           }}
           animate={{
             rotate: [0, 360],
@@ -88,7 +88,7 @@ export const IntroOrb = ({ size = "large", className = "" }: IntroOrbProps) => {
         <div
           className="absolute inset-0 rounded-full"
           style={{
-            boxShadow: "inset 0 0 60px hsl(195 100% 60% / 0.6)",
+            boxShadow: "inset 0 0 60px hsl(165 100% 60% / 0.6)",
           }}
         />
 
@@ -96,7 +96,7 @@ export const IntroOrb = ({ size = "large", className = "" }: IntroOrbProps) => {
         <div
           className="absolute inset-0 rounded-full"
           style={{
-            border: "2px solid hsl(195 100% 70% / 0.3)",
+            border: "2px solid hsl(165 100% 70% / 0.3)",
           }}
         />
       </motion.div>
