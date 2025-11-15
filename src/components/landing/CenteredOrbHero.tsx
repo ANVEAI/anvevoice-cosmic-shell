@@ -17,14 +17,41 @@ export const CenteredOrbHero = ({ onTapSpeak }: CenteredOrbHeroProps) => {
         transition: { duration: 0.8, ease: 'easeOut' },
       }}
     >
-      {/* Ambient background effects */}
-      <div className="absolute inset-0 bg-gradient-glow opacity-50" />
+      {/* Deep space cosmic background */}
+      <div className="absolute inset-0 bg-gradient-hero" />
+      
+      {/* Animated cosmic particles */}
+      <div className="absolute inset-0 overflow-hidden">
+        {[...Array(30)].map((_, i) => (
+          <motion.div
+            key={`cosmic-${i}`}
+            className="absolute w-1 h-1 bg-primary-glow rounded-full"
+            style={{
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+            }}
+            animate={{
+              opacity: [0, 1, 0],
+              scale: [0, 1.5, 0],
+            }}
+            transition={{
+              duration: 3 + Math.random() * 2,
+              repeat: Infinity,
+              delay: Math.random() * 3,
+              ease: "easeInOut",
+            }}
+          />
+        ))}
+      </div>
       
       {/* Content */}
       <div className="relative z-10 flex flex-col items-center">
         {/* Heading */}
         <motion.h1
-          className="text-5xl md:text-7xl font-bold mb-4 bg-gradient-to-r from-primary via-primary-glow to-primary bg-clip-text text-transparent"
+          className="text-5xl md:text-7xl font-bold mb-4 bg-gradient-to-r from-primary via-secondary to-primary-glow bg-clip-text text-transparent tracking-tight"
+          style={{
+            textShadow: "0 0 40px hsl(270 100% 60% / 0.3), 0 0 80px hsl(190 100% 60% / 0.2)",
+          }}
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2, duration: 0.6 }}
@@ -34,7 +61,7 @@ export const CenteredOrbHero = ({ onTapSpeak }: CenteredOrbHeroProps) => {
 
         {/* Tagline */}
         <motion.p
-          className="text-lg md:text-xl text-muted-foreground mb-12"
+          className="text-lg md:text-xl text-muted-foreground mb-12 font-light tracking-wide"
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4, duration: 0.6 }}
@@ -55,15 +82,32 @@ export const CenteredOrbHero = ({ onTapSpeak }: CenteredOrbHeroProps) => {
         {/* Tap & Speak Button */}
         <motion.button
           onClick={onTapSpeak}
-          className="flex items-center gap-3 px-8 py-4 bg-slate-800/50 backdrop-blur-md rounded-full border border-primary/30 hover:border-primary/60 hover:bg-primary/10 transition-all group"
+          className="flex items-center gap-3 px-8 py-4 rounded-full border-2 transition-all group relative overflow-hidden"
+          style={{
+            background: "linear-gradient(135deg, hsl(270 100% 60% / 0.15), hsl(190 100% 60% / 0.15))",
+            borderColor: "hsl(270 100% 65%)",
+            boxShadow: "0 0 30px hsl(270 100% 60% / 0.4), 0 0 60px hsl(190 100% 60% / 0.2)",
+            backdropFilter: "blur(12px)",
+          }}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.8, duration: 0.6 }}
-          whileHover={{ scale: 1.05 }}
+          whileHover={{ 
+            scale: 1.05,
+            boxShadow: "0 0 40px hsl(270 100% 60% / 0.6), 0 0 80px hsl(190 100% 60% / 0.3)",
+          }}
           whileTap={{ scale: 0.95 }}
         >
-          <Mic className="w-5 h-5 text-primary group-hover:animate-pulse" />
-          <span className="text-foreground font-medium">Tap & Speak</span>
+          <Mic className="w-5 h-5 text-primary group-hover:animate-pulse relative z-10" />
+          <span className="text-foreground font-medium tracking-wide relative z-10">Tap & Speak</span>
+          
+          {/* Animated background gradient */}
+          <motion.div
+            className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity"
+            style={{
+              background: "linear-gradient(135deg, hsl(270 100% 60% / 0.2), hsl(190 100% 60% / 0.2))",
+            }}
+          />
         </motion.button>
 
         {/* Scroll hint */}
