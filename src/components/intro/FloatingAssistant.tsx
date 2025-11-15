@@ -2,6 +2,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { IntroOrb } from "./IntroOrb";
 import { useVapiAssistant } from "@/hooks/useVapiAssistant";
 import { useVapiCommands } from "@/hooks/useVapiCommands";
+import { useClientSideFunctions } from "@/hooks/useClientSideFunctions";
 import { useMemo } from "react";
 import * as domActions from "@/utils/domActions";
 
@@ -14,12 +15,15 @@ export const FloatingAssistant = () => {
     click_element: domActions.click_element,
     fill_field: domActions.fill_field,
     toggle_element: domActions.toggle_element,
-    get_page_context: domActions.get_page_context,
     navigate_to_page: domActions.navigate_to_page,
+    // get_page_context handled by useClientSideFunctions
   }), []);
 
   // Listen for commands from VAPI webhook via Realtime
   useVapiCommands(actionHandlers);
+  
+  // Handle client-side function execution (get_page_context)
+  useClientSideFunctions();
 
   const handleClick = () => {
     if (isActive) {
