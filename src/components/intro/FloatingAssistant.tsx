@@ -1,7 +1,34 @@
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { IntroOrb } from "./IntroOrb";
+import { useVapiAssistant } from "@/hooks/useVapiAssistant";
+import { useVapiCommands } from "@/hooks/useVapiCommands";
+import { useMemo } from "react";
+import * as domActions from "@/utils/domActions";
 
 export const FloatingAssistant = () => {
+  const { startAssistant, stopAssistant, isActive, isSpeaking } = useVapiAssistant();
+
+  // DOM Actions mapping for VAPI commands
+  const actionHandlers = useMemo(() => ({
+    scroll_page: domActions.scroll_page,
+    click_element: domActions.click_element,
+    fill_field: domActions.fill_field,
+    toggle_element: domActions.toggle_element,
+    get_page_context: domActions.get_page_context,
+    navigate_to_page: domActions.navigate_to_page,
+  }), []);
+
+  // Listen for commands from VAPI webhook via Realtime
+  useVapiCommands(actionHandlers);
+
+  const handleClick = () => {
+    if (isActive) {
+      stopAssistant();
+    } else {
+      startAssistant();
+    }
+  };
+
   return (
     <motion.div
       className="fixed bottom-6 right-6 z-50 cursor-pointer"
@@ -10,9 +37,32 @@ export const FloatingAssistant = () => {
       transition={{ duration: 0.2, ease: "easeOut" }}
       whileHover={{ scale: 1.1 }}
       whileTap={{ scale: 0.95 }}
-      aria-label="Open voice assistant"
+      onClick={handleClick}
+      aria-label={isActive ? "Stop voice assistant" : "Start voice assistant"}
     >
-      <IntroOrb size="small" />
+      <div className="relative">
+        <IntroOrb size="small" />
+        
+        {/* Active indicator */}
+        <AnimatePresence>
+          {isActive && (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.8 }}
+              className="absolute -top-2 -right-2 w-4 h-4 bg-green-500 rounded-full shadow-lg"
+            >
+              {isSpeaking && (
+                <motion.div
+                  animate={{ scale: [1, 1.5, 1] }}
+                  transition={{ duration: 1, repeat: Infinity, ease: "easeInOut" }}
+                  className="absolute inset-0 bg-green-400 rounded-full opacity-50"
+                />
+              )}
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
     </motion.div>
   );
 };
