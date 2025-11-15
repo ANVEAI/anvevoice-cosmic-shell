@@ -10,7 +10,7 @@ export const IntroOrb = ({ size = "large", className = "" }: IntroOrbProps) => {
   const orbSize = isSmall ? "w-16 h-16" : "w-80 h-80"; // 320px for large
   const particleRadius = isSmall ? 35 : 160;
   const blurAmount = isSmall ? 20 : 50;
-  const ringRadius = isSmall ? 45 : 180;
+  const ringRadius = isSmall ? 60 : 240; // Much larger ring
   
   return (
     <div className={`relative ${className}`}>
@@ -139,7 +139,7 @@ export const IntroOrb = ({ size = "large", className = "" }: IntroOrbProps) => {
         />
       </motion.div>
 
-      {/* Rotating particle ring */}
+      {/* Rotating Saturn-like ring */}
       <motion.div
         className="absolute"
         style={{
@@ -154,29 +154,80 @@ export const IntroOrb = ({ size = "large", className = "" }: IntroOrbProps) => {
           rotate: [0, 360],
         }}
         transition={{
-          duration: 20,
+          duration: 25,
           repeat: Infinity,
           ease: "linear",
         }}
       >
         <svg width="100%" height="100%" viewBox="0 0 100 100" style={{ transform: "rotate(-90deg)" }}>
-          {/* Elliptical ring path */}
+          {/* Outer glow ring */}
           <ellipse
             cx="50"
             cy="50"
-            rx="48"
-            ry="15"
+            rx="47"
+            ry="18"
+            fill="none"
+            stroke="hsl(200 100% 60%)"
+            strokeWidth="2"
+            opacity="0.3"
+            style={{ filter: "blur(3px)" }}
+          />
+          
+          {/* Main bright neon ring */}
+          <ellipse
+            cx="50"
+            cy="50"
+            rx="47"
+            ry="18"
             fill="none"
             stroke="url(#ringGradient)"
-            strokeWidth="0.5"
-            opacity="0.6"
-            style={{ filter: "blur(1px)" }}
+            strokeWidth="1.5"
+            opacity="0.95"
+            style={{ filter: "blur(0.5px)" }}
           />
+          
+          {/* Inner bright highlight */}
+          <ellipse
+            cx="50"
+            cy="50"
+            rx="47"
+            ry="18"
+            fill="none"
+            stroke="url(#ringHighlight)"
+            strokeWidth="0.8"
+            opacity="1"
+          />
+          
+          {/* Particle dots on ring */}
+          {[0, 30, 60, 90, 120, 150, 180, 210, 240, 270, 300, 330].map((angle) => {
+            const radians = (angle * Math.PI) / 180;
+            const x = 50 + 47 * Math.cos(radians);
+            const y = 50 + 18 * Math.sin(radians);
+            return (
+              <circle
+                key={angle}
+                cx={x}
+                cy={y}
+                r="0.4"
+                fill="hsl(200 100% 70%)"
+                opacity="0.8"
+                style={{ filter: "blur(0.3px)" }}
+              />
+            );
+          })}
+          
           <defs>
             <linearGradient id="ringGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stopColor="hsl(220 100% 60%)" stopOpacity="0.8" />
-              <stop offset="50%" stopColor="hsl(280 90% 60%)" stopOpacity="0.9" />
-              <stop offset="100%" stopColor="hsl(220 100% 60%)" stopOpacity="0.8" />
+              <stop offset="0%" stopColor="hsl(200 100% 65%)" stopOpacity="0.9" />
+              <stop offset="25%" stopColor="hsl(220 100% 70%)" stopOpacity="1" />
+              <stop offset="50%" stopColor="hsl(260 90% 65%)" stopOpacity="0.95" />
+              <stop offset="75%" stopColor="hsl(220 100% 70%)" stopOpacity="1" />
+              <stop offset="100%" stopColor="hsl(200 100% 65%)" stopOpacity="0.9" />
+            </linearGradient>
+            <linearGradient id="ringHighlight" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stopColor="hsl(200 100% 80%)" stopOpacity="0.6" />
+              <stop offset="50%" stopColor="hsl(200 100% 90%)" stopOpacity="1" />
+              <stop offset="100%" stopColor="hsl(200 100% 80%)" stopOpacity="0.6" />
             </linearGradient>
           </defs>
         </svg>
