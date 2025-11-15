@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { useEffect } from "react";
 import { Mic, X } from "lucide-react";
 import { IntroOrb } from "./IntroOrb";
 
@@ -10,12 +11,18 @@ interface IntroScreenProps {
 
 export const IntroScreen = ({ onComplete, onTransitionComplete, phase }: IntroScreenProps) => {
   // Auto-transition after 12 seconds
-  setTimeout(onComplete, 12000);
+  useEffect(() => {
+    const timer = setTimeout(onComplete, 12000);
+    return () => clearTimeout(timer);
+  }, [onComplete]);
 
   // After transition animation, mark as complete
-  if (phase === "transitioning") {
-    setTimeout(onTransitionComplete, 1800);
-  }
+  useEffect(() => {
+    if (phase === "transitioning") {
+      const timer = setTimeout(onTransitionComplete, 1800);
+      return () => clearTimeout(timer);
+    }
+  }, [phase, onTransitionComplete]);
 
   return (
     <motion.div
