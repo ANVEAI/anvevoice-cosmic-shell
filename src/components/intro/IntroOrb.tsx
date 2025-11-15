@@ -14,132 +14,125 @@ export const IntroOrb = ({ size = "large", className = "" }: IntroOrbProps) => {
   
   return (
     <div className={`relative ${className}`}>
-      {/* Outer purple glow */}
+      {/* Atmospheric halo */}
       <motion.div
         className="absolute inset-0 rounded-full"
         style={{
-          background: "radial-gradient(circle, hsl(280 85% 60% / 0.4), hsl(220 90% 60% / 0.3), transparent 70%)",
-          filter: `blur(${blurAmount}px)`,
+          background: "radial-gradient(circle, hsl(250 80% 55% / 0.25), hsl(220 90% 60% / 0.2), transparent 65%)",
+          filter: `blur(${blurAmount * 1.2}px)`,
         }}
         animate={{
-          scale: [1, 1.3, 1],
-          opacity: [0.4, 0.7, 0.4],
+          scale: [1, 1.15, 1],
+          opacity: [0.4, 0.6, 0.4],
         }}
         transition={{
-          duration: 4,
+          duration: 5,
           repeat: Infinity,
           ease: "easeInOut",
         }}
       />
 
-      {/* Neon blue outer glow */}
+      {/* Soft volumetric glow */}
       <motion.div
         className="absolute inset-0 rounded-full"
         style={{
-          background: "radial-gradient(circle, hsl(220 100% 60% / 0.3), transparent 60%)",
+          background: "radial-gradient(circle, hsl(230 85% 60% / 0.2), transparent 60%)",
           filter: `blur(${blurAmount * 0.8}px)`,
         }}
         animate={{
-          scale: [1.1, 1.4, 1.1],
-          opacity: [0.3, 0.6, 0.3],
+          scale: [1.05, 1.25, 1.05],
+          opacity: [0.3, 0.5, 0.3],
         }}
         transition={{
-          duration: 5,
+          duration: 6,
           repeat: Infinity,
           ease: "easeInOut",
           delay: 0.5,
         }}
       />
 
-      {/* Main orb sphere */}
+      {/* Main 3D orb sphere */}
       <motion.div
         className={`relative ${orbSize} rounded-full overflow-hidden`}
+        style={{
+          boxShadow: "0 8px 32px hsl(230 70% 50% / 0.3)",
+        }}
         animate={{
-          scale: [1, 1.02, 1],
+          scale: [1, 1.015, 1],
         }}
         transition={{
-          duration: 3,
+          duration: 4,
           repeat: Infinity,
           ease: "easeInOut",
         }}
       >
-        {/* Purple to blue gradient base */}
+        {/* Smooth gradient base - blue to purple */}
         <div
           className="absolute inset-0 rounded-full"
           style={{
-            background: "linear-gradient(135deg, hsl(280 90% 50%), hsl(260 85% 55%), hsl(220 100% 60%))",
+            background: "linear-gradient(135deg, hsl(230 85% 55%), hsl(250 75% 60%))",
           }}
         />
         
-        {/* Holographic shine effect */}
+        {/* Soft highlight for 3D effect */}
         <motion.div
           className="absolute inset-0 rounded-full"
           style={{
-            background: "radial-gradient(circle at 30% 30%, hsl(280 60% 70% / 0.8), transparent 50%)",
+            background: "radial-gradient(circle at 35% 30%, hsl(220 70% 75% / 0.6), transparent 55%)",
           }}
           animate={{
-            opacity: [0.5, 0.9, 0.5],
-            scale: [1, 1.15, 1],
+            opacity: [0.5, 0.8, 0.5],
           }}
           transition={{
-            duration: 4,
+            duration: 5,
             repeat: Infinity,
             ease: "easeInOut",
           }}
         />
 
-        {/* Neon blue highlight */}
-        <motion.div
-          className="absolute inset-0 rounded-full"
-          style={{
-            background: "radial-gradient(circle at 70% 70%, transparent 40%, hsl(220 100% 65% / 0.6) 60%, transparent 80%)",
-          }}
-          animate={{
-            rotate: [0, 360],
-          }}
-          transition={{
-            duration: 12,
-            repeat: Infinity,
-            ease: "linear",
-          }}
-        />
-
-        {/* Inner neon glow */}
+        {/* Subtle depth shadow */}
         <div
           className="absolute inset-0 rounded-full"
           style={{
-            boxShadow: "inset 0 0 80px hsl(280 100% 60% / 0.6), inset 0 0 40px hsl(220 100% 70% / 0.4)",
+            background: "radial-gradient(circle at 65% 70%, transparent 45%, hsl(250 60% 35% / 0.4) 70%)",
           }}
         />
 
-        {/* Hologram scan lines */}
-        <motion.div
-          className="absolute inset-0 rounded-full"
-          style={{
-            background: "linear-gradient(180deg, transparent 48%, hsl(220 100% 80% / 0.1) 50%, transparent 52%)",
-            backgroundSize: "100% 8px",
-          }}
-          animate={{
-            y: ["-8px", "8px"],
-          }}
-          transition={{
-            duration: 2,
-            repeat: Infinity,
-            ease: "linear",
-          }}
-        />
-
-        {/* Neon edge glow */}
+        {/* Soft inner glow */}
         <div
           className="absolute inset-0 rounded-full"
           style={{
-            border: "1px solid hsl(220 100% 65% / 0.8)",
-            boxShadow: "0 0 20px hsl(220 100% 60% / 0.6), 0 0 40px hsl(280 90% 60% / 0.4)",
+            boxShadow: "inset 0 0 60px hsl(230 80% 60% / 0.3)",
+          }}
+        />
+
+        {/* Soft bloom effect */}
+        <motion.div
+          className="absolute inset-0 rounded-full"
+          style={{
+            background: "radial-gradient(circle at 40% 35%, hsl(220 90% 70% / 0.3), transparent 50%)",
+          }}
+          animate={{
+            opacity: [0.4, 0.7, 0.4],
+            scale: [1, 1.05, 1],
+          }}
+          transition={{
+            duration: 6,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+        />
+
+        {/* Polished edge */}
+        <div
+          className="absolute inset-0 rounded-full"
+          style={{
+            border: "0.5px solid hsl(220 80% 70% / 0.4)",
           }}
         />
       </motion.div>
 
-      {/* Rotating Saturn-like ring */}
+      {/* Thin dotted luminescent ring */}
       <motion.div
         className="absolute"
         style={{
@@ -154,115 +147,85 @@ export const IntroOrb = ({ size = "large", className = "" }: IntroOrbProps) => {
           rotate: [0, 360],
         }}
         transition={{
-          duration: 25,
+          duration: 30,
           repeat: Infinity,
           ease: "linear",
         }}
       >
         <svg width="100%" height="100%" viewBox="0 0 100 100" style={{ transform: "rotate(-90deg)" }}>
-          {/* Outer glow ring */}
+          {/* Soft glow under the dots */}
           <ellipse
             cx="50"
             cy="50"
             rx="47"
-            ry="18"
+            ry="16"
             fill="none"
-            stroke="hsl(200 100% 60%)"
-            strokeWidth="2"
-            opacity="0.3"
-            style={{ filter: "blur(3px)" }}
-          />
-          
-          {/* Main bright neon ring */}
-          <ellipse
-            cx="50"
-            cy="50"
-            rx="47"
-            ry="18"
-            fill="none"
-            stroke="url(#ringGradient)"
-            strokeWidth="1.5"
-            opacity="0.95"
-            style={{ filter: "blur(0.5px)" }}
-          />
-          
-          {/* Inner bright highlight */}
-          <ellipse
-            cx="50"
-            cy="50"
-            rx="47"
-            ry="18"
-            fill="none"
-            stroke="url(#ringHighlight)"
+            stroke="hsl(220 90% 65%)"
             strokeWidth="0.8"
-            opacity="1"
+            opacity="0.15"
+            style={{ filter: "blur(2px)" }}
           />
           
-          {/* Particle dots on ring */}
-          {[0, 30, 60, 90, 120, 150, 180, 210, 240, 270, 300, 330].map((angle) => {
+          {/* Elegant dotted ring particles */}
+          {Array.from({ length: 48 }).map((_, i) => {
+            const angle = (i * 360) / 48;
             const radians = (angle * Math.PI) / 180;
             const x = 50 + 47 * Math.cos(radians);
-            const y = 50 + 18 * Math.sin(radians);
+            const y = 50 + 16 * Math.sin(radians);
+            const opacity = 0.4 + Math.sin((i / 48) * Math.PI * 4) * 0.35;
+            const size = 0.35 + Math.sin((i / 48) * Math.PI * 2) * 0.15;
+            
             return (
-              <circle
-                key={angle}
-                cx={x}
-                cy={y}
-                r="0.4"
-                fill="hsl(200 100% 70%)"
-                opacity="0.8"
-                style={{ filter: "blur(0.3px)" }}
-              />
+              <g key={i}>
+                {/* Particle glow */}
+                <circle
+                  cx={x}
+                  cy={y}
+                  r={size * 2}
+                  fill="hsl(220 100% 70%)"
+                  opacity={opacity * 0.3}
+                  style={{ filter: "blur(0.8px)" }}
+                />
+                {/* Bright particle core */}
+                <circle
+                  cx={x}
+                  cy={y}
+                  r={size}
+                  fill="hsl(220 95% 75%)"
+                  opacity={opacity + 0.3}
+                />
+              </g>
             );
           })}
-          
-          <defs>
-            <linearGradient id="ringGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stopColor="hsl(200 100% 65%)" stopOpacity="0.9" />
-              <stop offset="25%" stopColor="hsl(220 100% 70%)" stopOpacity="1" />
-              <stop offset="50%" stopColor="hsl(260 90% 65%)" stopOpacity="0.95" />
-              <stop offset="75%" stopColor="hsl(220 100% 70%)" stopOpacity="1" />
-              <stop offset="100%" stopColor="hsl(200 100% 65%)" stopOpacity="0.9" />
-            </linearGradient>
-            <linearGradient id="ringHighlight" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stopColor="hsl(200 100% 80%)" stopOpacity="0.6" />
-              <stop offset="50%" stopColor="hsl(200 100% 90%)" stopOpacity="1" />
-              <stop offset="100%" stopColor="hsl(200 100% 80%)" stopOpacity="0.6" />
-            </linearGradient>
-          </defs>
         </svg>
       </motion.div>
 
-      {/* Floating neon particles */}
-      {[...Array(8)].map((_, i) => {
-        const angle = (i * Math.PI * 2) / 8;
-        const distance = particleRadius;
+      {/* Soft ambient particles */}
+      {[...Array(6)].map((_, i) => {
+        const angle = (i * Math.PI * 2) / 6;
+        const distance = particleRadius * 1.1;
         return (
           <motion.div
             key={i}
             className="absolute rounded-full"
             style={{
-              width: isSmall ? "3px" : "4px",
-              height: isSmall ? "3px" : "4px",
+              width: isSmall ? "2px" : "3px",
+              height: isSmall ? "2px" : "3px",
               left: `${(isSmall ? 32 : 160) + Math.cos(angle) * distance}px`,
               top: `${(isSmall ? 32 : 160) + Math.sin(angle) * distance}px`,
-              background: i % 2 === 0 
-                ? "hsl(220 100% 65%)" 
-                : "hsl(280 90% 60%)",
-              boxShadow: i % 2 === 0
-                ? "0 0 10px hsl(220 100% 60% / 0.8)"
-                : "0 0 10px hsl(280 90% 60% / 0.8)",
+              background: "hsl(220 90% 70%)",
+              boxShadow: "0 0 8px hsl(220 90% 65% / 0.6)",
             }}
             animate={{
-              y: [-15, 15, -15],
-              opacity: [0.4, 1, 0.4],
-              scale: [0.6, 1.4, 0.6],
+              y: [-12, 12, -12],
+              opacity: [0.3, 0.7, 0.3],
+              scale: [0.7, 1.2, 0.7],
             }}
             transition={{
-              duration: 3 + i * 0.4,
+              duration: 4 + i * 0.5,
               repeat: Infinity,
               ease: "easeInOut",
-              delay: i * 0.2,
+              delay: i * 0.3,
             }}
           />
         );
