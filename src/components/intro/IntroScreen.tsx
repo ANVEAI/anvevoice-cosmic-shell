@@ -16,13 +16,16 @@ export const IntroScreen = ({ onComplete, onTransitionComplete, phase }: IntroSc
     return () => clearTimeout(timer);
   }, [onComplete]);
 
-  // After transition animation, mark as complete
-  useEffect(() => {
-    if (phase === "transitioning") {
-      const timer = setTimeout(onTransitionComplete, 2200);
-      return () => clearTimeout(timer);
-    }
-  }, [phase, onTransitionComplete]);
+  // Helper to compute exact target offset for bottom-right positioning
+  const getTargetOffset = () => {
+    const margin = 24; // matches bottom-6 right-6 (1.5rem = 24px)
+    const smallSize = 64; // small orb size
+    const centerX = window.innerWidth / 2;
+    const centerY = window.innerHeight / 2;
+    const targetCenterX = window.innerWidth - margin - smallSize / 2;
+    const targetCenterY = window.innerHeight - margin - smallSize / 2;
+    return { x: targetCenterX - centerX, y: targetCenterY - centerY };
+  };
 
   return (
     <motion.div
@@ -31,15 +34,16 @@ export const IntroScreen = ({ onComplete, onTransitionComplete, phase }: IntroSc
         background: "linear-gradient(135deg, hsl(220 20% 8%), hsl(220 25% 10%))",
       }}
       initial={{ opacity: 0 }}
-      animate={{ opacity: phase === "transitioning" ? 0 : 1 }}
-        exit={{ opacity: 0 }}
-        transition={{ 
-          duration: phase === "transitioning" ? 0.1 : 1,
-          ease: "easeOut"
-        }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.6, ease: "easeOut" }}
     >
       {/* Ambient background effects */}
-      <div className="absolute inset-0 overflow-hidden">
+      <motion.div 
+        className="absolute inset-0 overflow-hidden"
+        animate={{ opacity: phase === "intro" ? 1 : 0 }}
+        transition={{ duration: 0.6 }}
+      >
         {/* Subtle gradient overlays */}
         <motion.div
           className="absolute top-0 left-1/4 w-96 h-96 rounded-full"
@@ -73,7 +77,7 @@ export const IntroScreen = ({ onComplete, onTransitionComplete, phase }: IntroSc
             ease: "easeInOut",
           }}
         />
-      </div>
+      </motion.div>
 
       {/* Main content */}
       <motion.div
@@ -82,13 +86,16 @@ export const IntroScreen = ({ onComplete, onTransitionComplete, phase }: IntroSc
         animate={
           phase === "intro"
             ? { scale: 1, opacity: 1, x: 0, y: 0, filter: "blur(0px)" }
-            : {
-                scale: 0.25,
-                x: typeof window !== "undefined" ? window.innerWidth / 2 - 80 : 0,
-                y: typeof window !== "undefined" ? window.innerHeight / 2 - 80 : 0,
-                opacity: 1,
-                filter: "blur(0px)",
-              }
+            : (() => {
+                const { x, y } = typeof window !== "undefined" ? getTargetOffset() : { x: 0, y: 0 };
+                return {
+                  scale: 0.25,
+                  x,
+                  y,
+                  opacity: 1,
+                  filter: "blur(0px)",
+                };
+              })()
         }
         transition={
           phase === "intro"
@@ -99,6 +106,11 @@ export const IntroScreen = ({ onComplete, onTransitionComplete, phase }: IntroSc
                 filter: { duration: 1.1 }
               }
         }
+        onAnimationComplete={() => {
+          if (phase === "transitioning") {
+            onTransitionComplete();
+          }
+        }}
       >
         {/* Central orb */}
         <IntroOrb />
@@ -108,7 +120,7 @@ export const IntroScreen = ({ onComplete, onTransitionComplete, phase }: IntroSc
           className="flex items-center gap-12"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: phase === "intro" ? 1 : 0, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.8 }}
+          transition={{ duration: 0.4, delay: 0.8 }}
         >
           {/* Mic button */}
           <button
