@@ -7,14 +7,9 @@ import { FeatureGrid } from "@/components/landing/FeatureGrid";
 import { HowItWorks } from "@/components/landing/HowItWorks";
 import { PricingSection } from "@/components/landing/PricingSection";
 import { Footer } from "@/components/landing/Footer";
-import { FloatingAssistant } from "@/components/intro/FloatingAssistant";
 import { motion } from "framer-motion";
 
-interface IndexProps {
-  showAssistant?: boolean;
-}
-
-const Index = ({ showAssistant = false }: IndexProps) => {
+const Index = () => {
   return (
     <motion.div 
       className="min-h-screen"
@@ -31,8 +26,6 @@ const Index = ({ showAssistant = false }: IndexProps) => {
       <HowItWorks />
       <PricingSection />
       <Footer />
-      
-      {showAssistant && <FloatingAssistant />}
     </motion.div>
   );
 };
