@@ -8,6 +8,9 @@ import { AnimatePresence } from "framer-motion";
 import { IntroScreen } from "./components/intro/IntroScreen";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
+import Offers from "./pages/Offers";
+import Contact from "./pages/Contact";
+import Demo from "./pages/Demo";
 
 const queryClient = new QueryClient();
 
@@ -42,6 +45,9 @@ const App = () => {
           {introPhase === "completed" && (
             <Routes>
               <Route path="/" element={<Index showAssistant={true} />} />
+              <Route path="/offers" element={<Offers />} />
+              <Route path="/demo" element={<Demo />} />
+              <Route path="/contact" element={<Contact />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>
