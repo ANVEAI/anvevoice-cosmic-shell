@@ -1,3 +1,4 @@
+import { Navigation } from "@/components/Navigation";
 import { HeroSection } from "@/components/landing/HeroSection";
 import { VoiceDemoPanel } from "@/components/landing/VoiceDemoPanel";
 import { GuidedTourPreview } from "@/components/landing/GuidedTourPreview";
@@ -21,6 +22,7 @@ const Index = ({ showAssistant = false }: IndexProps) => {
       animate={{ opacity: 1 }}
       transition={{ duration: 0.6 }}
     >
+      <Navigation />
       <HeroSection />
       <VoiceDemoPanel />
       <GuidedTourPreview />
