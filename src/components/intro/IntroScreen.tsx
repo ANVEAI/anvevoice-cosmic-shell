@@ -32,8 +32,11 @@ export const IntroScreen = ({ onComplete, onTransitionComplete, phase }: IntroSc
       }}
       initial={{ opacity: 0 }}
       animate={{ opacity: phase === "transitioning" ? 0 : 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: phase === "transitioning" ? 2 : 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ 
+          duration: phase === "transitioning" ? 0.1 : 1,
+          ease: "easeOut"
+        }}
     >
       {/* Ambient background effects */}
       <div className="absolute inset-0 overflow-hidden">
