@@ -12,10 +12,14 @@ import NotFound from "./pages/NotFound";
 const queryClient = new QueryClient();
 
 const App = () => {
-  const [showIntro, setShowIntro] = useState(true);
+  const [introPhase, setIntroPhase] = useState<"intro" | "transitioning" | "completed">("intro");
 
   const handleIntroComplete = () => {
-    setShowIntro(false);
+    setIntroPhase("transitioning");
+  };
+
+  const handleTransitionComplete = () => {
+    setIntroPhase("completed");
   };
 
   return (
@@ -23,19 +27,26 @@ const App = () => {
       <TooltipProvider>
         <Toaster />
         <Sonner />
-        <AnimatePresence mode="wait">
-          {showIntro ? (
-            <IntroScreen key="intro" onComplete={handleIntroComplete} />
-          ) : (
-            <BrowserRouter key="main">
-              <Routes>
-                <Route path="/" element={<Index />} />
-                {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-                <Route path="*" element={<NotFound />} />
-              </Routes>
-            </BrowserRouter>
+        <BrowserRouter>
+          <AnimatePresence mode="wait">
+            {introPhase === "intro" && (
+              <IntroScreen 
+                key="intro" 
+                onComplete={handleIntroComplete}
+                onTransitionComplete={handleTransitionComplete}
+                phase={introPhase}
+              />
+            )}
+          </AnimatePresence>
+          
+          {(introPhase === "transitioning" || introPhase === "completed") && (
+            <Routes>
+              <Route path="/" element={<Index showAssistant={introPhase === "completed"} />} />
+              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
           )}
-        </AnimatePresence>
+        </BrowserRouter>
       </TooltipProvider>
     </QueryClientProvider>
   );
