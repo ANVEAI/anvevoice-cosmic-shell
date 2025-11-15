@@ -4,11 +4,18 @@ import { IntroOrb } from "./IntroOrb";
 
 interface IntroScreenProps {
   onComplete: () => void;
+  onTransitionComplete: () => void;
+  phase: "intro" | "transitioning" | "completed";
 }
 
-export const IntroScreen = ({ onComplete }: IntroScreenProps) => {
-  // Auto-transition after 15 seconds
-  setTimeout(onComplete, 15000);
+export const IntroScreen = ({ onComplete, onTransitionComplete, phase }: IntroScreenProps) => {
+  // Auto-transition after 12 seconds
+  setTimeout(onComplete, 12000);
+
+  // After transition animation, mark as complete
+  if (phase === "transitioning") {
+    setTimeout(onTransitionComplete, 1800);
+  }
 
   return (
     <motion.div
@@ -62,8 +69,21 @@ export const IntroScreen = ({ onComplete }: IntroScreenProps) => {
       <motion.div
         className="relative z-10 flex flex-col items-center gap-20"
         initial={{ scale: 0.9, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        transition={{ duration: 0.8, delay: 0.2 }}
+        animate={
+          phase === "intro"
+            ? { scale: 1, opacity: 1, x: 0, y: 0 }
+            : {
+                scale: 0.25,
+                x: typeof window !== "undefined" ? window.innerWidth / 2 - 80 : 0,
+                y: typeof window !== "undefined" ? window.innerHeight / 2 - 80 : 0,
+                opacity: 1,
+              }
+        }
+        transition={
+          phase === "intro"
+            ? { duration: 0.8, delay: 0.2 }
+            : { duration: 1.6, ease: [0.32, 0.72, 0, 1] }
+        }
       >
         {/* Central orb */}
         <IntroOrb />
@@ -72,7 +92,7 @@ export const IntroScreen = ({ onComplete }: IntroScreenProps) => {
         <motion.div
           className="flex items-center gap-12"
           initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
+          animate={{ opacity: phase === "intro" ? 1 : 0, y: 0 }}
           transition={{ duration: 0.6, delay: 0.8 }}
         >
           {/* Mic button */}
@@ -141,7 +161,7 @@ export const IntroScreen = ({ onComplete }: IntroScreenProps) => {
         <motion.div
           className="absolute bottom-12 left-1/2 -translate-x-1/2"
           initial={{ opacity: 0 }}
-          animate={{ opacity: 0.5 }}
+          animate={{ opacity: phase === "intro" ? 0.5 : 0 }}
           transition={{ duration: 0.6, delay: 1.2 }}
         >
           <div className="flex gap-1.5">
