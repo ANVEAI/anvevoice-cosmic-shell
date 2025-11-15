@@ -41,7 +41,7 @@ export const IntroScreen = ({ onComplete, onTransitionComplete, phase }: IntroSc
         <motion.div
           className="absolute top-0 left-1/4 w-96 h-96 rounded-full"
           style={{
-            background: "radial-gradient(circle, hsl(195 100% 50% / 0.08), transparent 70%)",
+            background: "radial-gradient(circle, hsl(165 100% 50% / 0.08), transparent 70%)",
             filter: "blur(80px)",
           }}
           animate={{
