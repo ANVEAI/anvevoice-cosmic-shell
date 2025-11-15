@@ -7,9 +7,9 @@ interface IntroOrbProps {
 
 export const IntroOrb = ({ size = "large", className = "" }: IntroOrbProps) => {
   const isSmall = size === "small";
-  const orbSize = isSmall ? "w-16 h-16" : "w-52 h-52 md:w-64 md:h-64";
-  const particleRadius = isSmall ? 35 : 140;
-  const blurAmount = isSmall ? 20 : 40;
+  const orbSize = isSmall ? "w-16 h-16" : "w-80 h-80"; // 320px for large
+  const particleRadius = isSmall ? 35 : 160;
+  const blurAmount = isSmall ? 20 : 50;
   
   return (
     <div className={`relative ${className}`}>
