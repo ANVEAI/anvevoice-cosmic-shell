@@ -39,7 +39,7 @@ const App = () => {
             )}
           </AnimatePresence>
           
-          {(introPhase === "transitioning" || introPhase === "completed") && (
+          {introPhase === "completed" && (
             <Routes>
               <Route path="/" element={<Index showAssistant={true} />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
