@@ -18,8 +18,8 @@ serve(async (req) => {
     console.log('[VAPI Webhook] Received:', JSON.stringify(message, null, 2));
 
     // Handle different message types
-    if (message.type === 'function-call') {
-      return await handleFunctionCall(message, req);
+    if (message.type === 'tool-calls') {
+      return await handleToolCalls(message, req);
     } else if (message.type === 'status-update') {
       console.log(`[VAPI Webhook] Call status: ${message.call?.status}`);
     } else if (message.type === 'transcript') {
@@ -39,37 +39,67 @@ serve(async (req) => {
   }
 });
 
-async function handleFunctionCall(message: any, req: Request) {
-  const { functionCall } = message;
+async function handleToolCalls(message: any, req: Request) {
+  const { toolCalls } = message;
   
-  console.log(`[VAPI Webhook] Function call: ${functionCall.name}`, functionCall.parameters);
+  if (!toolCalls || !Array.isArray(toolCalls)) {
+    console.error('[VAPI Webhook] No tool calls found in message');
+    return new Response(JSON.stringify({ error: 'No tool calls found' }), {
+      status: 400,
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+    });
+  }
+
+  console.log(`[VAPI Webhook] Processing ${toolCalls.length} tool call(s)`);
 
   // Initialize Supabase client
   const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
   const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
   const supabase = createClient(supabaseUrl, supabaseKey);
 
+  const results = [];
+  const channel = supabase.channel('vapi-commands');
+
   try {
-    // Broadcast to frontend via Realtime
-    const channel = supabase.channel('vapi-commands');
-    
-    await channel.send({
-      type: 'broadcast',
-      event: 'function-call',
-      payload: {
-        function: functionCall.name,
-        parameters: functionCall.parameters,
-        callId: message.call?.id,
-        timestamp: new Date().toISOString(),
-      },
-    });
+    // Process each tool call
+    for (const toolCall of toolCalls) {
+      const functionName = toolCall.function?.name;
+      const functionArgs = toolCall.function?.arguments;
+      
+      if (!functionName) {
+        console.warn('[VAPI Webhook] Skipping tool call without function name:', toolCall);
+        continue;
+      }
 
-    console.log(`[VAPI Webhook] Broadcasted ${functionCall.name} to frontend`);
+      console.log(`[VAPI Webhook] Tool call ${toolCall.id}: ${functionName}`, functionArgs);
 
-    // Return success immediately - DOM action happens asynchronously on frontend
+      // Broadcast to frontend via Realtime
+      await channel.send({
+        type: 'broadcast',
+        event: 'function-call',
+        payload: {
+          function: functionName,
+          parameters: functionArgs,
+          callId: message.call?.id,
+          toolCallId: toolCall.id,
+          timestamp: new Date().toISOString(),
+        },
+      });
+
+      console.log(`[VAPI Webhook] Broadcasted ${functionName} (${toolCall.id}) to frontend`);
+      
+      results.push({
+        toolCallId: toolCall.id,
+        function: functionName,
+        success: true,
+      });
+    }
+
+    // Return success for all tool calls
     return new Response(JSON.stringify({
-      result: `Command ${functionCall.name} queued for execution`,
+      result: `${results.length} command(s) queued for execution`,
       success: true,
+      toolCalls: results,
     }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
@@ -77,9 +107,10 @@ async function handleFunctionCall(message: any, req: Request) {
     console.error('[VAPI Webhook] Broadcast error:', error);
     const errorMessage = error instanceof Error ? error.message : 'Unknown error';
     return new Response(JSON.stringify({
-      result: `Failed to queue ${functionCall.name}`,
+      result: 'Failed to queue commands',
       success: false,
       error: errorMessage,
+      toolCalls: results,
     }), {
       status: 500,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
