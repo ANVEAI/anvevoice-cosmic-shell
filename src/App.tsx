@@ -6,6 +6,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 import { IntroScreen } from "./components/intro/IntroScreen";
+import { FloatingAssistant } from "./components/intro/FloatingAssistant";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import Offers from "./pages/Offers";
@@ -43,14 +44,17 @@ const App = () => {
           </AnimatePresence>
           
           {introPhase === "completed" && (
-            <Routes>
-              <Route path="/" element={<Index showAssistant={true} />} />
-              <Route path="/offers" element={<Offers />} />
-              <Route path="/demo" element={<Demo />} />
-              <Route path="/contact" element={<Contact />} />
-              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-              <Route path="*" element={<NotFound />} />
-            </Routes>
+            <>
+              <Routes>
+                <Route path="/" element={<Index />} />
+                <Route path="/offers" element={<Offers />} />
+                <Route path="/demo" element={<Demo />} />
+                <Route path="/contact" element={<Contact />} />
+                {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+              <FloatingAssistant />
+            </>
           )}
         </BrowserRouter>
       </TooltipProvider>
