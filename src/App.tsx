@@ -29,7 +29,7 @@ const App = () => {
         <Sonner />
         <BrowserRouter>
           <AnimatePresence mode="wait">
-            {introPhase === "intro" && (
+            {(introPhase === "intro" || introPhase === "transitioning") && (
               <IntroScreen 
                 key="intro" 
                 onComplete={handleIntroComplete}
@@ -39,9 +39,9 @@ const App = () => {
             )}
           </AnimatePresence>
           
-          {(introPhase === "transitioning" || introPhase === "completed") && (
+          {introPhase === "completed" && (
             <Routes>
-              <Route path="/" element={<Index showAssistant={introPhase === "completed"} />} />
+              <Route path="/" element={<Index showAssistant={true} />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>
