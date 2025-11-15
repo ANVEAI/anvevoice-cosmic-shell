@@ -1,4 +1,3 @@
-import { showStatus, showSuccess, showError } from "./statusManager";
 import { navigationManager } from './navigationManager';
 
 // ============= Helper Functions =============
@@ -199,7 +198,7 @@ export const scroll_page = (params: { direction: string; target_section?: string
   if (target_section) {
     const sectionFound = scrollToSection(target_section);
     if (sectionFound) {
-      showSuccess('Scrolled to ' + target_section);
+      console.log('✅ Scrolled to', target_section);
       return;
     }
   }
@@ -253,14 +252,27 @@ export const scroll_page = (params: { direction: string; target_section?: string
             block: 'start',
             inline: 'nearest'
           });
-          showSuccess('Scrolled to ' + direction);
+          console.log('✅ Scrolled to', direction);
           return;
         }
       }
       window.scrollBy({ top: scrollAmount, behavior: 'smooth' });
   }
   
-  showSuccess('Scrolled ' + (direction || 'down'));
+  console.log('✅ Scrolled', direction || 'down');
+};
+
+export const scroll_to_content = () => {
+  console.log('📜 Scrolling to content');
+  window.scrollTo({ 
+    top: window.innerHeight, 
+    behavior: 'smooth' 
+  });
+};
+
+export const go_back_to_top = () => {
+  console.log('📜 Going back to top');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 };
 
 export const click_element = (params: {
@@ -295,7 +307,7 @@ export const click_element = (params: {
   }
   
   if (!element) {
-    showError(`Could not find element: "${target_text}"`);
+    console.error(`❌ Could not find element: "${target_text}"`);
     return;
   }
   
@@ -305,7 +317,7 @@ export const click_element = (params: {
   // Click after a short delay to allow scroll
   setTimeout(() => {
     element!.click();
-    showSuccess(`Clicked: ${target_text}`);
+    console.log(`✅ Clicked: ${target_text}`);
   }, 300);
 };
 
@@ -329,7 +341,7 @@ export const fill_field = (params: { value: string; field_hint?: string }) => {
   }
   
   if (!field) {
-    showError('Could not find field to fill');
+    console.error('❌ Could not find field to fill');
     return;
   }
   
@@ -341,7 +353,7 @@ export const fill_field = (params: { value: string; field_hint?: string }) => {
     field!.value = value;
     field!.dispatchEvent(new Event('input', { bubbles: true }));
     field!.dispatchEvent(new Event('change', { bubbles: true }));
-    showSuccess(`Filled field with: ${value}`);
+    console.log(`✅ Filled field with: ${value}`);
   }, 300);
 };
 
@@ -352,7 +364,7 @@ export const toggle_element = (params: { target: string }) => {
   const element = findElementByText(target);
   
   if (!element) {
-    showError(`Could not find element: "${target}"`);
+    console.error(`❌ Could not find element: "${target}"`);
     return;
   }
   
@@ -362,7 +374,7 @@ export const toggle_element = (params: { target: string }) => {
   // Toggle after a short delay
   setTimeout(() => {
     element.click();
-    showSuccess(`Toggled: ${target}`);
+    console.log(`✅ Toggled: ${target}`);
   }, 300);
 };
 
@@ -381,17 +393,17 @@ export const navigate_to_page = (params: { url: string; page_name: string }) => 
       const navigated = navigationManager.navigate(path);
       
       if (navigated) {
-        showSuccess(`Navigating to ${page_name}`);
+        console.log(`✅ Navigating to ${page_name}`);
       } else {
         // Fallback to full page reload if React Router not available
         window.location.href = targetUrl.href;
-        showSuccess(`Navigating to ${page_name}`);
+        console.log(`✅ Navigating to ${page_name}`);
       }
     } else {
-      showError('Cannot navigate to external URLs');
+      console.error('❌ Cannot navigate to external URLs');
     }
   } catch (error) {
-    showError(`Invalid URL: ${url}`);
+    console.error(`❌ Invalid URL: ${url}`);
   }
 };
 
@@ -410,7 +422,6 @@ export const get_page_context = (params: { refresh?: boolean; detail_level?: str
     },
   };
   
-  showStatus('Page context retrieved');
-  console.log('Page context:', context);
+  console.log('✅ Page context retrieved', context);
   return context;
 };

@@ -6,12 +6,20 @@ import { useClientSideFunctions } from "@/hooks/useClientSideFunctions";
 import { useMemo } from "react";
 import * as domActions from "@/utils/domActions";
 
-export const FloatingAssistant = () => {
+interface FloatingAssistantProps {
+  isCentered?: boolean;
+}
+
+export const FloatingAssistant = ({ isCentered = false }: FloatingAssistantProps) => {
+  // Don't render when orb is centered
+  if (isCentered) return null;
   const { startAssistant, stopAssistant, isActive, isSpeaking } = useVapiAssistant();
 
   // DOM Actions mapping for VAPI commands
   const actionHandlers = useMemo(() => ({
     scroll_page: domActions.scroll_page,
+    scroll_to_content: domActions.scroll_to_content,
+    go_back_to_top: domActions.go_back_to_top,
     click_element: domActions.click_element,
     fill_field: domActions.fill_field,
     toggle_element: domActions.toggle_element,
