@@ -19,7 +19,7 @@ export const IntroScreen = ({ onComplete, onTransitionComplete, phase }: IntroSc
   // After transition animation, mark as complete
   useEffect(() => {
     if (phase === "transitioning") {
-      const timer = setTimeout(onTransitionComplete, 1800);
+      const timer = setTimeout(onTransitionComplete, 2200);
       return () => clearTimeout(timer);
     }
   }, [phase, onTransitionComplete]);
@@ -31,9 +31,9 @@ export const IntroScreen = ({ onComplete, onTransitionComplete, phase }: IntroSc
         background: "linear-gradient(135deg, hsl(220 20% 8%), hsl(220 25% 10%))",
       }}
       initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
+      animate={{ opacity: phase === "transitioning" ? 0 : 1 }}
       exit={{ opacity: 0 }}
-      transition={{ duration: 1 }}
+      transition={{ duration: phase === "transitioning" ? 2 : 1 }}
     >
       {/* Ambient background effects */}
       <div className="absolute inset-0 overflow-hidden">
@@ -78,18 +78,23 @@ export const IntroScreen = ({ onComplete, onTransitionComplete, phase }: IntroSc
         initial={{ scale: 0.9, opacity: 0 }}
         animate={
           phase === "intro"
-            ? { scale: 1, opacity: 1, x: 0, y: 0 }
+            ? { scale: 1, opacity: 1, x: 0, y: 0, filter: "blur(0px)" }
             : {
                 scale: 0.25,
                 x: typeof window !== "undefined" ? window.innerWidth / 2 - 80 : 0,
                 y: typeof window !== "undefined" ? window.innerHeight / 2 - 80 : 0,
                 opacity: 1,
+                filter: "blur(0px)",
               }
         }
         transition={
           phase === "intro"
             ? { duration: 0.8, delay: 0.2 }
-            : { duration: 1.6, ease: [0.32, 0.72, 0, 1] }
+            : { 
+                duration: 2.2, 
+                ease: [0.43, 0.13, 0.23, 0.96],
+                filter: { duration: 1.1 }
+              }
         }
       >
         {/* Central orb */}

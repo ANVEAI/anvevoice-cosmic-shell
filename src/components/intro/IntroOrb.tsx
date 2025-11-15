@@ -1,14 +1,24 @@
 import { motion } from "framer-motion";
 
-export const IntroOrb = () => {
+interface IntroOrbProps {
+  size?: "large" | "small";
+  className?: string;
+}
+
+export const IntroOrb = ({ size = "large", className = "" }: IntroOrbProps) => {
+  const isSmall = size === "small";
+  const orbSize = isSmall ? "w-16 h-16" : "w-52 h-52 md:w-64 md:h-64";
+  const particleRadius = isSmall ? 35 : 140;
+  const blurAmount = isSmall ? 20 : 40;
+  
   return (
-    <div className="relative">
+    <div className={`relative ${className}`}>
       {/* Outer glow rings */}
       <motion.div
         className="absolute inset-0 rounded-full"
         style={{
           background: "radial-gradient(circle, hsl(195 100% 50% / 0.3), transparent 70%)",
-          filter: "blur(40px)",
+          filter: `blur(${blurAmount}px)`,
         }}
         animate={{
           scale: [1, 1.2, 1],
@@ -23,7 +33,7 @@ export const IntroOrb = () => {
 
       {/* Main orb */}
       <motion.div
-        className="relative w-52 h-52 md:w-64 md:h-64 rounded-full overflow-hidden"
+        className={`relative ${orbSize} rounded-full overflow-hidden`}
         animate={{
           scale: [1, 1.05, 1],
         }}
@@ -97,8 +107,8 @@ export const IntroOrb = () => {
           key={i}
           className="absolute w-1 h-1 rounded-full bg-primary-glow"
           style={{
-            left: `${50 + Math.cos((i * Math.PI) / 3) * 140}px`,
-            top: `${50 + Math.sin((i * Math.PI) / 3) * 140}px`,
+            left: `${(isSmall ? 32 : 128) + Math.cos((i * Math.PI) / 3) * particleRadius}px`,
+            top: `${(isSmall ? 32 : 128) + Math.sin((i * Math.PI) / 3) * particleRadius}px`,
           }}
           animate={{
             y: [-10, 10, -10],
