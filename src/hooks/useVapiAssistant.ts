@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import Vapi from '@vapi-ai/web';
 import { useToast } from '@/hooks/use-toast';
+import * as domActions from '@/utils/domActions';
 
 export const useVapiAssistant = () => {
   const vapiRef = useRef<Vapi | null>(null);
@@ -60,8 +61,36 @@ export const useVapiAssistant = () => {
       setIsSpeaking(false);
     });
 
-    vapi.on('message', (message) => {
+    vapi.on('message', (message: any) => {
       console.log('[VAPI] Message:', message);
+      
+      // Handle client-side function calls
+      if (message.type === 'function-call' && message.functionCall) {
+        const { functionCall } = message;
+        
+        if (functionCall.name === 'get_page_context') {
+          try {
+            console.log('[VAPI] Executing client-side get_page_context');
+            const result = domActions.get_page_context(functionCall.parameters || {});
+            
+            // Return result via callback in message
+            if (message.callback) {
+              message.callback({
+                result: result,
+              });
+            }
+            
+            console.log('[VAPI] get_page_context result:', result);
+          } catch (error) {
+            console.error('[VAPI] Error executing get_page_context:', error);
+            if (message.callback) {
+              message.callback({
+                error: error instanceof Error ? error.message : 'Unknown error',
+              });
+            }
+          }
+        }
+      }
     });
 
     return () => {

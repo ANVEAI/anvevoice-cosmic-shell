@@ -58,7 +58,6 @@ async function handleToolCalls(message: any, req: Request) {
   const supabase = createClient(supabaseUrl, supabaseKey);
 
   const results = [];
-  const channel = supabase.channel('vapi-commands');
 
   try {
     // Process each tool call
@@ -73,44 +72,98 @@ async function handleToolCalls(message: any, req: Request) {
 
       console.log(`[VAPI Webhook] Tool call ${toolCall.id}: ${functionName}`, functionArgs);
 
-      // Broadcast to frontend via Realtime
-      await channel.send({
-        type: 'broadcast',
-        event: 'function-call',
-        payload: {
-          function: functionName,
-          parameters: functionArgs,
-          callId: message.call?.id,
-          toolCallId: toolCall.id,
-          timestamp: new Date().toISOString(),
-        },
-      });
+      // Special handling for get_page_context - request from frontend
+      if (functionName === 'get_page_context') {
+        console.log('[VAPI Webhook] Requesting page context from frontend...');
+        
+        const requestId = `${toolCall.id}-${Date.now()}`;
+        const requestChannel = supabase.channel('vapi-function-requests');
+        const responseChannel = supabase.channel('vapi-function-responses');
+        
+        // Subscribe to response channel first
+        await responseChannel.subscribe();
+        
+        // Set up promise to wait for response
+        const responsePromise = new Promise((resolve, reject) => {
+          const timeout = setTimeout(() => {
+            reject(new Error('Timeout waiting for page context'));
+          }, 5000); // 5 second timeout
+          
+          responseChannel.on('broadcast', { event: 'function-response' }, ({ payload }: any) => {
+            if (payload.requestId === requestId) {
+              clearTimeout(timeout);
+              resolve(payload);
+            }
+          });
+        });
+        
+        // Request page context from frontend
+        await requestChannel.send({
+          type: 'broadcast',
+          event: 'function-request',
+          payload: {
+            requestId,
+            functionName: 'get_page_context',
+            parameters: functionArgs,
+            toolCallId: toolCall.id,
+          },
+        });
+        
+        try {
+          // Wait for response from frontend
+          const response: any = await responsePromise;
+          
+          console.log('[VAPI Webhook] Received page context:', response.result);
+          
+          results.push({
+            toolCallId: toolCall.id,
+            result: response.result,
+          });
+        } catch (error) {
+          console.error('[VAPI Webhook] Failed to get page context:', error);
+          results.push({
+            toolCallId: toolCall.id,
+            error: 'Failed to retrieve page context from frontend',
+          });
+        } finally {
+          await supabase.removeChannel(requestChannel);
+          await supabase.removeChannel(responseChannel);
+        }
+      } else {
+        // Regular function - broadcast to frontend via Realtime
+        const channel = supabase.channel('vapi-commands');
+        
+        await channel.send({
+          type: 'broadcast',
+          event: 'function-call',
+          payload: {
+            function: functionName,
+            parameters: functionArgs,
+            callId: message.call?.id,
+            toolCallId: toolCall.id,
+            timestamp: new Date().toISOString(),
+          },
+        });
 
-      console.log(`[VAPI Webhook] Broadcasted ${functionName} (${toolCall.id}) to frontend`);
-      
-      results.push({
-        toolCallId: toolCall.id,
-        function: functionName,
-        success: true,
-      });
+        console.log(`[VAPI Webhook] Broadcasted ${functionName} (${toolCall.id}) to frontend`);
+        
+        results.push({
+          toolCallId: toolCall.id,
+          result: `${functionName} command queued for execution`,
+        });
+      }
     }
 
-    // Return success for all tool calls
-    return new Response(JSON.stringify({
-      result: `${results.length} command(s) queued for execution`,
-      success: true,
-      toolCalls: results,
-    }), {
+    // Return results to VAPI
+    return new Response(JSON.stringify({ results }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
   } catch (error) {
-    console.error('[VAPI Webhook] Broadcast error:', error);
+    console.error('[VAPI Webhook] Error processing tool calls:', error);
     const errorMessage = error instanceof Error ? error.message : 'Unknown error';
     return new Response(JSON.stringify({
-      result: 'Failed to queue commands',
-      success: false,
       error: errorMessage,
-      toolCalls: results,
+      results,
     }), {
       status: 500,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
