@@ -1,4 +1,5 @@
 import { showStatus, showSuccess, showError } from "./statusManager";
+import { navigationManager } from './navigationManager';
 
 // ============= Helper Functions =============
 
@@ -373,9 +374,22 @@ export const navigate_to_page = (params: { url: string; page_name: string }) => 
     const currentOrigin = window.location.origin;
     const targetUrl = new URL(url, currentOrigin);
     
-    // Navigate to any valid URL
-    window.location.href = targetUrl.href;
-    showSuccess(`Navigating to ${page_name}`);
+    // Check if it's same origin
+    if (targetUrl.origin === currentOrigin) {
+      // Try React Router navigation first (keeps voice assistant active)
+      const path = targetUrl.pathname + targetUrl.search + targetUrl.hash;
+      const navigated = navigationManager.navigate(path);
+      
+      if (navigated) {
+        showSuccess(`Navigating to ${page_name}`);
+      } else {
+        // Fallback to full page reload if React Router not available
+        window.location.href = targetUrl.href;
+        showSuccess(`Navigating to ${page_name}`);
+      }
+    } else {
+      showError('Cannot navigate to external URLs');
+    }
   } catch (error) {
     showError(`Invalid URL: ${url}`);
   }
