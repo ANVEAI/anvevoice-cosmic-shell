@@ -373,13 +373,9 @@ export const navigate_to_page = (params: { url: string; page_name: string }) => 
     const currentOrigin = window.location.origin;
     const targetUrl = new URL(url, currentOrigin);
     
-    // Check if it's same origin
-    if (targetUrl.origin === currentOrigin) {
-      window.location.href = targetUrl.href;
-      showSuccess(`Navigating to ${page_name}`);
-    } else {
-      showError('Cannot navigate to external URLs');
-    }
+    // Navigate to any valid URL
+    window.location.href = targetUrl.href;
+    showSuccess(`Navigating to ${page_name}`);
   } catch (error) {
     showError(`Invalid URL: ${url}`);
   }
