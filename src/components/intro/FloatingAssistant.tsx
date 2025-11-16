@@ -5,12 +5,11 @@ import { useVapiCommands } from "@/hooks/useVapiCommands";
 import { useClientSideFunctions } from "@/hooks/useClientSideFunctions";
 import { useMemo } from "react";
 import * as domActions from "@/utils/domActions";
+import { useOrbContext } from "@/contexts/OrbContext";
 
-interface FloatingAssistantProps {
-  isCentered?: boolean;
-}
-
-export const FloatingAssistant = ({ isCentered = false }: FloatingAssistantProps) => {
+export const FloatingAssistant = () => {
+  const { isCentered } = useOrbContext();
+  
   // Don't render when orb is centered
   if (isCentered) return null;
   const { startAssistant, stopAssistant, isActive, isSpeaking } = useVapiAssistant();
