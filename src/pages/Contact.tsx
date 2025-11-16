@@ -5,9 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Mail, Phone, MapPin, Clock } from "lucide-react";
-import { useForm, Controller } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { toast } from "sonner";
@@ -16,7 +15,7 @@ const contactSchema = z.object({
   companyName: z.string().min(2, "Company name must be at least 2 characters").max(100),
   email: z.string().email("Invalid email address"),
   phoneNumber: z.string().optional(),
-  employeeSize: z.string().min(1, "Please select employee size"),
+  employeeSize: z.string().min(1, "Employee size is required").max(50),
   message: z.string().min(10, "Message must be at least 10 characters").max(1000)
 });
 type ContactFormData = z.infer<typeof contactSchema>;
@@ -24,7 +23,6 @@ const Contact = () => {
   const {
     register,
     handleSubmit,
-    control,
     formState: {
       errors
     },
@@ -114,24 +112,7 @@ const Contact = () => {
 
                   <div className="space-y-2">
                     <Label htmlFor="employeeSize">Employee Size *</Label>
-                    <Controller
-                      name="employeeSize"
-                      control={control}
-                      render={({ field }) => (
-                        <Select onValueChange={field.onChange} value={field.value}>
-                          <SelectTrigger className={errors.employeeSize ? "border-destructive" : ""}>
-                            <SelectValue placeholder="Select company size" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="1-10">1-10 employees</SelectItem>
-                            <SelectItem value="11-50">11-50 employees</SelectItem>
-                            <SelectItem value="51-200">51-200 employees</SelectItem>
-                            <SelectItem value="201-500">201-500 employees</SelectItem>
-                            <SelectItem value="500+">500+ employees</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      )}
-                    />
+                    <Input id="employeeSize" placeholder="e.g., 50-100 employees" {...register("employeeSize")} className={errors.employeeSize ? "border-destructive" : ""} />
                     {errors.employeeSize && <p className="text-sm text-destructive">{errors.employeeSize.message}</p>}
                   </div>
 
