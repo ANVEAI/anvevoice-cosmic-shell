@@ -49,8 +49,8 @@ export const CenteredOrbHero = ({ onTapSpeak }: CenteredOrbHeroProps) => {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.6, duration: 0.8, ease: 'easeOut' }}
         >
-          <div className="w-64 h-64 sm:w-72 sm:h-72 md:w-80 md:h-80">
-            <IntroOrb size="large" className="!w-full !h-full" />
+          <div className="w-80 h-80">
+            <IntroOrb size="large" className="!w-full !h-full flex items-center justify-center" />
           </div>
         </motion.div>
 
