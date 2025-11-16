@@ -17,16 +17,16 @@ const Demo = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="text-center space-y-4 mb-16"
+            className="text-center mb-6 sm:space-y-4 sm:mb-16"
           >
-            <Badge className="mb-4">Live Demos</Badge>
-            <h1 className="text-5xl lg:text-6xl font-bold">
+            <Badge className="mb-0 sm:mb-4">Live Demos</Badge>
+            <h1 className="hidden sm:block text-5xl lg:text-6xl font-bold">
               See AnveVoice
               <span className="bg-gradient-to-r from-primary to-primary-glow bg-clip-text text-transparent">
                 {" "}In Action
               </span>
             </h1>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+            <p className="hidden sm:block text-xl text-muted-foreground max-w-2xl mx-auto">
               Explore how AnveVoice transforms different industries with intelligent voice navigation
             </p>
           </motion.div>
