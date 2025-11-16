@@ -1,6 +1,7 @@
 import { CenteredOrbHero } from "@/components/landing/CenteredOrbHero";
 import { FeatureGrid } from "@/components/landing/FeatureGrid";
 import { HowItWorks } from "@/components/landing/HowItWorks";
+import { CTASection } from "@/components/landing/CTASection";
 import { Footer } from "@/components/landing/Footer";
 import { FloatingAssistant } from "@/components/intro/FloatingAssistant";
 import { useOrbTransition } from "@/hooks/useOrbTransition";
@@ -38,6 +39,7 @@ const Index = () => {
       >
         <FeatureGrid />
         <HowItWorks />
+        <CTASection />
         <Footer />
       </motion.div>
 
