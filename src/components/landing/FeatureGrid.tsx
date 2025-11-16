@@ -63,7 +63,7 @@ export const FeatureGrid = () => {
                     
                     <div className="flex-1 min-w-0">
                       <h3 className="text-base sm:text-lg font-semibold mb-1.5">{feature.title}</h3>
-                      <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">{feature.description}</p>
+                      
                     </div>
                   </div>
                 </Card>
