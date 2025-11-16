@@ -21,7 +21,7 @@ const features = [
   },
   {
     icon: Zap,
-    title: "COnvert web Visitors Into Sales 24/7",
+    title: "Convert Web Visitors Into Sales 24/7",
     description:
       "Execute actions automatically. Click buttons, navigate menus, and interact with web elements via voice.",
   },
