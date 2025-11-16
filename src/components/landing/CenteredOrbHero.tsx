@@ -1,11 +1,13 @@
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { IntroOrb } from '@/components/intro/IntroOrb';
-import { Mic } from 'lucide-react';
+import { Mic, X } from 'lucide-react';
 interface CenteredOrbHeroProps {
   onTapSpeak: () => void;
+  isActive: boolean;
 }
 export const CenteredOrbHero = ({
-  onTapSpeak
+  onTapSpeak,
+  isActive
 }: CenteredOrbHeroProps) => {
   return <motion.section className="fixed inset-0 z-30 flex flex-col items-center justify-center bg-background" initial={{
     opacity: 1
@@ -67,23 +69,39 @@ export const CenteredOrbHero = ({
           </div>
         </motion.div>
 
-        {/* Tap & Speak Button */}
-        <motion.button onClick={onTapSpeak} className="flex items-center gap-2 sm:gap-3 px-6 sm:px-8 py-3 sm:py-4 bg-slate-800/50 backdrop-blur-md rounded-full border border-primary/30 hover:border-primary/60 hover:bg-primary/10 transition-all group" initial={{
-        opacity: 0,
-        y: 20
-      }} animate={{
-        opacity: 1,
-        y: 0
-      }} transition={{
-        delay: 0.8,
-        duration: 0.6
-      }} whileHover={{
-        scale: 1.05
-      }} whileTap={{
-        scale: 0.95
-      }}>
-          <Mic className="w-4 h-4 sm:w-5 sm:h-5 text-primary group-hover:animate-pulse" />
-          <span className="text-foreground font-medium text-sm sm:text-base">Tap & Speak</span>
+        {/* Voice Control Button */}
+        <motion.button 
+          onClick={onTapSpeak} 
+          className="relative w-14 h-14 sm:w-16 sm:h-16 bg-background/10 backdrop-blur-md rounded-full border border-primary/30 hover:border-primary/60 hover:bg-primary/10 transition-all flex items-center justify-center" 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.8, duration: 0.6 }}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+        >
+          <AnimatePresence mode="wait">
+            {isActive ? (
+              <motion.div
+                key="cross"
+                initial={{ scale: 0, rotate: -90 }}
+                animate={{ scale: 1, rotate: 0 }}
+                exit={{ scale: 0, rotate: 90 }}
+                transition={{ duration: 0.2 }}
+              >
+                <X className="w-6 h-6 sm:w-7 sm:h-7 text-primary" />
+              </motion.div>
+            ) : (
+              <motion.div
+                key="mic"
+                initial={{ scale: 0, rotate: 90 }}
+                animate={{ scale: 1, rotate: 0 }}
+                exit={{ scale: 0, rotate: -90 }}
+                transition={{ duration: 0.2 }}
+              >
+                <Mic className="w-6 h-6 sm:w-7 sm:h-7 text-primary" />
+              </motion.div>
+            )}
+          </AnimatePresence>
         </motion.button>
 
         {/* Scroll hint */}

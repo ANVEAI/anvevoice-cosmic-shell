@@ -25,7 +25,7 @@ const Index = () => {
       {/* Centered Hero - visible when isCentered */}
       <AnimatePresence>
         {isCentered && (
-          <CenteredOrbHero onTapSpeak={handleTapSpeak} />
+          <CenteredOrbHero onTapSpeak={handleTapSpeak} isActive={isActive} />
         )}
       </AnimatePresence>
 
