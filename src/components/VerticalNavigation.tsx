@@ -1,7 +1,9 @@
-import { Home, Grid3x3, PlayCircle, DollarSign, Heart, Plus, X } from 'lucide-react';
+import { useState } from 'react';
+import { Home, Grid3x3, PlayCircle, DollarSign, Heart, Plus, X, Menu } from 'lucide-react';
 import { NavLink } from './NavLink';
 import { useTheme } from '@/hooks/useTheme';
-import { motion } from 'framer-motion';
+import { useIsMobile } from '@/hooks/use-mobile';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const navItems = [
   { icon: Home, label: 'Home', path: '/' },
@@ -13,49 +15,134 @@ const navItems = [
 
 export const VerticalNavigation = () => {
   const { theme, toggleTheme } = useTheme();
+  const isMobile = useIsMobile();
+  const [isOpen, setIsOpen] = useState(false);
 
-  return (
-    <motion.nav
-      initial={{ x: -80, opacity: 0 }}
-      animate={{ x: 0, opacity: 1 }}
-      transition={{ duration: 0.5 }}
-      className="fixed left-0 top-0 h-screen w-20 bg-slate-950 border-r border-border/50 z-50 flex flex-col items-center py-6"
-    >
-      {/* Theme Toggle */}
-      <motion.button
-        onClick={toggleTheme}
-        className="mb-8 w-12 h-12 rounded-lg bg-slate-900/50 border border-primary/30 flex items-center justify-center text-primary hover:bg-primary/10 transition-colors"
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
+  // Desktop navigation
+  if (!isMobile) {
+    return (
+      <motion.nav
+        initial={{ x: -80, opacity: 0 }}
+        animate={{ x: 0, opacity: 1 }}
+        transition={{ duration: 0.5 }}
+        className="fixed left-0 top-0 h-screen w-20 bg-slate-950 border-r border-border/50 z-50 flex flex-col items-center py-6"
       >
-        <motion.div
-          animate={{ rotate: theme === 'light' ? 45 : 0 }}
-          transition={{ duration: 0.3 }}
+        {/* Theme Toggle */}
+        <motion.button
+          onClick={toggleTheme}
+          className="mb-8 w-12 h-12 rounded-lg bg-slate-900/50 border border-primary/30 flex items-center justify-center text-primary hover:bg-primary/10 transition-colors"
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
         >
-          {theme === 'light' ? <X className="w-5 h-5" /> : <Plus className="w-5 h-5" />}
-        </motion.div>
-      </motion.button>
-
-      {/* Navigation Items */}
-      <div className="flex-1 flex flex-col gap-6">
-        {navItems.map((item) => (
-          <NavLink
-            key={item.path}
-            to={item.path}
-            end={item.path === '/'}
-            className="flex flex-col items-center gap-1 text-muted-foreground hover:text-primary transition-colors group"
-            activeClassName="text-primary"
+          <motion.div
+            animate={{ rotate: theme === 'light' ? 45 : 0 }}
+            transition={{ duration: 0.3 }}
           >
-            <motion.div
-              whileHover={{ scale: 1.1 }}
-              className="w-10 h-10 rounded-lg bg-slate-900/30 flex items-center justify-center group-hover:bg-primary/10 group-hover:shadow-glow transition-all"
+            {theme === 'light' ? <X className="w-5 h-5" /> : <Plus className="w-5 h-5" />}
+          </motion.div>
+        </motion.button>
+
+        {/* Navigation Items */}
+        <div className="flex-1 flex flex-col gap-6">
+          {navItems.map((item) => (
+            <NavLink
+              key={item.path}
+              to={item.path}
+              end={item.path === '/'}
+              className="flex flex-col items-center gap-1 text-muted-foreground hover:text-primary transition-colors group"
+              activeClassName="text-primary"
             >
-              <item.icon className="w-5 h-5" />
-            </motion.div>
-            <span className="text-xs font-medium hidden md:block">{item.label}</span>
-          </NavLink>
-        ))}
-      </div>
-    </motion.nav>
+              <motion.div
+                whileHover={{ scale: 1.1 }}
+                className="w-10 h-10 rounded-lg bg-slate-900/30 flex items-center justify-center group-hover:bg-primary/10 group-hover:shadow-glow transition-all"
+              >
+                <item.icon className="w-5 h-5" />
+              </motion.div>
+              <span className="text-xs font-medium hidden md:block">{item.label}</span>
+            </NavLink>
+          ))}
+        </div>
+      </motion.nav>
+    );
+  }
+
+  // Mobile navigation
+  return (
+    <>
+      {/* Mobile Header */}
+      <motion.div
+        initial={{ y: -60, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.5 }}
+        className="fixed top-0 left-0 right-0 h-16 bg-slate-950 border-b border-border/50 z-50 flex items-center justify-between px-4"
+      >
+        {/* Menu Button */}
+        <motion.button
+          onClick={() => setIsOpen(!isOpen)}
+          className="w-10 h-10 rounded-lg bg-slate-900/50 border border-primary/30 flex items-center justify-center text-primary hover:bg-primary/10 transition-colors"
+          whileTap={{ scale: 0.95 }}
+        >
+          {isOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+        </motion.button>
+
+        {/* Theme Toggle */}
+        <motion.button
+          onClick={toggleTheme}
+          className="w-10 h-10 rounded-lg bg-slate-900/50 border border-primary/30 flex items-center justify-center text-primary hover:bg-primary/10 transition-colors"
+          whileTap={{ scale: 0.95 }}
+        >
+          <motion.div
+            animate={{ rotate: theme === 'light' ? 45 : 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            {theme === 'light' ? <X className="w-5 h-5" /> : <Plus className="w-5 h-5" />}
+          </motion.div>
+        </motion.button>
+      </motion.div>
+
+      {/* Mobile Menu Overlay */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ x: '-100%' }}
+            animate={{ x: 0 }}
+            exit={{ x: '-100%' }}
+            transition={{ duration: 0.3, ease: 'easeInOut' }}
+            className="fixed top-16 left-0 bottom-0 w-64 bg-slate-950 border-r border-border/50 z-40 flex flex-col py-6 px-4"
+          >
+            {/* Navigation Items */}
+            <div className="flex flex-col gap-4">
+              {navItems.map((item) => (
+                <NavLink
+                  key={item.path}
+                  to={item.path}
+                  end={item.path === '/'}
+                  onClick={() => setIsOpen(false)}
+                  className="flex items-center gap-3 text-muted-foreground hover:text-primary transition-colors group p-3 rounded-lg hover:bg-slate-900/30"
+                  activeClassName="text-primary bg-slate-900/50"
+                >
+                  <item.icon className="w-5 h-5" />
+                  <span className="text-sm font-medium">{item.label}</span>
+                </NavLink>
+              ))}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Backdrop */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            onClick={() => setIsOpen(false)}
+            className="fixed inset-0 bg-black/50 z-30 top-16"
+          />
+        )}
+      </AnimatePresence>
+    </>
   );
 };
