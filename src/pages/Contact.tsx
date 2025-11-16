@@ -69,8 +69,8 @@ const Contact = () => {
           y: 0
         }} transition={{
           duration: 0.6
-        }} className="text-center space-y-4 mb-16 max-w-2xl mx-auto">
-            <Badge className="mb-4 text-base sm:text-sm px-4 py-2">Get In Touch</Badge>
+        }} className="text-center mb-4 sm:mb-16 max-w-2xl mx-auto">
+            <Badge className="mb-0 sm:mb-4 text-base sm:text-sm px-4 py-2">Get In Touch</Badge>
             
             
           </motion.div>
