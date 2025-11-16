@@ -3,14 +3,20 @@ import { FeatureGrid } from "@/components/landing/FeatureGrid";
 import { HowItWorks } from "@/components/landing/HowItWorks";
 import { CTASection } from "@/components/landing/CTASection";
 import { Footer } from "@/components/landing/Footer";
-import { FloatingAssistant } from "@/components/intro/FloatingAssistant";
 import { useOrbTransition } from "@/hooks/useOrbTransition";
 import { motion, AnimatePresence } from "framer-motion";
 import { useVapiAssistant } from "@/hooks/useVapiAssistant";
+import { useOrbContext } from "@/contexts/OrbContext";
+import { useEffect } from "react";
 
 const Index = () => {
   const { isCentered, triggerScroll } = useOrbTransition();
+  const { setIsCentered } = useOrbContext();
   const { startAssistant, stopAssistant, isActive } = useVapiAssistant();
+
+  useEffect(() => {
+    setIsCentered(isCentered);
+  }, [isCentered, setIsCentered]);
 
   const handleTapSpeak = () => {
     if (isActive) {
@@ -42,9 +48,6 @@ const Index = () => {
         <CTASection />
         <Footer />
       </motion.div>
-
-      {/* Floating Assistant - only visible when not centered */}
-      {!isCentered && <FloatingAssistant isCentered={false} />}
     </>
   );
 };

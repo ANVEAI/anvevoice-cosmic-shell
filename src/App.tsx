@@ -5,7 +5,9 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
 import { ThemeProvider } from "./contexts/ThemeContext";
+import { OrbProvider } from "./contexts/OrbContext";
 import { VerticalNavigation } from "./components/VerticalNavigation";
+import { FloatingAssistant } from "./components/intro/FloatingAssistant";
 import { navigationManager } from "./utils/navigationManager";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
@@ -35,6 +37,7 @@ const AppContent = () => {
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
+      <FloatingAssistant />
     </div>
   );
 };
@@ -42,15 +45,17 @@ const AppContent = () => {
 const App = () => {
   return (
     <ThemeProvider>
-      <QueryClientProvider client={queryClient}>
-        <TooltipProvider>
-          <Toaster />
-          <Sonner />
-          <BrowserRouter>
-            <AppContent />
-          </BrowserRouter>
-        </TooltipProvider>
-      </QueryClientProvider>
+      <OrbProvider>
+        <QueryClientProvider client={queryClient}>
+          <TooltipProvider>
+            <Toaster />
+            <Sonner />
+            <BrowserRouter>
+              <AppContent />
+            </BrowserRouter>
+          </TooltipProvider>
+        </QueryClientProvider>
+      </OrbProvider>
     </ThemeProvider>
   );
 };
