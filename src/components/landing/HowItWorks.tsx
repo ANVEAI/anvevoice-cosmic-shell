@@ -36,7 +36,7 @@ export const HowItWorks = () => {
         duration: 0.6
       }} className="text-center mb-8 sm:mb-12 lg:mb-20">
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-3 sm:mb-4">
-            How It Works
+            How It <span className="text-primary">Works</span>
           </h2>
           <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto">
             Simple, seamless, and intelligent. See how AnveVoice transforms user experience in three steps
