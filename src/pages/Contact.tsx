@@ -64,8 +64,8 @@ const Contact = () => {
     <div className="min-h-screen bg-gradient-hero overflow-x-hidden">
       <Navigation />
       
-      <section className="pt-32 pb-16 px-4 sm:px-6">
-        <div className="container mx-auto max-w-7xl">
+      <section className="pt-32 pb-16">
+        <div className="mx-auto w-full max-w-[680px] px-4 sm:px-6 lg:max-w-7xl">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
