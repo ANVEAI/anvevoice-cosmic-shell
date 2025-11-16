@@ -59,7 +59,7 @@ const Contact = () => {
   return <div className="min-h-screen bg-gradient-hero overflow-x-hidden">
       <Navigation />
       
-      <section className="pt-10 sm:pt-32 pb-5">
+      <section className="pt-8 sm:pt-32 pb-5">
         <div className="mx-auto w-full max-w-[680px] px-4 sm:px-6 lg:max-w-7xl">
           <motion.div initial={{
           opacity: 0,
@@ -69,8 +69,8 @@ const Contact = () => {
           y: 0
         }} transition={{
           duration: 0.6
-        }} className="text-center mb-4 sm:mb-16 max-w-2xl mx-auto">
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-2">Let's Get In Touch</h1>
+        }} className="text-center mb-3 sm:mb-16 max-w-2xl mx-auto">
+            <h1 className="text-2xl sm:text-4xl md:text-5xl font-bold mb-0">Let's Get In Touch</h1>
           </motion.div>
 
           <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 justify-items-center">
@@ -84,41 +84,41 @@ const Contact = () => {
             duration: 0.6,
             delay: 0.2
           }} className="max-w-xl mx-auto w-full lg:max-w-none">
-              <Card className="p-6 sm:p-8 bg-gradient-card shadow-elevated">
-                <h2 className="text-2xl font-bold mb-6">Send us a message</h2>
-                <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-                  <div className="space-y-2">
+              <Card className="p-4 sm:p-8 bg-gradient-card shadow-elevated">
+                <h2 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6">Send us a message</h2>
+                <form onSubmit={handleSubmit(onSubmit)} className="space-y-3 sm:space-y-6">
+                  <div className="space-y-1 sm:space-y-2">
                     <Label htmlFor="name">Full Name *</Label>
                     <Input id="name" placeholder="John Doe" {...register("name")} className={errors.name ? "border-destructive" : ""} />
                     {errors.name && <p className="text-sm text-destructive">{errors.name.message}</p>}
                   </div>
 
-                  <div className="space-y-2">
+                  <div className="space-y-1 sm:space-y-2">
                     <Label htmlFor="companyName">Company Name *</Label>
                     <Input id="companyName" placeholder="Acme Inc." {...register("companyName")} className={errors.companyName ? "border-destructive" : ""} />
                     {errors.companyName && <p className="text-sm text-destructive">{errors.companyName.message}</p>}
                   </div>
 
-                  <div className="space-y-2">
+                  <div className="space-y-1 sm:space-y-2">
                     <Label htmlFor="email">Email Address *</Label>
                     <Input id="email" type="email" placeholder="john@company.com" {...register("email")} className={errors.email ? "border-destructive" : ""} />
                     {errors.email && <p className="text-sm text-destructive">{errors.email.message}</p>}
                   </div>
 
-                  <div className="space-y-2">
+                  <div className="space-y-1 sm:space-y-2">
                     <Label htmlFor="phoneNumber">Phone Number (Optional)</Label>
                     <Input id="phoneNumber" type="tel" placeholder="+1 (555) 123-4567" {...register("phoneNumber")} />
                   </div>
 
-                  <div className="space-y-2">
+                  <div className="space-y-1 sm:space-y-2">
                     <Label htmlFor="employeeSize">Employee Size *</Label>
                     <Input id="employeeSize" placeholder="e.g., 50-100 employees" {...register("employeeSize")} className={errors.employeeSize ? "border-destructive" : ""} />
                     {errors.employeeSize && <p className="text-sm text-destructive">{errors.employeeSize.message}</p>}
                   </div>
 
-                  <div className="space-y-2">
+                  <div className="space-y-1 sm:space-y-2">
                     <Label htmlFor="message">Message *</Label>
-                    <Textarea id="message" placeholder="Tell us about your project or ask us anything..." rows={5} {...register("message")} className={errors.message ? "border-destructive" : ""} />
+                    <Textarea id="message" placeholder="Tell us about your project or ask us anything..." rows={3} {...register("message")} className={errors.message ? "border-destructive" : ""} />
                     {errors.message && <p className="text-sm text-destructive">{errors.message.message}</p>}
                   </div>
 
