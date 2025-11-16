@@ -27,7 +27,7 @@ const AppContent = () => {
   return (
     <div className="flex min-h-screen w-full">
       <VerticalNavigation />
-      <main className="flex-1 ml-0 md:ml-20 mt-16 md:mt-0">
+      <main className="flex-1 ml-0 md:ml-20 mt-16 md:mt-0 overflow-x-hidden">
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/offers" element={<Offers />} />
