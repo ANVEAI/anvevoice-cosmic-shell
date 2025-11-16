@@ -10,7 +10,7 @@ const navItems = [
   { icon: Grid3x3, label: 'Features', path: '/#features' },
   { icon: PlayCircle, label: 'Demo', path: '/demo' },
   { icon: DollarSign, label: 'Pricing', path: '/offers' },
-  { icon: Heart, label: 'Support', path: '/contact' },
+  { icon: Heart, label: 'Contact', path: '/contact' },
 ];
 
 export const VerticalNavigation = () => {
