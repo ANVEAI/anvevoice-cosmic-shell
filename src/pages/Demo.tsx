@@ -40,15 +40,15 @@ const Demo = () => {
               <TabsList className="grid w-full grid-cols-3 h-auto p-2">
                 <TabsTrigger value="medical" className="flex flex-col sm:flex-row gap-2 py-3">
                   <Stethoscope className="w-5 h-5" />
-                  <span>Medical Consultation</span>
+                  <span className="hidden sm:inline">Medical Consultation</span>
                 </TabsTrigger>
                 <TabsTrigger value="prosthetic" className="flex flex-col sm:flex-row gap-2 py-3">
                   <Wrench className="w-5 h-5" />
-                  <span>Prosthetic Arm</span>
+                  <span className="hidden sm:inline">Prosthetic Arm</span>
                 </TabsTrigger>
                 <TabsTrigger value="bookstore" className="flex flex-col sm:flex-row gap-2 py-3">
                   <BookOpen className="w-5 h-5" />
-                  <span>Book E-commerce</span>
+                  <span className="hidden sm:inline">Book E-commerce</span>
                 </TabsTrigger>
               </TabsList>
 
