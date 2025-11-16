@@ -11,7 +11,7 @@ const Demo = () => {
     <div className="min-h-screen bg-gradient-hero">
       <Navigation />
       
-      <section className="pt-20 sm:pt-32 pb-16 px-6">
+      <section className="pt-10 sm:pt-32 pb-16 px-6">
         <div className="container mx-auto max-w-7xl">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
