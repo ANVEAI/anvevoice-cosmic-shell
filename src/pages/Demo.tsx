@@ -11,7 +11,7 @@ const Demo = () => {
     <div className="min-h-screen bg-gradient-hero">
       <Navigation />
       
-      <section className="pt-32 pb-16 px-6">
+      <section className="pt-20 sm:pt-32 pb-16 px-6">
         <div className="container mx-auto max-w-7xl">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -19,7 +19,7 @@ const Demo = () => {
             transition={{ duration: 0.6 }}
             className="text-center mb-6 sm:space-y-4 sm:mb-16"
           >
-            <Badge className="mb-0 sm:mb-4">Live Demos</Badge>
+            <Badge className="mb-0 sm:mb-4 text-base sm:text-sm px-4 py-2">Live Demos</Badge>
             <h1 className="hidden sm:block text-5xl lg:text-6xl font-bold">
               See AnveVoice
               <span className="bg-gradient-to-r from-primary to-primary-glow bg-clip-text text-transparent">
