@@ -8,11 +8,11 @@ interface IntroOrbProps {
 export const IntroOrb = ({ size = "large", className = "" }: IntroOrbProps) => {
   const isSmall = size === "small";
   const orbSize = isSmall ? "w-16 h-16" : "w-80 h-80"; // 320px for large
-  const particleRadius = isSmall ? 35 : 160;
+  const particleRadius = isSmall ? 28 : 160;
   const blurAmount = isSmall ? 20 : 50;
   
   return (
-    <div className={`relative ${className}`}>
+    <div className={`relative overflow-hidden ${className}`}>
       {/* Outer glow rings */}
       <motion.div
         className="absolute inset-0 rounded-full"

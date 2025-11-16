@@ -43,6 +43,7 @@ export const FloatingAssistant = () => {
   return (
     <motion.div
       className="fixed bottom-6 right-6 z-50 cursor-pointer"
+
       initial={{ scale: 0, opacity: 0 }}
       animate={{ scale: 1, opacity: 1 }}
       transition={{ duration: 0.2, ease: "easeOut" }}
@@ -61,7 +62,7 @@ export const FloatingAssistant = () => {
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.8 }}
-              className="absolute -top-2 -right-2 w-4 h-4 bg-green-500 rounded-full shadow-lg"
+              className="absolute -top-2 right-0 w-4 h-4 bg-green-500 rounded-full shadow-lg"
             >
               {isSpeaking && (
                 <motion.div
