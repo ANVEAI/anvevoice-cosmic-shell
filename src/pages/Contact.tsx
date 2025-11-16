@@ -64,7 +64,7 @@ const Contact = () => {
     <div className="min-h-screen bg-gradient-hero">
       <Navigation />
       
-      <section className="pt-32 pb-16 px-6">
+      <section className="pt-32 pb-16 px-4 sm:px-6">
         <div className="container mx-auto max-w-7xl">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -84,13 +84,13 @@ const Contact = () => {
             </p>
           </motion.div>
 
-          <div className="grid lg:grid-cols-2 gap-12">
+          <div className="grid lg:grid-cols-2 gap-8 lg:gap-12">
             <motion.div
               initial={{ opacity: 0, x: -30 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
             >
-              <Card className="p-8 bg-gradient-card shadow-elevated">
+              <Card className="p-6 sm:p-8 bg-gradient-card shadow-elevated">
                 <h2 className="text-2xl font-bold mb-6">Send us a message</h2>
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                   <div className="space-y-2">
@@ -170,7 +170,7 @@ const Contact = () => {
               transition={{ duration: 0.6, delay: 0.3 }}
               className="space-y-6"
             >
-              <Card className="p-8 bg-gradient-card shadow-card">
+              <Card className="p-6 sm:p-8 bg-gradient-card shadow-card">
                 <h2 className="text-2xl font-bold mb-6">Contact Information</h2>
                 <div className="space-y-6">
                   {contactInfo.map((info, index) => {
@@ -196,7 +196,7 @@ const Contact = () => {
                 </div>
               </Card>
 
-              <Card className="p-8 bg-gradient-to-br from-primary/5 to-primary-glow/5 border-primary/20">
+              <Card className="p-6 sm:p-8 bg-gradient-to-br from-primary/5 to-primary-glow/5 border-primary/20">
                 <h3 className="font-bold text-lg mb-3">Quick Response Guarantee</h3>
                 <p className="text-muted-foreground mb-4">
                   We typically respond to all inquiries within 24 hours during business days. For urgent matters, please call us directly.
