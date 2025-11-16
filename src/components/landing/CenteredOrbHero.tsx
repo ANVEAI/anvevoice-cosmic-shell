@@ -25,18 +25,7 @@ export const CenteredOrbHero = ({
       {/* Content */}
       <div className="relative z-10 flex flex-col items-center">
         {/* Heading */}
-        <motion.h1 className="text-4xl sm:text-5xl md:text-7xl font-bold mb-3 sm:mb-4 bg-gradient-to-r from-primary via-primary-glow to-primary bg-clip-text text-transparent px-4 text-center" initial={{
-        opacity: 0,
-        y: -20
-      }} animate={{
-        opacity: 1,
-        y: 0
-      }} transition={{
-        delay: 0.2,
-        duration: 0.6
-      }}>
-          AnveVoice
-        </motion.h1>
+        
 
         {/* Tagline */}
         <motion.p className="text-base sm:text-lg md:text-xl text-muted-foreground mb-8 sm:mb-12 px-4 text-center" initial={{
@@ -70,37 +59,48 @@ export const CenteredOrbHero = ({
         </motion.div>
 
         {/* Voice Control Button */}
-        <motion.button 
-          onClick={onTapSpeak} 
-          className="relative w-14 h-14 sm:w-16 sm:h-16 bg-background/10 backdrop-blur-md rounded-full border border-primary/30 hover:border-primary/60 hover:bg-primary/10 transition-all flex items-center justify-center" 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.8, duration: 0.6 }}
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-        >
+        <motion.button onClick={onTapSpeak} className="relative w-14 h-14 sm:w-16 sm:h-16 bg-background/10 backdrop-blur-md rounded-full border border-primary/30 hover:border-primary/60 hover:bg-primary/10 transition-all flex items-center justify-center" initial={{
+        opacity: 0,
+        y: 20
+      }} animate={{
+        opacity: 1,
+        y: 0
+      }} transition={{
+        delay: 0.8,
+        duration: 0.6
+      }} whileHover={{
+        scale: 1.05
+      }} whileTap={{
+        scale: 0.95
+      }}>
           <AnimatePresence mode="wait">
-            {isActive ? (
-              <motion.div
-                key="cross"
-                initial={{ scale: 0, rotate: -90 }}
-                animate={{ scale: 1, rotate: 0 }}
-                exit={{ scale: 0, rotate: 90 }}
-                transition={{ duration: 0.2 }}
-              >
+            {isActive ? <motion.div key="cross" initial={{
+            scale: 0,
+            rotate: -90
+          }} animate={{
+            scale: 1,
+            rotate: 0
+          }} exit={{
+            scale: 0,
+            rotate: 90
+          }} transition={{
+            duration: 0.2
+          }}>
                 <X className="w-6 h-6 sm:w-7 sm:h-7 text-primary" />
-              </motion.div>
-            ) : (
-              <motion.div
-                key="mic"
-                initial={{ scale: 0, rotate: 90 }}
-                animate={{ scale: 1, rotate: 0 }}
-                exit={{ scale: 0, rotate: -90 }}
-                transition={{ duration: 0.2 }}
-              >
+              </motion.div> : <motion.div key="mic" initial={{
+            scale: 0,
+            rotate: 90
+          }} animate={{
+            scale: 1,
+            rotate: 0
+          }} exit={{
+            scale: 0,
+            rotate: -90
+          }} transition={{
+            duration: 0.2
+          }}>
                 <Mic className="w-6 h-6 sm:w-7 sm:h-7 text-primary" />
-              </motion.div>
-            )}
+              </motion.div>}
           </AnimatePresence>
         </motion.button>
 
