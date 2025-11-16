@@ -28,7 +28,7 @@ const features = [
 ];
 export const FeatureGrid = () => {
   return (
-    <section className="pt-12 pb-4 sm:py-16 px-6 bg-muted/30">
+    <section className="pt-12 pb-9 sm:py-16 px-6 bg-muted/30">
       <div className="container mx-auto max-w-6xl">
         <motion.div
           initial={{
