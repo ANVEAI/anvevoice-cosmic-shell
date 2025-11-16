@@ -16,7 +16,7 @@ const features = [{
 }, {
   icon: Zap,
   title: "Agentic Web Actions",
-  description: "Cut Support Costs by 40%. Boost Conversions by 50%."
+  description: "Execute actions automatically. Click buttons, navigate menus, and interact with web elements via voice."
 }];
 export const FeatureGrid = () => {
   return <section className="py-12 sm:py-16 px-6 bg-muted/30 min-h-screen flex items-center">
