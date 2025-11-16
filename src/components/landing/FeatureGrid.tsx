@@ -40,7 +40,7 @@ export const FeatureGrid = () => {
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 max-w-4xl mx-auto">
           {features.map((feature, index) => {
           const Icon = feature.icon;
           return <motion.div key={feature.title} initial={{
@@ -55,15 +55,15 @@ export const FeatureGrid = () => {
             duration: 0.6,
             delay: index * 0.1
           }}>
-                <Card className="h-full p-6 bg-gradient-card border-border hover:shadow-elevated transition-all duration-300 hover:-translate-y-1 group">
-                  <div className="space-y-3">
-                    <div className="h-10 w-10 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 group-hover:scale-110 transition-all duration-300">
-                      <Icon className="h-5 w-5 text-primary" />
+                <Card className="h-full p-4 sm:p-5 bg-gradient-card border-border hover:shadow-elevated transition-all duration-300 hover:-translate-y-1 group">
+                  <div className="flex items-start gap-3">
+                    <div className="h-8 w-8 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0 group-hover:bg-primary/20 transition-all duration-300">
+                      <Icon className="h-4 w-4 text-primary" />
                     </div>
                     
-                    <div>
-                      <h3 className="text-lg font-semibold mb-2">{feature.title}</h3>
-                      <p className="text-sm text-muted-foreground">{feature.description}</p>
+                    <div className="flex-1 min-w-0">
+                      <h3 className="text-base sm:text-lg font-semibold mb-1.5">{feature.title}</h3>
+                      <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">{feature.description}</p>
                     </div>
                   </div>
                 </Card>
