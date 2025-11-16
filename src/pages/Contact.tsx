@@ -61,7 +61,7 @@ const Contact = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-hero">
+    <div className="min-h-screen bg-gradient-hero overflow-x-hidden">
       <Navigation />
       
       <section className="pt-32 pb-16 px-4 sm:px-6">
@@ -70,7 +70,7 @@ const Contact = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="text-center space-y-4 mb-16"
+            className="text-center space-y-4 mb-16 max-w-2xl mx-auto"
           >
             <Badge className="mb-4">Get In Touch</Badge>
             <h1 className="text-5xl lg:text-6xl font-bold">
@@ -84,11 +84,12 @@ const Contact = () => {
             </p>
           </motion.div>
 
-          <div className="grid lg:grid-cols-2 gap-8 lg:gap-12">
+          <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 justify-items-center">
             <motion.div
               initial={{ opacity: 0, x: -30 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
+              className="max-w-xl mx-auto w-full lg:max-w-none"
             >
               <Card className="p-6 sm:p-8 bg-gradient-card shadow-elevated">
                 <h2 className="text-2xl font-bold mb-6">Send us a message</h2>
@@ -168,7 +169,7 @@ const Contact = () => {
               initial={{ opacity: 0, x: 30 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6, delay: 0.3 }}
-              className="space-y-6"
+              className="max-w-xl mx-auto w-full lg:max-w-none space-y-6"
             >
               <Card className="p-6 sm:p-8 bg-gradient-card shadow-card">
                 <h2 className="text-2xl font-bold mb-6">Contact Information</h2>
