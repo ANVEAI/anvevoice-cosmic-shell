@@ -59,7 +59,7 @@ const Contact = () => {
   return <div className="min-h-screen bg-gradient-hero overflow-x-hidden">
       <Navigation />
       
-      <section className="pt-32 pb-16">
+      <section className="pt-20 sm:pt-32 pb-16">
         <div className="mx-auto w-full max-w-[680px] px-4 sm:px-6 lg:max-w-7xl">
           <motion.div initial={{
           opacity: 0,
@@ -70,7 +70,7 @@ const Contact = () => {
         }} transition={{
           duration: 0.6
         }} className="text-center space-y-4 mb-16 max-w-2xl mx-auto">
-            <Badge className="mb-4">Get In Touch</Badge>
+            <Badge className="mb-4 text-base sm:text-sm px-4 py-2">Get In Touch</Badge>
             
             
           </motion.div>
