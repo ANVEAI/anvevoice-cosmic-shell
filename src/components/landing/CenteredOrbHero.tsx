@@ -24,7 +24,7 @@ export const CenteredOrbHero = ({ onTapSpeak }: CenteredOrbHeroProps) => {
       <div className="relative z-10 flex flex-col items-center">
         {/* Heading */}
         <motion.h1
-          className="text-5xl md:text-7xl font-bold mb-4 bg-gradient-to-r from-primary via-primary-glow to-primary bg-clip-text text-transparent"
+          className="text-4xl sm:text-5xl md:text-7xl font-bold mb-3 sm:mb-4 bg-gradient-to-r from-primary via-primary-glow to-primary bg-clip-text text-transparent px-4 text-center"
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2, duration: 0.6 }}
@@ -34,7 +34,7 @@ export const CenteredOrbHero = ({ onTapSpeak }: CenteredOrbHeroProps) => {
 
         {/* Tagline */}
         <motion.p
-          className="text-lg md:text-xl text-muted-foreground mb-12"
+          className="text-base sm:text-lg md:text-xl text-muted-foreground mb-8 sm:mb-12 px-4 text-center"
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4, duration: 0.6 }}
@@ -44,26 +44,28 @@ export const CenteredOrbHero = ({ onTapSpeak }: CenteredOrbHeroProps) => {
 
         {/* Large Centered Orb */}
         <motion.div
-          className="relative mb-8"
+          className="relative mb-6 sm:mb-8 px-4"
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.6, duration: 0.8, ease: 'easeOut' }}
         >
-          <IntroOrb size="large" />
+          <div className="w-64 h-64 sm:w-72 sm:h-72 md:w-80 md:h-80 mx-auto">
+            <IntroOrb size="large" className="!w-full !h-full" />
+          </div>
         </motion.div>
 
         {/* Tap & Speak Button */}
         <motion.button
           onClick={onTapSpeak}
-          className="flex items-center gap-3 px-8 py-4 bg-slate-800/50 backdrop-blur-md rounded-full border border-primary/30 hover:border-primary/60 hover:bg-primary/10 transition-all group"
+          className="flex items-center gap-2 sm:gap-3 px-6 sm:px-8 py-3 sm:py-4 bg-slate-800/50 backdrop-blur-md rounded-full border border-primary/30 hover:border-primary/60 hover:bg-primary/10 transition-all group"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.8, duration: 0.6 }}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
         >
-          <Mic className="w-5 h-5 text-primary group-hover:animate-pulse" />
-          <span className="text-foreground font-medium">Tap & Speak</span>
+          <Mic className="w-4 h-4 sm:w-5 sm:h-5 text-primary group-hover:animate-pulse" />
+          <span className="text-foreground font-medium text-sm sm:text-base">Tap & Speak</span>
         </motion.button>
 
         {/* Scroll hint */}
