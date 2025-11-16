@@ -15,7 +15,7 @@ export const CTASection = () => {
         className="max-w-4xl mx-auto text-center"
       >
         <h2 className="text-4xl md:text-5xl font-bold mb-8 bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
-          Ready to Reduce Call Center Costs by 40%?
+          Cut Support Costs 40% & Boost Conversions 50%?
         </h2>
         
         <Button
