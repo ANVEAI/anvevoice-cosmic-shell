@@ -9,9 +9,6 @@ import { useOrbContext } from "@/contexts/OrbContext";
 
 export const FloatingAssistant = () => {
   const { isCentered } = useOrbContext();
-  
-  // Don't render when orb is centered
-  if (isCentered) return null;
   const { startAssistant, stopAssistant, isActive, isSpeaking } = useVapiAssistant();
 
   // DOM Actions mapping for VAPI commands
@@ -44,10 +41,17 @@ export const FloatingAssistant = () => {
     <motion.div
       className="fixed bottom-6 right-6 z-50 cursor-pointer"
       initial={{ scale: 0, opacity: 0 }}
-      animate={{ scale: 1, opacity: 1 }}
-      transition={{ duration: 0.2, ease: "easeOut" }}
-      whileHover={{ scale: 1.1 }}
-      whileTap={{ scale: 0.95 }}
+      animate={{ 
+        scale: isCentered ? 0 : 1, 
+        opacity: isCentered ? 0 : 1 
+      }}
+      transition={{ 
+        duration: 0.4, 
+        delay: isCentered ? 0 : 1.2, // Appear right as large orb arrives
+        ease: [0.22, 1, 0.36, 1]
+      }}
+      whileHover={{ scale: isCentered ? 0 : 1.1 }}
+      whileTap={{ scale: isCentered ? 0 : 0.95 }}
       onClick={handleClick}
       aria-label={isActive ? "Stop voice assistant" : "Start voice assistant"}
     >

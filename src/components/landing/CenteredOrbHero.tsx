@@ -12,13 +12,12 @@ export const CenteredOrbHero = ({
   return <motion.section className="fixed inset-0 z-30 flex flex-col items-center justify-center bg-background" initial={{
     opacity: 1
   }} exit={{
-    opacity: 0,
-    scale: 0.25,
-    x: 'calc(50vw - 4rem)',
-    y: 'calc(50vh - 4rem)',
+    scale: 0.3,
+    x: 'calc(50vw - 2.5rem)',
+    y: 'calc(50vh - 2.5rem)',
     transition: {
-      duration: 1.2,
-      ease: [0.34, 1.56, 0.64, 1]
+      duration: 1.5,
+      ease: [0.22, 1, 0.36, 1] // Smooth easeOutCubic curve for natural motion
     }
   }}>
       {/* Ambient background effects */}
