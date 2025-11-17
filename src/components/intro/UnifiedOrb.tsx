@@ -25,10 +25,8 @@ export const UnifiedOrb = ({ isCentered }: UnifiedOrbProps) => {
   const { startAssistant, stopAssistant, isActive, isSpeaking } = useVapiAssistant();
   const isMobile = useIsMobile();
   
-  // Responsive centering calculations
-  const headerHalf = isMobile ? 32 : 0; // half of 64px mobile header
-  const sidebarHalf = isMobile ? 0 : 40; // half of 80px desktop sidebar
-  const orbSize = isMobile ? 'min(78vw, 320px)' : '320px';
+  // Responsive orb size (accounts for glow on mobile to avoid cropping)
+  const orbSize = isMobile ? 'min(64vw, 280px)' : '320px';
   
   // DOM Actions mapping for VAPI commands
   const actionHandlers = useMemo(() => ({
@@ -58,8 +56,8 @@ export const UnifiedOrb = ({ isCentered }: UnifiedOrbProps) => {
   
   const orbVariants = {
     centered: {
-      top: `calc(50% + ${headerHalf}px)`,
-      left: `calc(50% + ${sidebarHalf}px)`,
+      top: '50%',
+      left: '50%',
       x: '-50%',
       y: '-50%',
       scale: 1,
@@ -139,7 +137,7 @@ export const UnifiedOrb = ({ isCentered }: UnifiedOrbProps) => {
             aria-label={isActive ? "Stop voice assistant" : "Start voice assistant"}
           >
             <div style={{ width: orbSize, height: orbSize }}>
-              <IntroOrb size="large" />
+              <IntroOrb size={isMobile ? "small" : "large"} />
             </div>
 
             {/* Active indicator for floating state */}
@@ -170,7 +168,7 @@ export const UnifiedOrb = ({ isCentered }: UnifiedOrbProps) => {
               <motion.button
                 onClick={handleTapSpeak}
                 className="absolute left-1/2 -translate-x-1/2 w-14 h-14 sm:w-16 sm:h-16 bg-background/10 backdrop-blur-md rounded-full border border-primary/30 hover:border-primary/60 hover:bg-primary/10 transition-all flex items-center justify-center"
-                style={{ bottom: 'clamp(28px, 7vh, 64px)' }}
+                style={{ bottom: 'calc(-1 * clamp(28px, 7vh, 64px))' }}
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 20 }}
