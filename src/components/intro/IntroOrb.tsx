@@ -13,113 +13,201 @@ export const IntroOrb = ({ size = "large", className = "" }: IntroOrbProps) => {
   
   return (
     <div className={`relative ${className}`}>
-      {/* Outer glow rings */}
+      {/* Deep space background glow - volumetric bloom */}
       <motion.div
         className="absolute inset-0 rounded-full"
         style={{
-          background: "radial-gradient(circle, hsl(205 85% 65% / 0.3), transparent 70%)",
-          filter: `blur(${blurAmount}px)`,
+          background: "radial-gradient(circle, hsl(270 100% 65% / 0.4), hsl(240 100% 60% / 0.3), transparent 80%)",
+          filter: `blur(${blurAmount * 1.5}px)`,
         }}
         animate={{
-          scale: [1, 1.2, 1],
-          opacity: [0.3, 0.5, 0.3],
+          scale: [1, 1.3, 1],
+          opacity: [0.4, 0.7, 0.4],
+        }}
+        transition={{
+          duration: 5,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+      />
+
+      {/* Outer circular halo */}
+      <motion.div
+        className="absolute inset-0 rounded-full"
+        style={{
+          background: "radial-gradient(circle, transparent 65%, hsl(270 100% 70% / 0.15) 75%, transparent 85%)",
+          filter: `blur(${isSmall ? 15 : 40}px)`,
+        }}
+        animate={{
+          scale: [1.2, 1.4, 1.2],
+          opacity: [0.5, 0.8, 0.5],
+        }}
+        transition={{
+          duration: 6,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+      />
+
+      {/* Main holographic orb */}
+      <motion.div
+        className={`relative ${orbSize} rounded-full overflow-hidden`}
+        style={{
+          boxShadow: `0 0 ${isSmall ? 30 : 80}px hsl(270 100% 65% / 0.6), 0 0 ${isSmall ? 50 : 120}px hsl(240 100% 60% / 0.4)`,
+        }}
+        animate={{
+          scale: [1, 1.03, 1],
         }}
         transition={{
           duration: 4,
           repeat: Infinity,
           ease: "easeInOut",
         }}
-      />
-
-      {/* Main orb */}
-      <motion.div
-        className={`relative ${orbSize} rounded-full overflow-hidden`}
-        animate={{
-          scale: [1, 1.05, 1],
-        }}
-        transition={{
-          duration: 3,
-          repeat: Infinity,
-          ease: "easeInOut",
-        }}
       >
-        {/* Gradient layers */}
+        {/* Base gradient - neon purple to blue */}
         <div
           className="absolute inset-0 rounded-full"
           style={{
-            background: "linear-gradient(135deg, hsl(200 70% 90%), hsl(210 90% 55%))",
+            background: "linear-gradient(135deg, hsl(270 100% 65%), hsl(260 100% 60%), hsl(240 100% 60%))",
           }}
         />
         
-        {/* Animated texture overlay */}
+        {/* Holographic overlay - subsurface scattering effect */}
         <motion.div
           className="absolute inset-0 rounded-full"
           style={{
-            background: "radial-gradient(circle at 30% 30%, hsl(200 60% 95% / 0.9), transparent 60%)",
+            background: "radial-gradient(circle at 35% 35%, hsl(280 100% 80% / 0.8), hsl(270 80% 70% / 0.4), transparent 70%)",
+            mixBlendMode: "screen",
           }}
           animate={{
-            opacity: [0.6, 1, 0.6],
-            scale: [1, 1.1, 1],
+            opacity: [0.7, 1, 0.7],
+            scale: [1, 1.05, 1],
           }}
           transition={{
-            duration: 5,
+            duration: 4,
             repeat: Infinity,
             ease: "easeInOut",
           }}
         />
 
-        {/* Moving shimmer effect */}
+        {/* Volumetric glow shimmer */}
         <motion.div
           className="absolute inset-0 rounded-full"
           style={{
-            background: "linear-gradient(145deg, transparent 30%, hsl(200 80% 85% / 0.6) 50%, transparent 70%)",
+            background: "linear-gradient(145deg, transparent 20%, hsl(240 100% 70% / 0.5) 50%, transparent 80%)",
+            mixBlendMode: "screen",
           }}
           animate={{
             rotate: [0, 360],
           }}
           transition={{
-            duration: 8,
+            duration: 12,
             repeat: Infinity,
             ease: "linear",
           }}
         />
 
-        {/* Inner glow */}
+        {/* Inner radiance core */}
         <div
           className="absolute inset-0 rounded-full"
           style={{
-            boxShadow: "inset 0 0 60px hsl(210 80% 70% / 0.4)",
+            background: "radial-gradient(circle at center, hsl(280 100% 75% / 0.6), transparent 60%)",
+            boxShadow: `inset 0 0 ${isSmall ? 30 : 80}px hsl(270 100% 70% / 0.5)`,
           }}
         />
 
-        {/* Edge highlight */}
+        {/* Depth blur edge */}
         <div
           className="absolute inset-0 rounded-full"
           style={{
-            border: "2px solid hsl(205 70% 80% / 0.5)",
+            border: `${isSmall ? 1 : 2}px solid hsl(270 100% 75% / 0.4)`,
+            boxShadow: `inset 0 0 ${isSmall ? 20 : 50}px hsl(280 100% 60% / 0.3)`,
           }}
         />
       </motion.div>
 
-      {/* Floating particles */}
-      {[...Array(6)].map((_, i) => (
+      {/* Golden planetary ring */}
+      <motion.div
+        className="absolute"
+        style={{
+          left: "50%",
+          top: "50%",
+          width: isSmall ? "110px" : "440px",
+          height: isSmall ? "30px" : "120px",
+          border: `${isSmall ? 1.5 : 3}px solid hsl(45 100% 60% / 0.7)`,
+          borderRadius: "50%",
+          transform: "translate(-50%, -50%) rotateX(75deg)",
+          boxShadow: `0 0 ${isSmall ? 15 : 40}px hsl(45 100% 60% / 0.5), inset 0 0 ${isSmall ? 10 : 30}px hsl(45 100% 60% / 0.3)`,
+        }}
+        animate={{
+          rotateZ: [0, 360],
+        }}
+        transition={{
+          duration: 20,
+          repeat: Infinity,
+          ease: "linear",
+        }}
+      />
+
+      {/* Particle ring - neon cosmic dust */}
+      {[...Array(isSmall ? 16 : 24)].map((_, i) => {
+        const angle = (i * 2 * Math.PI) / (isSmall ? 16 : 24);
+        const radius = isSmall ? 50 : 200;
+        return (
+          <motion.div
+            key={`particle-${i}`}
+            className="absolute rounded-full"
+            style={{
+              width: isSmall ? "2px" : "4px",
+              height: isSmall ? "2px" : "4px",
+              left: `${(isSmall ? 32 : 160) + Math.cos(angle) * radius}px`,
+              top: `${(isSmall ? 32 : 160) + Math.sin(angle) * radius}px`,
+              background: i % 3 === 0 
+                ? "hsl(270 100% 70%)" 
+                : i % 3 === 1 
+                  ? "hsl(240 100% 65%)" 
+                  : "hsl(280 100% 75%)",
+              boxShadow: `0 0 ${isSmall ? 4 : 8}px currentColor`,
+            }}
+            animate={{
+              rotate: [0, 360],
+              scale: [0.8, 1.4, 0.8],
+              opacity: [0.4, 1, 0.4],
+            }}
+            transition={{
+              duration: 15,
+              repeat: Infinity,
+              ease: "linear",
+              delay: i * 0.05,
+            }}
+          />
+        );
+      })}
+
+      {/* Swirling light specks - motion trails */}
+      {[...Array(8)].map((_, i) => (
         <motion.div
-          key={i}
-          className="absolute w-1 h-1 rounded-full bg-primary-glow"
+          key={`speck-${i}`}
+          className="absolute rounded-full"
           style={{
-            left: `${(isSmall ? 32 : 128) + Math.cos((i * Math.PI) / 3) * particleRadius}px`,
-            top: `${(isSmall ? 32 : 128) + Math.sin((i * Math.PI) / 3) * particleRadius}px`,
+            width: isSmall ? "1px" : "2px",
+            height: isSmall ? "1px" : "2px",
+            left: `${(isSmall ? 32 : 160) + Math.cos((i * Math.PI) / 4) * (isSmall ? 40 : 160)}px`,
+            top: `${(isSmall ? 32 : 160) + Math.sin((i * Math.PI) / 4) * (isSmall ? 40 : 160)}px`,
+            background: "hsl(270 100% 75%)",
+            boxShadow: `0 0 ${isSmall ? 6 : 12}px hsl(270 100% 70% / 0.8)`,
           }}
           animate={{
-            y: [-10, 10, -10],
-            opacity: [0.3, 0.8, 0.3],
-            scale: [0.8, 1.2, 0.8],
+            x: [0, Math.cos((i * Math.PI) / 4) * (isSmall ? 20 : 60), 0],
+            y: [0, Math.sin((i * Math.PI) / 4) * (isSmall ? 20 : 60), 0],
+            opacity: [0.3, 0.9, 0.3],
+            scale: [0.5, 1.5, 0.5],
           }}
           transition={{
-            duration: 3 + i * 0.5,
+            duration: 4 + i * 0.3,
             repeat: Infinity,
             ease: "easeInOut",
-            delay: i * 0.3,
+            delay: i * 0.2,
           }}
         />
       ))}
