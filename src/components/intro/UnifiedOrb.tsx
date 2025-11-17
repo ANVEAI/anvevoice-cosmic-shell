@@ -25,8 +25,8 @@ export const UnifiedOrb = ({ isCentered }: UnifiedOrbProps) => {
   const { startAssistant, stopAssistant, isActive, isSpeaking } = useVapiAssistant();
   const isMobile = useIsMobile();
   
-  // Responsive orb size (accounts for glow on mobile to avoid cropping)
-  const orbSize = isMobile ? 'min(64vw, 280px)' : '320px';
+  // Responsive orb size with safe glow margin
+  const orbSize = 'clamp(240px, 70vw, 340px)';
   
   // DOM Actions mapping for VAPI commands
   const actionHandlers = useMemo(() => ({
@@ -115,13 +115,13 @@ export const UnifiedOrb = ({ isCentered }: UnifiedOrbProps) => {
             {isCentered && (
               <motion.div
                 className="absolute left-1/2 -translate-x-1/2 w-max"
-                style={{ top: 'calc(-1 * clamp(28px, 6vh, 56px))' }}
+                style={{ bottom: 'calc(100% + clamp(16px, 4vh, 40px))' }}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
                 transition={{ duration: 0.4 }}
               >
-                <p className="text-base sm:text-lg md:text-xl text-muted-foreground text-center whitespace-nowrap">
+                <p className="text-base sm:text-lg md:text-xl text-muted-foreground text-center">
                   Ask Anything. Speak, Don't Type.
                 </p>
               </motion.div>
@@ -137,7 +137,7 @@ export const UnifiedOrb = ({ isCentered }: UnifiedOrbProps) => {
             aria-label={isActive ? "Stop voice assistant" : "Start voice assistant"}
           >
             <div style={{ width: orbSize, height: orbSize }}>
-              <IntroOrb size={isMobile ? "small" : "large"} />
+              <IntroOrb size="large" />
             </div>
 
             {/* Active indicator for floating state */}
@@ -168,7 +168,7 @@ export const UnifiedOrb = ({ isCentered }: UnifiedOrbProps) => {
               <motion.button
                 onClick={handleTapSpeak}
                 className="absolute left-1/2 -translate-x-1/2 w-14 h-14 sm:w-16 sm:h-16 bg-background/10 backdrop-blur-md rounded-full border border-primary/30 hover:border-primary/60 hover:bg-primary/10 transition-all flex items-center justify-center"
-                style={{ bottom: 'calc(-1 * clamp(28px, 7vh, 64px))' }}
+                style={{ top: 'calc(100% + clamp(24px, 6vh, 64px))' }}
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 20 }}
