@@ -18,15 +18,6 @@ const Index = () => {
     setIsCentered(isCentered);
   }, [isCentered, setIsCentered]);
 
-  // Automatic 20-second timer to trigger orb transition
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsCentered(false);
-    }, 20000);
-    
-    return () => clearTimeout(timer);
-  }, [setIsCentered]);
-
   const handleTapSpeak = () => {
     if (isActive) {
       stopAssistant();
