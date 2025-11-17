@@ -4,7 +4,7 @@ import { Mic, X } from 'lucide-react';
 import { useVapiAssistant } from "@/hooks/useVapiAssistant";
 import { useVapiCommands } from "@/hooks/useVapiCommands";
 import { useClientSideFunctions } from "@/hooks/useClientSideFunctions";
-import { useMemo } from "react";
+import { useMemo, useState, useEffect } from "react";
 import * as domActions from "@/utils/domActions";
 
 interface UnifiedOrbProps {
@@ -22,6 +22,15 @@ interface UnifiedOrbProps {
  */
 export const UnifiedOrb = ({ isCentered }: UnifiedOrbProps) => {
   const { startAssistant, stopAssistant, isActive, isSpeaking } = useVapiAssistant();
+  
+  // Detect desktop to account for sidebar width
+  const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 768);
+
+  useEffect(() => {
+    const handleResize = () => setIsDesktop(window.innerWidth >= 768);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   // DOM Actions mapping for VAPI commands
   const actionHandlers = useMemo(() => ({
@@ -52,7 +61,7 @@ export const UnifiedOrb = ({ isCentered }: UnifiedOrbProps) => {
   const orbVariants = {
     centered: {
       top: '50%',
-      left: '50%',
+      left: isDesktop ? 'calc(50% + 40px)' : '50%', // Account for 80px sidebar on desktop
       x: '-50%',
       y: '-50%',
       scale: 1,
