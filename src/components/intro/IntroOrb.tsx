@@ -141,24 +141,26 @@ export const IntroOrb = ({ size = "large", className = "" }: IntroOrbProps) => {
         style={{
           left: "50%",
           top: "50%",
-          width: isSmall ? "100px" : "400px",
-          height: isSmall ? "28px" : "112px",
+          width: isSmall ? "110px" : "440px",
+          height: isSmall ? "22px" : "88px",
           borderRadius: "50%",
           transform: "translate(-50%, -50%) rotateX(75deg)",
           background: `
             radial-gradient(ellipse at center, 
-              transparent 35%,
-              hsl(250 100% 70% / 0.4) 45%,
-              hsl(240 100% 75% / 0.6) 50%,
-              hsl(250 100% 70% / 0.4) 55%,
-              transparent 65%
+              transparent 40%,
+              hsl(190 100% 60% / 0.5) 47%,
+              hsl(220 100% 65% / 0.7) 50%,
+              hsl(260 100% 70% / 0.8) 53%,
+              hsl(280 100% 65% / 0.6) 56%,
+              transparent 63%
             )
           `,
           boxShadow: `
-            0 0 ${isSmall ? 20 : 50}px hsl(250 100% 70% / 0.6),
-            inset 0 0 ${isSmall ? 15 : 40}px hsl(240 100% 75% / 0.5)
+            0 0 ${isSmall ? 30 : 80}px hsl(220 100% 65% / 0.8),
+            0 0 ${isSmall ? 20 : 60}px hsl(260 100% 70% / 0.6),
+            inset 0 0 ${isSmall ? 20 : 50}px hsl(240 100% 75% / 0.7)
           `,
-          filter: `blur(${isSmall ? 1 : 2}px)`,
+          filter: `blur(${isSmall ? 1.5 : 3}px)`,
         }}
         animate={{
           rotateZ: [0, 360],
@@ -170,27 +172,32 @@ export const IntroOrb = ({ size = "large", className = "" }: IntroOrbProps) => {
         }}
       />
 
-      {/* Ring particles - cosmic dust */}
+      {/* Ring particles - cosmic dust with gradient colors */}
       {[...Array(isSmall ? 12 : 20)].map((_, i) => {
         const angle = (i * 2 * Math.PI) / (isSmall ? 12 : 20);
-        const radiusX = isSmall ? 48 : 192;
-        const radiusY = isSmall ? 13 : 52;
+        const radiusX = isSmall ? 52 : 208;
+        const radiusY = isSmall ? 11 : 44;
+        
+        // Create gradient effect around the ring
+        const progress = i / (isSmall ? 12 : 20);
+        const hue = 190 + progress * 90; // From cyan (190) to purple (280)
+        
         return (
           <motion.div
             key={`ring-particle-${i}`}
             className="absolute rounded-full"
             style={{
-              width: isSmall ? "1.5px" : "3px",
-              height: isSmall ? "1.5px" : "3px",
+              width: isSmall ? "2px" : "4px",
+              height: isSmall ? "2px" : "4px",
               left: `${(isSmall ? 32 : 160) + Math.cos(angle) * radiusX}px`,
               top: `${(isSmall ? 32 : 160) + Math.sin(angle) * radiusY}px`,
-              background: i % 2 === 0 ? "hsl(250 100% 75%)" : "hsl(240 100% 80%)",
-              boxShadow: `0 0 ${isSmall ? 6 : 12}px currentColor`,
+              background: `hsl(${hue} 100% 70%)`,
+              boxShadow: `0 0 ${isSmall ? 8 : 16}px hsl(${hue} 100% 70% / 0.8)`,
               filter: "blur(0.5px)",
             }}
             animate={{
-              opacity: [0.3, 0.8, 0.3],
-              scale: [0.7, 1.2, 0.7],
+              opacity: [0.4, 0.9, 0.4],
+              scale: [0.8, 1.3, 0.8],
             }}
             transition={{
               duration: 3 + i * 0.1,
