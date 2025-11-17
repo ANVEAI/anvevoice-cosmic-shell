@@ -47,40 +47,31 @@ export const UnifiedOrb = ({ isCentered }: UnifiedOrbProps) => {
 
   // Animation variants for smooth, visible transformation
   // Using cubic-bezier(0.16, 1, 0.3, 1) - "ease-out-expo" for natural deceleration
-  // Researched from easings.net and Framer Motion docs for layout animations
   const easeCurve = [0.16, 1, 0.3, 1] as const;
   
   const orbVariants = {
     centered: {
-      position: 'fixed' as const,
       top: '50%',
       left: '50%',
-      right: 'auto' as const,
-      bottom: 'auto' as const,
       x: '-50%',
       y: '-50%',
-      width: 'min(320px, 70vw)',
-      height: 'min(320px, 70vw)',
+      scale: 1,
       transition: {
         duration: 1,
-        ease: easeCurve,
-        layout: { duration: 1 }
+        ease: easeCurve, // Smooth ease-out from easings.net
       }
     },
     floating: {
-      position: 'fixed' as const,
       top: 'auto' as const,
       left: 'auto' as const,
-      right: '1.5rem',
-      bottom: 'calc(1.5rem + env(safe-area-inset-bottom, 0px))',
+      bottom: 24,
+      right: 24,
       x: 0,
       y: 0,
-      width: 'min(80px, 18vw)',
-      height: 'min(80px, 18vw)',
+      scale: 0.25, // Shrinks from 320px to 80px
       transition: {
         duration: 1,
         ease: easeCurve,
-        layout: { duration: 1 }
       }
     }
   };
@@ -104,12 +95,12 @@ export const UnifiedOrb = ({ isCentered }: UnifiedOrbProps) => {
 
       {/* Unified Orb Container */}
       <motion.div
-        layout
         className="z-40"
         initial={false}
         animate={isCentered ? 'centered' : 'floating'}
         variants={orbVariants}
         style={{
+          position: 'fixed',
           pointerEvents: 'auto',
         }}
       >
@@ -132,22 +123,24 @@ export const UnifiedOrb = ({ isCentered }: UnifiedOrbProps) => {
 
         {/* The Orb itself - always visible, smoothly transitioning */}
         <motion.div
-          className="relative cursor-pointer w-full h-full"
+          className="relative cursor-pointer"
           onClick={handleTapSpeak}
           whileHover={{ scale: isCentered ? 1.02 : 1.1 }}
           whileTap={{ scale: isCentered ? 0.98 : 0.95 }}
           aria-label={isActive ? "Stop voice assistant" : "Start voice assistant"}
         >
-          <IntroOrb size="large" />
+          <div className={isCentered ? "w-80 h-80" : "w-80 h-80"}>
+            <IntroOrb size="large" />
+          </div>
 
           {/* Active indicator for floating state */}
           <AnimatePresence>
-          {!isCentered && isActive && (
+            {!isCentered && isActive && (
               <motion.div
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.8 }}
-                className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full shadow-lg"
+                className="absolute -top-2 -right-2 w-4 h-4 bg-green-500 rounded-full shadow-lg"
                 style={{ transformOrigin: 'center' }}
               >
                 {isSpeaking && (
@@ -167,8 +160,7 @@ export const UnifiedOrb = ({ isCentered }: UnifiedOrbProps) => {
           {isCentered && (
             <motion.button
               onClick={handleTapSpeak}
-              className="absolute left-1/2 -translate-x-1/2 w-14 h-14 sm:w-16 sm:h-16 bg-background/10 backdrop-blur-md rounded-full border border-primary/30 hover:border-primary/60 hover:bg-primary/10 transition-all flex items-center justify-center"
-              style={{ top: 'calc(100% + 2rem)' }}
+              className="absolute -bottom-20 left-1/2 -translate-x-1/2 w-14 h-14 sm:w-16 sm:h-16 bg-background/10 backdrop-blur-md rounded-full border border-primary/30 hover:border-primary/60 hover:bg-primary/10 transition-all flex items-center justify-center"
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 20 }}
