@@ -45,7 +45,7 @@ export const UnifiedOrb = ({ isCentered }: UnifiedOrbProps) => {
   };
 
   const easeCurve = [0.16, 1, 0.3, 1] as const;
-  const mobileNudge = 'clamp(6px, 2vw, 12px)';
+  const mobileNudge = 'clamp(12px, 4vw, 20px)';
 
   const orbVariants = useMemo(() => ({
     centered: {
