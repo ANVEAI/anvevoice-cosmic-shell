@@ -100,7 +100,7 @@ export const UnifiedOrb = ({ isCentered }: UnifiedOrbProps) => {
 
       {/* Unified Orb Container */}
       <motion.div
-        className="z-[60]"
+        className={`z-[60] ${isCentered ? "fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2" : ""}`}
         initial={false}
         animate={isCentered ? 'centered' : 'floating'}
         variants={orbVariants}
