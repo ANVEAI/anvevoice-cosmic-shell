@@ -109,7 +109,7 @@ export const VerticalNavigation = () => {
             animate={{ x: 0 }}
             exit={{ x: '-100%' }}
             transition={{ duration: 0.3, ease: 'easeInOut' }}
-            className="fixed top-16 left-0 bottom-0 w-64 bg-slate-950 border-r border-border/50 z-40 flex flex-col py-6 px-4"
+            className="fixed top-16 left-0 bottom-0 w-64 bg-slate-950 border-r border-border/50 z-[70] flex flex-col py-6 px-4"
           >
             {/* Navigation Items */}
             <div className="flex flex-col gap-4">
@@ -140,7 +140,7 @@ export const VerticalNavigation = () => {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
             onClick={() => setIsOpen(false)}
-            className="fixed inset-0 bg-black/50 z-30 top-16"
+            className="fixed inset-0 bg-black/50 z-[60] top-16"
           />
         )}
       </AnimatePresence>
