@@ -38,9 +38,9 @@ const Index = () => {
   return (
     <>
       {/* Centered Hero - visible when isCentered */}
-      <AnimatePresence>
+      <AnimatePresence mode="wait">
         {isCentered && (
-          <CenteredOrbHero onTapSpeak={handleTapSpeak} isActive={isActive} />
+          <CenteredOrbHero key="intro" onTapSpeak={handleTapSpeak} isActive={isActive} />
         )}
       </AnimatePresence>
 
