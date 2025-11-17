@@ -106,98 +106,98 @@ export const UnifiedOrb = ({ isCentered }: UnifiedOrbProps) => {
           pointerEvents: 'auto',
         }}
       >
-        <div className="relative w-80 h-80">
-          {/* Text content - only when centered */}
+        {/* Text content - only when centered */}
+        <AnimatePresence>
+          {isCentered && (
+            <motion.div
+              className="absolute -top-32 -translate-x-1/2 w-max"
+              style={{ left: isMobile ? '50%' : 'calc(50% + 40px)' }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.4 }}
+            >
+              <p className="text-base sm:text-lg md:text-xl text-muted-foreground text-center whitespace-nowrap">
+                Ask Anything. Speak, Don't Type.
+              </p>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* The Orb itself - always visible, smoothly transitioning */}
+        <motion.div
+          className="relative cursor-pointer"
+          onClick={handleTapSpeak}
+          whileHover={{ scale: isCentered ? 1.02 : 1.1 }}
+          whileTap={{ scale: isCentered ? 0.98 : 0.95 }}
+          aria-label={isActive ? "Stop voice assistant" : "Start voice assistant"}
+        >
+          <div className={isCentered ? "w-80 h-80" : "w-80 h-80"}>
+            <IntroOrb size="large" />
+          </div>
+
+          {/* Active indicator for floating state */}
           <AnimatePresence>
-            {isCentered && (
+            {!isCentered && isActive && (
               <motion.div
-                className="absolute -top-32 left-1/2 -translate-x-1/2 w-max"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                transition={{ duration: 0.4 }}
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.8 }}
+                className="absolute -top-2 -right-2 w-4 h-4 bg-green-500 rounded-full shadow-lg"
+                style={{ transformOrigin: 'center' }}
               >
-                <p className="text-base sm:text-lg md:text-xl text-muted-foreground text-center whitespace-nowrap">
-                  Ask Anything. Speak, Don't Type.
-                </p>
+                {isSpeaking && (
+                  <motion.div
+                    animate={{ scale: [1, 1.5, 1] }}
+                    transition={{ duration: 1, repeat: Infinity, ease: "easeInOut" }}
+                    className="absolute inset-0 bg-green-400 rounded-full opacity-50"
+                  />
+                )}
               </motion.div>
             )}
           </AnimatePresence>
+        </motion.div>
 
-          {/* The Orb itself - always visible, smoothly transitioning */}
-          <motion.div
-            className="relative cursor-pointer w-full h-full"
-            onClick={handleTapSpeak}
-            whileHover={{ scale: isCentered ? 1.02 : 1.1 }}
-            whileTap={{ scale: isCentered ? 0.98 : 0.95 }}
-            aria-label={isActive ? "Stop voice assistant" : "Start voice assistant"}
-          >
-            <div className="w-80 h-80">
-              <IntroOrb size="large" />
-            </div>
-
-            {/* Active indicator for floating state */}
-            <AnimatePresence>
-              {!isCentered && isActive && (
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.8 }}
-                  className="absolute -top-2 -right-2 w-4 h-4 bg-green-500 rounded-full shadow-lg"
-                  style={{ transformOrigin: 'center' }}
-                >
-                  {isSpeaking && (
-                    <motion.div
-                      animate={{ scale: [1, 1.5, 1] }}
-                      transition={{ duration: 1, repeat: Infinity, ease: "easeInOut" }}
-                      className="absolute inset-0 bg-green-400 rounded-full opacity-50"
-                    />
-                  )}
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </motion.div>
-
-          {/* Voice Control Button - only when centered */}
-          <AnimatePresence>
-            {isCentered && (
-              <motion.button
-                onClick={handleTapSpeak}
-                className="absolute -bottom-20 left-1/2 -translate-x-1/2 w-14 h-14 sm:w-16 sm:h-16 bg-background/10 backdrop-blur-md rounded-full border border-primary/30 hover:border-primary/60 hover:bg-primary/10 transition-all flex items-center justify-center"
-                initial={{ opacity: 0, y: -20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 20 }}
-                transition={{ duration: 0.4 }}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <AnimatePresence mode="wait">
-                  {isActive ? (
-                    <motion.div
-                      key="cross"
-                      initial={{ scale: 0, rotate: -90 }}
-                      animate={{ scale: 1, rotate: 0 }}
-                      exit={{ scale: 0, rotate: 90 }}
-                      transition={{ duration: 0.2 }}
-                    >
-                      <X className="w-6 h-6 sm:w-7 sm:h-7 text-primary" />
-                    </motion.div>
-                  ) : (
-                    <motion.div
-                      key="mic"
-                      initial={{ scale: 0, rotate: 90 }}
-                      animate={{ scale: 1, rotate: 0 }}
-                      exit={{ scale: 0, rotate: -90 }}
-                      transition={{ duration: 0.2 }}
-                    >
-                      <Mic className="w-6 h-6 sm:w-7 sm:h-7 text-primary" />
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </motion.button>
-            )}
-          </AnimatePresence>
-        </div>
+        {/* Voice Control Button - only when centered */}
+        <AnimatePresence>
+          {isCentered && (
+            <motion.button
+              onClick={handleTapSpeak}
+              className="absolute -bottom-20 -translate-x-1/2 w-14 h-14 sm:w-16 sm:h-16 bg-background/10 backdrop-blur-md rounded-full border border-primary/30 hover:border-primary/60 hover:bg-primary/10 transition-all flex items-center justify-center"
+              style={{ left: isMobile ? '50%' : 'calc(50% + 40px)' }}
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 20 }}
+              transition={{ duration: 0.4 }}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <AnimatePresence mode="wait">
+                {isActive ? (
+                  <motion.div
+                    key="cross"
+                    initial={{ scale: 0, rotate: -90 }}
+                    animate={{ scale: 1, rotate: 0 }}
+                    exit={{ scale: 0, rotate: 90 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <X className="w-6 h-6 sm:w-7 sm:h-7 text-primary" />
+                  </motion.div>
+                ) : (
+                  <motion.div
+                    key="mic"
+                    initial={{ scale: 0, rotate: 90 }}
+                    animate={{ scale: 1, rotate: 0 }}
+                    exit={{ scale: 0, rotate: -90 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <Mic className="w-6 h-6 sm:w-7 sm:h-7 text-primary" />
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </motion.button>
+          )}
+        </AnimatePresence>
       </motion.div>
     </>
   );
