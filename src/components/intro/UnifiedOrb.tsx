@@ -92,7 +92,7 @@ export const UnifiedOrb = ({
       </AnimatePresence>
 
       {/* motion container is the fixed box sized to orbSize so transforms are stable */}
-      <motion.div className="z-[60]" initial={false} animate={isCentered ? 'centered' : 'floating'} variants={orbVariants} style={{
+      <motion.div className={isCentered ? "z-50" : "z-20"} initial={false} animate={isCentered ? 'centered' : 'floating'} variants={orbVariants} style={{
       position: 'fixed',
       width: orbSize,
       height: orbSize,
