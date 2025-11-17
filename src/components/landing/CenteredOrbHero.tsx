@@ -13,10 +13,12 @@ export const CenteredOrbHero = ({
     opacity: 1
   }} exit={{
     opacity: 0,
-    scale: 0.95,
+    scale: 0.25,
+    x: 'calc(50vw - 4rem)',
+    y: 'calc(50vh - 4rem)',
     transition: {
-      duration: 0.8,
-      ease: 'easeOut'
+      duration: 1.2,
+      ease: [0.34, 1.56, 0.64, 1]
     }
   }}>
       {/* Ambient background effects */}
