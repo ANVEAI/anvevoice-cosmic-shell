@@ -13,10 +13,12 @@ export const CenteredOrbHero = ({
     opacity: 1
   }} exit={{
     opacity: 0,
+    scale: 0.25,
+    x: 'calc(50vw - 4rem)',
+    y: 'calc(50vh - 4rem)',
     transition: {
-      duration: 1.5,
-      ease: [0.43, 0.13, 0.23, 0.96],
-      delay: 1.3 // Fade out after movement completes
+      duration: 1.2,
+      ease: [0.34, 1.56, 0.64, 1]
     }
   }}>
       {/* Ambient background effects */}
@@ -34,13 +36,6 @@ export const CenteredOrbHero = ({
       }} animate={{
         opacity: 1,
         y: 0
-      }} exit={{
-        opacity: 0,
-        y: -20,
-        transition: {
-          duration: 0.4,
-          ease: 'easeOut'
-        }
       }} transition={{
         delay: 0.4,
         duration: 0.6
@@ -55,14 +50,6 @@ export const CenteredOrbHero = ({
       }} animate={{
         opacity: 1,
         scale: 1
-      }} exit={{
-        x: 'calc(50vw - 7rem)',
-        y: 'calc(50vh - 7rem)',
-        scale: 0.2,
-        transition: {
-          duration: 1.5,
-          ease: [0.43, 0.13, 0.23, 0.96]
-        }
       }} transition={{
         delay: 0.6,
         duration: 0.8,
@@ -80,13 +67,6 @@ export const CenteredOrbHero = ({
       }} animate={{
         opacity: 1,
         y: 0
-      }} exit={{
-        opacity: 0,
-        scale: 0.8,
-        transition: {
-          duration: 0.4,
-          ease: 'easeOut'
-        }
       }} transition={{
         delay: 0.8,
         duration: 0.6
