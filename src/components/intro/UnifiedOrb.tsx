@@ -53,6 +53,8 @@ export const UnifiedOrb = ({ isCentered }: UnifiedOrbProps) => {
     centered: {
       top: '50%',
       left: '50%',
+      bottom: 'auto',
+      right: 'auto',
       x: '-50%',
       y: '-50%',
       scale: 1,
@@ -62,10 +64,10 @@ export const UnifiedOrb = ({ isCentered }: UnifiedOrbProps) => {
       }
     },
     floating: {
-      top: 'auto' as const,
-      left: 'auto' as const,
-      bottom: 24,
-      right: 24,
+      top: 'auto',
+      left: 'auto',
+      bottom: '24px',
+      right: '24px',
       x: 0,
       y: 0,
       scale: 0.25, // Shrinks from 320px to 80px
