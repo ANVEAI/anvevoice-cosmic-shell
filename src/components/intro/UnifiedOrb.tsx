@@ -129,7 +129,8 @@ export const UnifiedOrb = ({ isCentered }: UnifiedOrbProps) => {
           whileTap={{ scale: isCentered ? 0.98 : 0.95 }}
           aria-label={isActive ? "Stop voice assistant" : "Start voice assistant"}
         >
-          <div className={isCentered ? "w-80 h-80" : "w-80 h-80"}>
+          {/* Responsive sizing: smaller on mobile, medium on tablet, large on desktop */}
+          <div className="w-64 h-64 sm:w-72 sm:h-72 md:w-80 md:h-80 lg:w-[min(320px,40vw)] lg:h-[min(320px,40vw)]">
             <IntroOrb size="large" />
           </div>
 
