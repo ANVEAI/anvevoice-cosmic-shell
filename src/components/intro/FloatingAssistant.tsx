@@ -42,14 +42,23 @@ export const FloatingAssistant = () => {
 
   return (
     <motion.div
+      layoutId="assistant-orb"
       className="fixed bottom-6 right-6 z-50 cursor-pointer"
       initial={{ scale: 0, opacity: 0 }}
       animate={{ scale: 1, opacity: 1 }}
-      transition={{ duration: 0.2, ease: "easeOut" }}
+      transition={{ 
+        duration: 0.2, 
+        ease: "easeOut",
+        layout: {
+          duration: 1.2,
+          ease: [0.22, 0.61, 0.36, 1]
+        }
+      }}
       whileHover={{ scale: 1.1 }}
       whileTap={{ scale: 0.95 }}
       onClick={handleClick}
       aria-label={isActive ? "Stop voice assistant" : "Start voice assistant"}
+      style={{ willChange: 'transform' }}
     >
       <div className="relative">
         <IntroOrb size="small" />
