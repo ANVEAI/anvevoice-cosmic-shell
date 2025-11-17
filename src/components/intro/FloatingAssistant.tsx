@@ -9,6 +9,9 @@ import { useOrbContext } from "@/contexts/OrbContext";
 
 export const FloatingAssistant = () => {
   const { isCentered } = useOrbContext();
+  
+  // Don't render when orb is centered
+  if (isCentered) return null;
   const { startAssistant, stopAssistant, isActive, isSpeaking } = useVapiAssistant();
 
   // DOM Actions mapping for VAPI commands
@@ -37,22 +40,12 @@ export const FloatingAssistant = () => {
     }
   };
 
-  if (isCentered) return null;
-
   return (
     <motion.div
-      layoutId="orb-morph"
       className="fixed bottom-6 right-6 z-50 cursor-pointer"
       initial={{ scale: 0, opacity: 0 }}
-      animate={{ 
-        scale: 1, 
-        opacity: 1 
-      }}
-      transition={{ 
-        layout: { duration: 1.2, ease: [0.33, 1, 0.68, 1] },
-        duration: 0.4,
-        ease: [0.22, 1, 0.36, 1]
-      }}
+      animate={{ scale: 1, opacity: 1 }}
+      transition={{ duration: 0.2, ease: "easeOut" }}
       whileHover={{ scale: 1.1 }}
       whileTap={{ scale: 0.95 }}
       onClick={handleClick}

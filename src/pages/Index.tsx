@@ -18,15 +18,6 @@ const Index = () => {
     setIsCentered(isCentered);
   }, [isCentered, setIsCentered]);
 
-  // Automatic 20-second timer to trigger orb transition
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsCentered(false);
-    }, 20000);
-    
-    return () => clearTimeout(timer);
-  }, [setIsCentered]);
-
   const handleTapSpeak = () => {
     if (isActive) {
       stopAssistant();
@@ -38,9 +29,9 @@ const Index = () => {
   return (
     <>
       {/* Centered Hero - visible when isCentered */}
-      <AnimatePresence mode="wait">
+      <AnimatePresence>
         {isCentered && (
-          <CenteredOrbHero key="intro" onTapSpeak={handleTapSpeak} isActive={isActive} />
+          <CenteredOrbHero onTapSpeak={handleTapSpeak} isActive={isActive} />
         )}
       </AnimatePresence>
 

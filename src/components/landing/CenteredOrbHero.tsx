@@ -11,6 +11,13 @@ export const CenteredOrbHero = ({
 }: CenteredOrbHeroProps) => {
   return <motion.section className="fixed inset-0 z-30 flex flex-col items-center justify-center bg-background" initial={{
     opacity: 1
+  }} exit={{
+    opacity: 0,
+    scale: 0.95,
+    transition: {
+      duration: 0.8,
+      ease: 'easeOut'
+    }
   }}>
       {/* Ambient background effects */}
       <div className="absolute inset-0 bg-gradient-glow opacity-50" />
@@ -35,24 +42,17 @@ export const CenteredOrbHero = ({
         </motion.p>
 
         {/* Large Centered Orb */}
-        <motion.div 
-          layoutId="orb-morph"
-          className="relative mb-6 sm:mb-8 w-full flex justify-center items-center" 
-          initial={{
-            opacity: 0,
-            scale: 0.8
-          }} 
-          animate={{
-            opacity: 1,
-            scale: 1
-          }} 
-          transition={{
-            layout: { duration: 1.2, ease: [0.33, 1, 0.68, 1] },
-            delay: 0.6,
-            duration: 0.8,
-            ease: 'easeOut'
-          }}
-        >
+        <motion.div className="relative mb-6 sm:mb-8 w-full flex justify-center items-center" initial={{
+        opacity: 0,
+        scale: 0.8
+      }} animate={{
+        opacity: 1,
+        scale: 1
+      }} transition={{
+        delay: 0.6,
+        duration: 0.8,
+        ease: 'easeOut'
+      }}>
           <div className="w-80 h-80 flex justify-center items-center scale-[0.8] sm:scale-100">
             <IntroOrb size="large" className="flex items-center justify-center" />
           </div>
