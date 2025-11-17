@@ -4,7 +4,6 @@ import { Mic, X } from 'lucide-react';
 import { useVapiAssistant } from "@/hooks/useVapiAssistant";
 import { useVapiCommands } from "@/hooks/useVapiCommands";
 import { useClientSideFunctions } from "@/hooks/useClientSideFunctions";
-import { useIsMobile } from "@/hooks/use-mobile";
 import { useMemo } from "react";
 import * as domActions from "@/utils/domActions";
 
@@ -23,7 +22,6 @@ interface UnifiedOrbProps {
  */
 export const UnifiedOrb = ({ isCentered }: UnifiedOrbProps) => {
   const { startAssistant, stopAssistant, isActive, isSpeaking } = useVapiAssistant();
-  const isMobile = useIsMobile();
 
   // DOM Actions mapping for VAPI commands
   const actionHandlers = useMemo(() => ({
@@ -51,15 +49,12 @@ export const UnifiedOrb = ({ isCentered }: UnifiedOrbProps) => {
   // Using cubic-bezier(0.16, 1, 0.3, 1) - "ease-out-expo" for natural deceleration
   const easeCurve = [0.16, 1, 0.3, 1] as const;
   
-  // Sidebar offset: 40px right on desktop (half of 80px sidebar), 0px on mobile
-  const sidebarOffset = isMobile ? 0 : 40;
-  
   const orbVariants = {
     centered: {
       top: '50%',
       left: '50%',
-      x: `calc(-50% + ${sidebarOffset}px)`, // Account for sidebar on desktop
-      y: '-50%',
+      x: '-50%', // True viewport center
+      y: '-50%', // True viewport center
       scale: 1,
       transition: {
         duration: 1,
