@@ -135,36 +135,38 @@ export const IntroOrb = ({ size = "large", className = "" }: IntroOrbProps) => {
         />
       </motion.div>
 
-      {/* Embedded glowing ring - Saturn style */}
+      {/* Saturn-style ring - tightly wrapped around orb */}
       <motion.div
         className="absolute"
         style={{
           left: "50%",
           top: "50%",
-          width: isSmall ? "100px" : "400px",
-          height: isSmall ? "28px" : "112px",
+          width: isSmall ? "110px" : "440px",
+          height: isSmall ? "18px" : "72px",
           borderRadius: "50%",
           transform: "translate(-50%, -50%) rotateX(75deg)",
           background: `
             radial-gradient(ellipse at center, 
-              transparent 35%,
-              hsl(250 100% 70% / 0.4) 45%,
-              hsl(240 100% 75% / 0.6) 50%,
-              hsl(250 100% 70% / 0.4) 55%,
-              transparent 65%
+              transparent 42%,
+              hsl(220 100% 65% / 0.3) 46%,
+              hsl(240 100% 70% / 0.8) 48%,
+              hsl(250 100% 75% / 1) 50%,
+              hsl(240 100% 70% / 0.8) 52%,
+              hsl(220 100% 65% / 0.3) 54%,
+              transparent 58%
             )
           `,
           boxShadow: `
-            0 0 ${isSmall ? 20 : 50}px hsl(250 100% 70% / 0.6),
-            inset 0 0 ${isSmall ? 15 : 40}px hsl(240 100% 75% / 0.5)
+            0 0 ${isSmall ? 15 : 40}px hsl(240 100% 70% / 0.8),
+            inset 0 0 ${isSmall ? 10 : 25}px hsl(250 100% 75% / 0.6)
           `,
-          filter: `blur(${isSmall ? 1 : 2}px)`,
+          filter: `blur(${isSmall ? 0.5 : 1}px)`,
         }}
         animate={{
           rotateZ: [0, 360],
         }}
         transition={{
-          duration: 25,
+          duration: 20,
           repeat: Infinity,
           ease: "linear",
         }}
