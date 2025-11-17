@@ -261,6 +261,76 @@ export const IntroOrb = ({ size = "large", className = "" }: IntroOrbProps) => {
         />
       </motion.div>
 
+      {/* Saturn-style ring with 24 orbiting particles */}
+      <motion.div
+        className="absolute inset-0"
+        style={{ 
+          transform: 'rotateX(65deg)',
+          transformStyle: 'preserve-3d',
+        }}
+        animate={{ rotate: [0, 360] }}
+        transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
+      >
+        {/* Elliptical ring glow background */}
+        <div
+          className="absolute rounded-full"
+          style={{
+            width: isSmall ? '90px' : '400px',
+            height: isSmall ? '27px' : '120px',
+            left: '50%',
+            top: '50%',
+            transform: 'translate(-50%, -50%)',
+            background: 'radial-gradient(ellipse, hsl(270 100% 70% / 0.15), hsl(260 90% 75% / 0.1), transparent 70%)',
+            filter: `blur(${isSmall ? 15 : 30}px)`,
+          }}
+        />
+        
+        {/* 24 orbiting ring particles */}
+        {[...Array(24)].map((_, i) => {
+          const angle = (i * 2 * Math.PI) / 24;
+          const radius = isSmall ? 45 : 200;
+          const x = Math.cos(angle) * radius;
+          const y = Math.sin(angle) * radius * 0.3; // Elliptical (0.3 = vertical squash)
+          
+          // Opacity based on Y position (top brighter, bottom dimmer for depth)
+          const depthOpacity = 0.5 + (y / (radius * 0.3)) * 0.35;
+          
+          // Color variation - cycle through purple/blue hues
+          const colors = [
+            'hsl(270 100% 75%)',
+            'hsl(260 100% 80%)',
+            'hsl(250 100% 82%)',
+          ];
+          const particleColor = colors[i % 3];
+          
+          return (
+            <motion.div
+              key={`ring-particle-${i}`}
+              className="absolute rounded-full"
+              style={{
+                width: isSmall ? '3px' : '6px',
+                height: isSmall ? '3px' : '6px',
+                left: `calc(50% + ${x}px)`,
+                top: `calc(50% + ${y}px)`,
+                background: particleColor,
+                boxShadow: `0 0 ${isSmall ? 8 : 15}px ${particleColor}, 0 0 ${isSmall ? 12 : 25}px ${particleColor}`,
+                opacity: depthOpacity,
+                transform: 'translate(-50%, -50%)',
+              }}
+              animate={{
+                opacity: [depthOpacity * 0.6, depthOpacity, depthOpacity * 0.6],
+                scale: [1, 1.2, 1],
+              }}
+              transition={{
+                duration: 2 + i * 0.05,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+            />
+          );
+        })}
+      </motion.div>
+
       {/* Floating space particles - enhanced ambient depth */}
       {[...Array(isSmall ? 8 : 12)].map((_, i) => {
         const angle = (i * Math.PI) / (isSmall ? 4 : 6);
