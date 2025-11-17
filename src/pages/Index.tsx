@@ -1,40 +1,22 @@
-import { CenteredOrbHero } from "@/components/landing/CenteredOrbHero";
 import { FeatureGrid } from "@/components/landing/FeatureGrid";
 import { HowItWorks } from "@/components/landing/HowItWorks";
 import { CTASection } from "@/components/landing/CTASection";
 import { Footer } from "@/components/landing/Footer";
 import { useOrbTransition } from "@/hooks/useOrbTransition";
-import { motion, AnimatePresence } from "framer-motion";
-import { useVapiAssistant } from "@/hooks/useVapiAssistant";
+import { motion } from "framer-motion";
 import { useOrbContext } from "@/contexts/OrbContext";
 import { useEffect } from "react";
 
 const Index = () => {
-  const { isCentered, triggerScroll } = useOrbTransition();
+  const { isCentered } = useOrbTransition();
   const { setIsCentered } = useOrbContext();
-  const { startAssistant, stopAssistant, isActive } = useVapiAssistant();
 
   useEffect(() => {
     setIsCentered(isCentered);
   }, [isCentered, setIsCentered]);
 
-  const handleTapSpeak = () => {
-    if (isActive) {
-      stopAssistant();
-    } else {
-      startAssistant();
-    }
-  };
-
   return (
     <>
-      {/* Centered Hero - visible when isCentered */}
-      <AnimatePresence>
-        {isCentered && (
-          <CenteredOrbHero onTapSpeak={handleTapSpeak} isActive={isActive} />
-        )}
-      </AnimatePresence>
-
       {/* Scrollable Content */}
       <motion.div
         className="relative"

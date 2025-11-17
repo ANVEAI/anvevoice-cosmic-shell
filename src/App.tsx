@@ -7,7 +7,8 @@ import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { OrbProvider } from "./contexts/OrbContext";
 import { VerticalNavigation } from "./components/VerticalNavigation";
-import { FloatingAssistant } from "./components/intro/FloatingAssistant";
+import { UnifiedOrb } from "./components/intro/UnifiedOrb";
+import { useOrbContext } from "./contexts/OrbContext";
 import { navigationManager } from "./utils/navigationManager";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
@@ -20,6 +21,7 @@ const queryClient = new QueryClient();
 
 const AppContent = () => {
   const navigate = useNavigate();
+  const { isCentered } = useOrbContext();
 
   useEffect(() => {
     navigationManager.setNavigate(navigate);
@@ -39,7 +41,7 @@ const AppContent = () => {
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
-      <FloatingAssistant />
+      <UnifiedOrb isCentered={isCentered} />
     </div>
   );
 };
