@@ -4,7 +4,7 @@ import { HowItWorks } from "@/components/landing/HowItWorks";
 import { CTASection } from "@/components/landing/CTASection";
 import { Footer } from "@/components/landing/Footer";
 import { useOrbTransition } from "@/hooks/useOrbTransition";
-import { motion, AnimatePresence, LayoutGroup } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useVapiAssistant } from "@/hooks/useVapiAssistant";
 import { useOrbContext } from "@/contexts/OrbContext";
 import { useEffect } from "react";
@@ -18,14 +18,14 @@ const Index = () => {
     setIsCentered(isCentered);
   }, [isCentered, setIsCentered]);
 
-  // Automatic 20-second timer to trigger smooth orb transition
+  // Automatic 20-second timer to trigger orb transition
   useEffect(() => {
     const timer = setTimeout(() => {
-      triggerScroll(); // Triggers smooth transition with proper cleanup
+      setIsCentered(false);
     }, 20000);
     
     return () => clearTimeout(timer);
-  }, [triggerScroll]);
+  }, [setIsCentered]);
 
   const handleTapSpeak = () => {
     if (isActive) {
@@ -36,9 +36,9 @@ const Index = () => {
   };
 
   return (
-    <LayoutGroup>
+    <>
       {/* Centered Hero - visible when isCentered */}
-      <AnimatePresence mode="wait">
+      <AnimatePresence>
         {isCentered && (
           <CenteredOrbHero onTapSpeak={handleTapSpeak} isActive={isActive} />
         )}
@@ -57,7 +57,7 @@ const Index = () => {
         <CTASection />
         <Footer />
       </motion.div>
-    </LayoutGroup>
+    </>
   );
 };
 

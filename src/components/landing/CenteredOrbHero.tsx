@@ -13,9 +13,12 @@ export const CenteredOrbHero = ({
     opacity: 1
   }} exit={{
     opacity: 0,
+    scale: 0.25,
+    x: 'calc(50vw - 4rem)',
+    y: 'calc(50vh - 4rem)',
     transition: {
       duration: 1.2,
-      ease: [0.22, 0.61, 0.36, 1] // easeOutCubic for natural deceleration
+      ease: [0.34, 1.56, 0.64, 1]
     }
   }}>
       {/* Ambient background effects */}
@@ -40,34 +43,18 @@ export const CenteredOrbHero = ({
           Ask Anything. Speak, Don't Type.
         </motion.p>
 
-        {/* Large Centered Orb with layoutId for shared element transition */}
-        <motion.div 
-          layoutId="assistant-orb"
-          className="relative mb-6 sm:mb-8 w-full flex justify-center items-center" 
-          initial={{
-            opacity: 0,
-            scale: 0.8
-          }} 
-          animate={{
-            opacity: 1,
-            scale: 1
-          }} 
-          exit={{
-            scale: 0.25,
-            x: 'calc(50vw - 6rem)',
-            y: 'calc(50vh - 6rem)'
-          }}
-          transition={{
-            delay: 0.6,
-            duration: 0.8,
-            ease: 'easeOut',
-            layout: {
-              duration: 1.2,
-              ease: [0.22, 0.61, 0.36, 1] // easeOutCubic - cited from easings.net
-            }
-          }}
-          style={{ willChange: 'transform' }} // GPU layer promotion
-        >
+        {/* Large Centered Orb */}
+        <motion.div className="relative mb-6 sm:mb-8 w-full flex justify-center items-center" initial={{
+        opacity: 0,
+        scale: 0.8
+      }} animate={{
+        opacity: 1,
+        scale: 1
+      }} transition={{
+        delay: 0.6,
+        duration: 0.8,
+        ease: 'easeOut'
+      }}>
           <div className="w-80 h-80 flex justify-center items-center scale-[0.8] sm:scale-100">
             <IntroOrb size="large" className="flex items-center justify-center" />
           </div>

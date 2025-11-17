@@ -4,7 +4,6 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
-import { LayoutGroup } from "framer-motion";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { OrbProvider } from "./contexts/OrbContext";
 import { VerticalNavigation } from "./components/VerticalNavigation";
@@ -27,23 +26,21 @@ const AppContent = () => {
   }, [navigate]);
 
   return (
-    <LayoutGroup>
-      <div className="flex min-h-screen w-full">
-        <VerticalNavigation />
-        <main className="flex-1 ml-0 md:ml-20 mt-16 md:mt-0">
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/offers" element={<Offers />} />
-            <Route path="/demo" element={<Demo />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="/try-offer" element={<TryOffer />} />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </main>
-        <FloatingAssistant />
-      </div>
-    </LayoutGroup>
+    <div className="flex min-h-screen w-full">
+      <VerticalNavigation />
+      <main className="flex-1 ml-0 md:ml-20 mt-16 md:mt-0">
+        <Routes>
+          <Route path="/" element={<Index />} />
+          <Route path="/offers" element={<Offers />} />
+          <Route path="/demo" element={<Demo />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/try-offer" element={<TryOffer />} />
+          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </main>
+      <FloatingAssistant />
+    </div>
   );
 };
 
