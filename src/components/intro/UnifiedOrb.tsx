@@ -102,19 +102,19 @@ export const UnifiedOrb = ({
     }}>
         {/* content positioned relative to the orb box */}
         <div className="relative w-full h-full overflow-visible">
-          {/* centered text above orb */}
+          {/* centered text to left of orb */}
           <AnimatePresence>
-            {isCentered && <motion.div className="absolute left-1/2 -translate-x-1/2 w-max" style={{
-            bottom: `calc(100% + clamp(16px, 4vh, 40px))`
+            {isCentered && <motion.div className="absolute top-1/2 -translate-y-1/2 w-max" style={{
+            right: `calc(100% + clamp(24px, 6vw, 48px))`
           }} initial={{
             opacity: 0,
-            y: 20
+            x: 20
           }} animate={{
             opacity: 1,
-            y: 0
+            x: 0
           }} exit={{
             opacity: 0,
-            y: -20
+            x: 20
           }} transition={{
             duration: 0.35
           }}>
