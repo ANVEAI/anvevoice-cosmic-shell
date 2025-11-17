@@ -4,7 +4,8 @@ import { Mic, X } from 'lucide-react';
 import { useVapiAssistant } from "@/hooks/useVapiAssistant";
 import { useVapiCommands } from "@/hooks/useVapiCommands";
 import { useClientSideFunctions } from "@/hooks/useClientSideFunctions";
-import { useMemo, useState, useEffect } from "react";
+import { useMemo } from "react";
+import { useIsMobile } from "@/hooks/use-mobile";
 import * as domActions from "@/utils/domActions";
 
 interface UnifiedOrbProps {
@@ -22,16 +23,8 @@ interface UnifiedOrbProps {
  */
 export const UnifiedOrb = ({ isCentered }: UnifiedOrbProps) => {
   const { startAssistant, stopAssistant, isActive, isSpeaking } = useVapiAssistant();
+  const isMobile = useIsMobile();
   
-  // Detect desktop to account for sidebar width
-  const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 768);
-
-  useEffect(() => {
-    const handleResize = () => setIsDesktop(window.innerWidth >= 768);
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
   // DOM Actions mapping for VAPI commands
   const actionHandlers = useMemo(() => ({
     scroll_page: domActions.scroll_page,
@@ -61,7 +54,7 @@ export const UnifiedOrb = ({ isCentered }: UnifiedOrbProps) => {
   const orbVariants = {
     centered: {
       top: '50%',
-      left: isDesktop ? 'calc(50% + 40px)' : '50%', // Account for 80px sidebar on desktop
+      left: isMobile ? '50%' : 'calc(50% + 40px)',
       x: '-50%',
       y: '-50%',
       scale: 1,
@@ -104,7 +97,7 @@ export const UnifiedOrb = ({ isCentered }: UnifiedOrbProps) => {
 
       {/* Unified Orb Container */}
       <motion.div
-        className="z-40"
+        className="z-[60]"
         initial={false}
         animate={isCentered ? 'centered' : 'floating'}
         variants={orbVariants}
