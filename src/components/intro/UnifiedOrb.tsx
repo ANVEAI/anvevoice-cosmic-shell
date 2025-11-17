@@ -53,8 +53,8 @@ export const UnifiedOrb = ({ isCentered }: UnifiedOrbProps) => {
     centered: {
       top: '50%',
       left: '50%',
-      x: '-50%', // True viewport center
-      y: '-50%', // True viewport center
+      x: '-50%',
+      y: '-50%',
       scale: 1,
       transition: {
         duration: 1,
@@ -64,8 +64,8 @@ export const UnifiedOrb = ({ isCentered }: UnifiedOrbProps) => {
     floating: {
       top: 'auto' as const,
       left: 'auto' as const,
-      bottom: 32, // Precise bottom-right corner placement
-      right: 32,  // Precise bottom-right corner placement
+      bottom: 24,
+      right: 24,
       x: 0,
       y: 0,
       scale: 0.25, // Shrinks from 320px to 80px
@@ -129,8 +129,7 @@ export const UnifiedOrb = ({ isCentered }: UnifiedOrbProps) => {
           whileTap={{ scale: isCentered ? 0.98 : 0.95 }}
           aria-label={isActive ? "Stop voice assistant" : "Start voice assistant"}
         >
-          {/* Responsive sizing: smaller on mobile, medium on tablet, large on desktop */}
-          <div className="w-64 h-64 sm:w-72 sm:h-72 md:w-80 md:h-80 lg:w-[min(320px,40vw)] lg:h-[min(320px,40vw)]">
+          <div className={isCentered ? "w-80 h-80" : "w-80 h-80"}>
             <IntroOrb size="large" />
           </div>
 

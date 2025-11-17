@@ -28,23 +28,21 @@ const AppContent = () => {
   }, [navigate]);
 
   return (
-    <>
-      <div className="flex min-h-screen w-full">
-        <VerticalNavigation />
-        <main className="flex-1 ml-0 md:ml-20 mt-16 md:mt-0">
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/offers" element={<Offers />} />
-            <Route path="/demo" element={<Demo />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="/try-offer" element={<TryOffer />} />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </main>
-      </div>
+    <div className="flex min-h-screen w-full">
+      <VerticalNavigation />
+      <main className="flex-1 ml-0 md:ml-20 mt-16 md:mt-0">
+        <Routes>
+          <Route path="/" element={<Index />} />
+          <Route path="/offers" element={<Offers />} />
+          <Route path="/demo" element={<Demo />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/try-offer" element={<TryOffer />} />
+          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </main>
       <UnifiedOrb isCentered={isCentered} />
-    </>
+    </div>
   );
 };
 
