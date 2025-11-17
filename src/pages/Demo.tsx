@@ -1,5 +1,4 @@
 import { motion } from "framer-motion";
-import { Navigation } from "@/components/Navigation";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { Stethoscope, BookOpen, ShoppingBag } from "lucide-react";
@@ -25,8 +24,6 @@ const Demo = () => {
 
   return (
     <div className="min-h-screen bg-gradient-hero">
-      <Navigation />
-      
       <section className="pt-10 sm:pt-32 pb-16 px-6">
         <div className="container mx-auto max-w-7xl">
           <motion.div

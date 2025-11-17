@@ -1,5 +1,4 @@
 import { motion } from "framer-motion";
-import { Navigation } from "@/components/Navigation";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -57,8 +56,6 @@ const Contact = () => {
     color: "text-muted-foreground"
   }];
   return <div className="min-h-screen bg-gradient-hero overflow-x-hidden">
-      <Navigation />
-      
       <section className="pt-8 sm:pt-32 pb-5">
         <div className="mx-auto w-full max-w-[680px] px-4 sm:px-6 lg:max-w-7xl">
           <motion.div initial={{
