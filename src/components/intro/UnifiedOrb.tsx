@@ -104,7 +104,7 @@ export const UnifiedOrb = ({
         <div className="relative w-full h-full overflow-visible">
           {/* centered text above orb */}
           <AnimatePresence>
-            {isCentered && <motion.div className="absolute left-[20%] w-max" style={{
+            {isCentered && <motion.div className="absolute left-[10%] w-max" style={{
             bottom: `calc(100% + clamp(16px, 4vh, 40px))`
           }} initial={{
             opacity: 0,
