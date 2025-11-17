@@ -2,13 +2,10 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Check } from "lucide-react";
-import { Navigation } from "@/components/Navigation";
 
 const TryOffer = () => {
   return (
     <div className="min-h-screen bg-background">
-      <Navigation />
-      
       <section className="py-12 md:py-16 lg:py-24 px-4 md:px-6">
         <div className="container mx-auto max-w-3xl">
           <motion.div
