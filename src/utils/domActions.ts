@@ -3,7 +3,14 @@ import { navigationManager } from "./navigationManager";
 // ============= Helper Functions =============
 
 const findScrollTarget = (targetText: string): HTMLElement | null => {
-  const searchTerms = targetText.toLowerCase().split(/\s+/);
+  console.log('[findScrollTarget] Searching for:', targetText);
+  
+  // FIX 1: Remove all punctuation for better matching
+  const normalizeText = (text: string) => text.toLowerCase().replace(/[^\w\s]/g, '').trim();
+  const normalizedSearch = normalizeText(targetText);
+  const searchTerms = normalizedSearch.split(/\s+/).filter(term => term.length > 0);
+  
+  console.log('[findScrollTarget] Normalized search terms:', searchTerms);
 
   // Try to find by ID or section
   const selectors = [
@@ -15,34 +22,69 @@ const findScrollTarget = (targetText: string): HTMLElement | null => {
   for (const selector of selectors) {
     try {
       const element = document.querySelector(selector) as HTMLElement;
-      if (element) return element;
+      if (element) {
+        console.log('[findScrollTarget] Found by selector:', selector, element);
+        return element;
+      }
     } catch (e) {
       // Invalid selector, continue
     }
   }
 
-  // Search through all headings and sections
-  const headings = document.querySelectorAll('h1, h2, h3, h4, h5, h6, section, [role="region"]');
+  // FIX 2: Search headings FIRST (h1-h6), then fall back to sections
+  const headings = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
+  console.log('[findScrollTarget] Searching through', headings.length, 'headings');
+  
   for (const heading of headings) {
-    const text = heading.textContent?.toLowerCase() || "";
-    if (searchTerms.every((term) => text.includes(term))) {
+    const text = heading.textContent || "";
+    const normalizedHeading = normalizeText(text);
+    
+    if (searchTerms.every((term) => normalizedHeading.includes(term))) {
+      console.log('[findScrollTarget] ✓ Found heading match:', text.trim(), '→', heading);
       return heading as HTMLElement;
     }
   }
+  
+  // Fall back to sections and regions if no heading matched
+  const sections = document.querySelectorAll('section, [role="region"]');
+  console.log('[findScrollTarget] No heading match, searching through', sections.length, 'sections');
+  
+  for (const section of sections) {
+    const text = section.textContent || "";
+    const normalizedSection = normalizeText(text);
+    
+    if (searchTerms.every((term) => normalizedSection.includes(term))) {
+      console.log('[findScrollTarget] ✓ Found section match:', section);
+      return section as HTMLElement;
+    }
+  }
 
+  console.log('[findScrollTarget] ✗ No match found for:', targetText);
   return null;
 };
 
 const scrollToSection = (sectionName: string): boolean => {
+  console.log('[scrollToSection] Attempting to scroll to:', sectionName);
+  const scrollBefore = window.scrollY;
+  
   const element = findScrollTarget(sectionName);
   if (element) {
+    console.log('[scrollToSection] Scrolling to element:', element.tagName, element.textContent?.substring(0, 50));
     element.scrollIntoView({
       behavior: "smooth",
       block: "start",
       inline: "nearest",
     });
+    
+    setTimeout(() => {
+      const scrollAfter = window.scrollY;
+      console.log('[scrollToSection] ✓ Scroll complete. Before:', scrollBefore, 'After:', scrollAfter, 'Delta:', scrollAfter - scrollBefore);
+    }, 100);
+    
     return true;
   }
+  
+  console.log('[scrollToSection] ✗ Failed to find element for:', sectionName);
   return false;
 };
 
