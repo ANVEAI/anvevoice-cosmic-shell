@@ -66,10 +66,21 @@ const findScrollTarget = (targetText: string): HTMLElement | null => {
 const scrollToSection = (sectionName: string): boolean => {
   console.log('[scrollToSection] Attempting to scroll to:', sectionName);
   const scrollBefore = window.scrollY;
+  const pageHeight = document.documentElement.scrollHeight;
   
   const element = findScrollTarget(sectionName);
   if (element) {
-    console.log('[scrollToSection] Scrolling to element:', element.tagName, element.textContent?.substring(0, 50));
+    const elementTop = element.getBoundingClientRect().top + window.scrollY;
+    const offsetTop = element.offsetTop;
+    console.log('[scrollToSection] ✓ Found element:', {
+      tag: element.tagName,
+      text: element.textContent?.substring(0, 50),
+      offsetTop: offsetTop,
+      calculatedTop: elementTop,
+      pageHeight: pageHeight,
+      position: `${Math.round((offsetTop / pageHeight) * 100)}% down the page`
+    });
+    
     element.scrollIntoView({
       behavior: "smooth",
       block: "start",
@@ -84,7 +95,7 @@ const scrollToSection = (sectionName: string): boolean => {
     return true;
   }
   
-  console.log('[scrollToSection] ✗ Failed to find element for:', sectionName);
+  console.log('[scrollToSection] ✗ No match found for:', sectionName);
   return false;
 };
 
@@ -994,28 +1005,72 @@ const extractDeepContext = () => {
 
 // ============= Main DOM Action Functions =============
 
-export const scroll_page = (params: { direction: string; target_section?: string }) => {
+export const scroll_page = (params: { direction?: string; target_section?: string }) => {
   const { direction, target_section } = params;
-  console.log("📜 Scrolling page:", direction, target_section);
+  console.log("📜 scroll_page called with:", { direction, target_section });
 
   // If target_section is provided, try to scroll to specific section
   if (target_section) {
+    console.log("📍 Target section requested:", target_section);
+    
+    // Safety check: Get known content sections to validate the target
+    const knownSections = extractContentSections();
+    const knownHeadings = knownSections.map(s => s.heading);
+    console.log("📋 Known sections on page:", knownHeadings);
+    
+    // Check if target_section appears in any known heading
+    const normalizeText = (text: string) => text.toLowerCase().replace(/[^\w\s]/g, '').trim();
+    const normalizedTarget = normalizeText(target_section);
+    const matchesKnownSection = knownHeadings.some(heading => 
+      normalizeText(heading).includes(normalizedTarget) || 
+      normalizedTarget.includes(normalizeText(heading))
+    );
+    
+    console.log("🔍 Target matches known section:", matchesKnownSection);
+    
     const sectionFound = scrollToSection(target_section);
     if (sectionFound) {
-      console.log("✅ Scrolled to", target_section);
+      console.log("✅ Successfully scrolled to target section:", target_section);
       return;
     }
+    
+    // Section not found - prevent bottom fallback
+    console.warn("⚠️ target_section '" + target_section + "' not found on page");
+    
+    if (direction?.toLowerCase() === "bottom" || direction?.toLowerCase() === "end") {
+      console.warn("⚠️ Ignoring 'bottom' fallback when target_section fails. Performing small 'down' scroll instead.");
+      const scrollAmount = window.innerHeight * 0.2;
+      const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+      const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+      const downAmount = Math.min(scrollAmount, maxScroll - currentScroll);
+      window.scrollBy({ top: downAmount, behavior: "smooth" });
+      console.log("✅ Performed small down scroll as safe fallback");
+      return;
+    }
+    
+    // If direction is not "bottom", continue to process other directions below
+    if (!direction) {
+      console.log("⚠️ No direction provided, no scroll performed");
+      return;
+    }
+  }
+
+  // Handle direction-based scrolling
+  if (!direction) {
+    console.log("⚠️ No direction or valid target_section, no scroll performed");
+    return;
   }
 
   const scrollAmount = window.innerHeight * 0.2;
   const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
   const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
 
-  switch (direction?.toLowerCase()) {
+  switch (direction.toLowerCase()) {
     case "down":
     case "next":
       const downAmount = Math.min(scrollAmount, maxScroll - currentScroll);
       window.scrollBy({ top: downAmount, behavior: "smooth" });
+      console.log("✅ Scrolled down");
       break;
 
     case "up":
@@ -1023,20 +1078,24 @@ export const scroll_page = (params: { direction: string; target_section?: string
     case "back":
       const upAmount = Math.min(scrollAmount, currentScroll);
       window.scrollBy({ top: -upAmount, behavior: "smooth" });
+      console.log("✅ Scrolled up");
       break;
 
     case "top":
     case "start":
     case "beginning":
       window.scrollTo({ top: 0, behavior: "smooth" });
+      console.log("✅ Scrolled to top");
       break;
 
     case "bottom":
     case "end":
+      console.log("📍 Explicit bottom scroll requested (no target_section)");
       window.scrollTo({
         top: document.documentElement.scrollHeight,
         behavior: "smooth",
       });
+      console.log("✅ Scrolled to bottom");
       break;
 
     case "middle":
@@ -1045,25 +1104,23 @@ export const scroll_page = (params: { direction: string; target_section?: string
         top: document.documentElement.scrollHeight / 2,
         behavior: "smooth",
       });
+      console.log("✅ Scrolled to middle");
       break;
 
     default:
-      if (direction) {
-        const element = findScrollTarget(direction);
-        if (element) {
-          element.scrollIntoView({
-            behavior: "smooth",
-            block: "start",
-            inline: "nearest",
-          });
-          console.log("✅ Scrolled to", direction);
-          return;
-        }
+      const element = findScrollTarget(direction);
+      if (element) {
+        element.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+          inline: "nearest",
+        });
+        console.log("✅ Scrolled to", direction);
+        return;
       }
       window.scrollBy({ top: scrollAmount, behavior: "smooth" });
+      console.log("✅ Default scroll down");
   }
-
-  console.log("✅ Scrolled", direction || "down");
 };
 
 export const scroll_to_content = () => {
