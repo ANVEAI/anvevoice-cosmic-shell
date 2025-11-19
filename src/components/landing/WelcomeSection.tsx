@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 
 export const WelcomeSection = () => {
   return (
-    <section className="relative min-h-screen flex items-end justify-center px-4 pb-32">
+    <section className="relative min-h-screen flex items-center justify-center px-4">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
