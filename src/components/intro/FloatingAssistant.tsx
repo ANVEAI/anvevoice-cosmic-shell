@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { IntroOrb } from "./IntroOrb";
+import { IntroOrb } from "./SimplifiedIntroOrb";
 import { useVapiAssistant } from "@/hooks/useVapiAssistant";
 import { useVapiCommands } from "@/hooks/useVapiCommands";
 import { useClientSideFunctions } from "@/hooks/useClientSideFunctions";

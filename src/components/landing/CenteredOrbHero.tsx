@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from 'framer-motion';
-import { IntroOrb } from '@/components/intro/IntroOrb';
+import { IntroOrb } from '@/components/intro/SimplifiedIntroOrb';
 import { Mic, X } from 'lucide-react';
 interface CenteredOrbHeroProps {
   onTapSpeak: () => void;
