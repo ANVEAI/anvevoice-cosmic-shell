@@ -2,6 +2,7 @@ import { FeatureGrid } from "@/components/landing/FeatureGrid";
 import { HowItWorks } from "@/components/landing/HowItWorks";
 import { CTASection } from "@/components/landing/CTASection";
 import { Footer } from "@/components/landing/Footer";
+import { WelcomeSection } from "@/components/landing/WelcomeSection";
 import { useOrbTransition } from "@/hooks/useOrbTransition";
 import { motion } from "framer-motion";
 import { useOrbContext } from "@/contexts/OrbContext";
@@ -25,6 +26,7 @@ const Index = () => {
         animate={{ opacity: 1 }}
         transition={{ duration: 0.6 }}
       >
+        <WelcomeSection />
         <HowItWorks />
         <FeatureGrid />
         <CTASection />
