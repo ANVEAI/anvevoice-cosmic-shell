@@ -67,8 +67,8 @@ export const UnifiedOrb = ({
     floating: {
       top: 'auto',
       left: 'auto',
-      bottom: -80,
-      right: 24,
+      bottom: 16,
+      right: 16,
       x: 0,
       y: 0,
       scale: 0.25,
@@ -102,8 +102,8 @@ export const UnifiedOrb = ({
       width: orbSize,
       height: orbSize,
       pointerEvents: 'auto',
-      // keep high render quality during transforms
-      transformOrigin: 'center center'
+      // Change transform origin based on state for proper scaling anchor
+      transformOrigin: isCentered ? 'center center' : 'bottom right'
     }}>
       {/* content positioned relative to the orb box */}
       <div className="relative w-full h-full overflow-visible flex items-center justify-center">
