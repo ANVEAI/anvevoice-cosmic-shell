@@ -207,7 +207,7 @@ export const scroll_page = (params: { direction: string; target_section?: string
     }
   }
 
-  const scrollAmount = window.innerHeight;
+  const scrollAmount = window.innerHeight * 0.2;
   const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
   const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
 
