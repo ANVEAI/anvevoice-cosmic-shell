@@ -22,7 +22,7 @@ const steps = [
 ];
 export const HowItWorks = () => {
   return (
-    <section className="pt-6 pb-9 sm:py-16 lg:py-24 px-6 bg-background relative overflow-hidden">
+    <section className="pt-32 sm:pt-40 lg:pt-48 pb-9 sm:pb-16 lg:pb-24 px-6 bg-background relative overflow-hidden">
       {/* Background decoration */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full max-w-4xl">
         <div className="absolute inset-0 bg-gradient-glow opacity-20" />
