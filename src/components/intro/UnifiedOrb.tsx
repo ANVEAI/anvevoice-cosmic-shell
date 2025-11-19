@@ -67,7 +67,7 @@ export const UnifiedOrb = ({
     floating: {
       top: 'auto',
       left: 'auto',
-      bottom: 24,
+      bottom: -80,
       right: 24,
       x: 0,
       y: 0,
