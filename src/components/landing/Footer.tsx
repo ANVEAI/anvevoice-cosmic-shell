@@ -105,7 +105,7 @@ export const Footer = () => {
           {/* Brand */}
           <div className="lg:col-span-2 space-y-4">
             <div className="flex items-center gap-3">
-              <img src={anvevoiceLogo} alt="AnveVoice Logo" className="h-20 w-20 object-contain" />
+              <img src={anvevoiceLogo} alt="AnveVoice Logo" className="h-60 w-60 object-contain" />
               
             </div>
             <p className="text-muted-foreground max-w-sm">
