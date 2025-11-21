@@ -101,7 +101,7 @@ export const VerticalNavigation = () => {
             {isOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </motion.button>
 
-          <motion.img src={mobileLogo} alt="AnveVoice" className="w-10 h-10 rounded-full" initial={{
+          <motion.img src={mobileLogo} alt="AnveVoice" initial={{
           opacity: 0,
           scale: 0.8
         }} animate={{
@@ -110,7 +110,7 @@ export const VerticalNavigation = () => {
         }} transition={{
           duration: 0.5,
           delay: 0.2
-        }} />
+        }} className="w-10 h-10 rounded-full object-contain" />
         </div>
 
         {/* Theme Toggle */}
