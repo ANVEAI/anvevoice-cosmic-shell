@@ -5,6 +5,7 @@ import { useTheme } from '@/hooks/useTheme';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { motion, AnimatePresence } from 'framer-motion';
 import logo from '@/assets/anvevoice-logo-navbar.png';
+import desktopLogo from '@/assets/anvevoice-orb-logo.png';
 const navItems = [{
   icon: Home,
   label: 'Home',
@@ -60,7 +61,7 @@ export const VerticalNavigation = () => {
         duration: 0.5,
         delay: 0.2
       }} className="mb-6">
-          <img src={logo} alt="AnveVoice" className="w-12 h-12 rounded-full object-contain" />
+          <img src={desktopLogo} alt="AnveVoice" className="w-12 h-12 rounded-full object-contain" />
         </motion.div>
 
         {/* Theme Toggle */}
