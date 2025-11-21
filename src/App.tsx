@@ -10,6 +10,7 @@ import { VerticalNavigation } from "./components/VerticalNavigation";
 import { UnifiedOrb } from "./components/intro/UnifiedOrb";
 import { useOrbContext } from "./contexts/OrbContext";
 import { navigationManager } from "./utils/navigationManager";
+import { ScrollToTop } from "./components/ScrollToTop";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import Offers from "./pages/Offers";
@@ -35,6 +36,7 @@ const AppContent = () => {
 
   return (
     <div className="flex min-h-screen w-full">
+      <ScrollToTop />
       <VerticalNavigation />
       <main className="flex-1 ml-0 md:ml-20 mt-16 md:mt-0">
         <Routes>
