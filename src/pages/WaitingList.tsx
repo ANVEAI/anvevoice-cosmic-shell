@@ -48,7 +48,7 @@ const WaitingList = () => {
             transition={{ duration: 0.6 }}
             className="text-center mb-3 sm:mb-16 max-w-2xl mx-auto"
           >
-            <h1 className="text-2xl sm:text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-purple-400 via-purple-600 to-indigo-600 bg-clip-text text-transparent">
+            <h1 className="text-2xl sm:text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-purple-400 via-purple-600 to-indigo-600 bg-clip-text text-transparent leading-tight pb-2">
               Waiting List
             </h1>
             <p className="text-muted-foreground text-lg">
