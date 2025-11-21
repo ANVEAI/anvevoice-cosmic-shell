@@ -64,19 +64,7 @@ export const VerticalNavigation = () => {
         </motion.div>
 
         {/* Theme Toggle */}
-        <motion.button onClick={toggleTheme} className="mb-8 w-12 h-12 rounded-lg bg-slate-900/50 border border-primary/30 flex items-center justify-center text-primary hover:bg-primary/10 transition-colors" whileHover={{
-        scale: 1.05
-      }} whileTap={{
-        scale: 0.95
-      }}>
-          <motion.div animate={{
-          rotate: theme === 'light' ? 45 : 0
-        }} transition={{
-          duration: 0.3
-        }}>
-            {theme === 'light' ? <X className="w-5 h-5" /> : <Plus className="w-5 h-5" />}
-          </motion.div>
-        </motion.button>
+        
 
         {/* Navigation Items */}
         <div className="flex-1 flex flex-col gap-6">
