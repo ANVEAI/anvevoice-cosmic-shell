@@ -4,6 +4,7 @@ import { NavLink } from './NavLink';
 import { useTheme } from '@/hooks/useTheme';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { motion, AnimatePresence } from 'framer-motion';
+import logo from '@/assets/anvevoice-logo.png';
 
 const navItems = [
   { icon: Home, label: 'Home', path: '/' },
@@ -28,6 +29,16 @@ export const VerticalNavigation = () => {
         transition={{ duration: 0.5 }}
         className="fixed left-0 top-0 h-screen w-20 bg-slate-950 border-r border-border/50 z-50 flex flex-col items-center py-6"
       >
+        {/* Logo */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+          className="mb-6"
+        >
+          <img src={logo} alt="AnveVoice" className="w-12 h-12 rounded-full" />
+        </motion.div>
+
         {/* Theme Toggle */}
         <motion.button
           onClick={toggleTheme}
@@ -77,14 +88,25 @@ export const VerticalNavigation = () => {
         transition={{ duration: 0.5 }}
         className="fixed top-0 left-0 right-0 h-16 bg-slate-950 border-b border-border/50 z-50 flex items-center justify-between px-4"
       >
-        {/* Menu Button */}
-        <motion.button
-          onClick={() => setIsOpen(!isOpen)}
-          className="w-10 h-10 rounded-lg bg-slate-900/50 border border-primary/30 flex items-center justify-center text-primary hover:bg-primary/10 transition-colors"
-          whileTap={{ scale: 0.95 }}
-        >
-          {isOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-        </motion.button>
+        {/* Logo and Menu Button */}
+        <div className="flex items-center gap-3">
+          <motion.button
+            onClick={() => setIsOpen(!isOpen)}
+            className="w-10 h-10 rounded-lg bg-slate-900/50 border border-primary/30 flex items-center justify-center text-primary hover:bg-primary/10 transition-colors"
+            whileTap={{ scale: 0.95 }}
+          >
+            {isOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+          </motion.button>
+
+          <motion.img
+            src={logo}
+            alt="AnveVoice"
+            className="w-10 h-10 rounded-full"
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+          />
+        </div>
 
         {/* Theme Toggle */}
         <motion.button
