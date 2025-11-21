@@ -16,6 +16,7 @@ import Offers from "./pages/Offers";
 import Contact from "./pages/Contact";
 import Demo from "./pages/Demo";
 import TryOffer from "./pages/TryOffer";
+import WaitingList from "./pages/WaitingList";
 
 const queryClient = new QueryClient();
 
@@ -42,6 +43,7 @@ const AppContent = () => {
           <Route path="/demo" element={<Demo />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/try-offer" element={<TryOffer />} />
+          <Route path="/waiting-list" element={<WaitingList />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
