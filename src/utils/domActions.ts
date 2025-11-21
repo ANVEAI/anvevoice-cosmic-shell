@@ -1209,12 +1209,37 @@ export const fill_field = (params: { value: string; field_hint?: string }) => {
   // Scroll into view
   field.scrollIntoView({ behavior: "smooth", block: "center" });
 
-  // Fill field
+  // Fill field with React Hook Form compatibility
   setTimeout(() => {
-    field!.value = value;
-    field!.dispatchEvent(new Event("input", { bubbles: true }));
-    field!.dispatchEvent(new Event("change", { bubbles: true }));
-    console.log(`✅ Filled field with: ${value}`);
+    // Use React's native property descriptors to ensure React detects the change
+    const nativeInputValueSetter = Object.getOwnPropertyDescriptor(
+      window.HTMLInputElement.prototype,
+      "value"
+    )?.set;
+    const nativeTextAreaValueSetter = Object.getOwnPropertyDescriptor(
+      window.HTMLTextAreaElement.prototype,
+      "value"
+    )?.set;
+    
+    if (field instanceof HTMLInputElement && nativeInputValueSetter) {
+      nativeInputValueSetter.call(field, value);
+    } else if (field instanceof HTMLTextAreaElement && nativeTextAreaValueSetter) {
+      nativeTextAreaValueSetter.call(field, value);
+    } else {
+      field!.value = value;
+    }
+    
+    // Dispatch events in the correct order with proper options
+    field!.dispatchEvent(new Event("input", { bubbles: true, cancelable: true }));
+    field!.dispatchEvent(new Event("change", { bubbles: true, cancelable: true }));
+    field!.dispatchEvent(new Event("blur", { bubbles: true, cancelable: true }));
+    
+    // Trigger focus/blur cycle to ensure react-hook-form validation
+    field!.focus();
+    setTimeout(() => {
+      field!.blur();
+      console.log(`✅ Filled field with: "${value}" and triggered validation`);
+    }, 50);
   }, 300);
 };
 

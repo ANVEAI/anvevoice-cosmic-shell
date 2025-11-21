@@ -9,13 +9,14 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { toast } from "sonner";
+import { useEffect } from "react";
 const contactSchema = z.object({
-  name: z.string().min(2, "Name must be at least 2 characters").max(100),
-  companyName: z.string().min(2, "Company name must be at least 2 characters").max(100),
-  email: z.string().email("Invalid email address"),
-  phoneNumber: z.string().optional(),
-  employeeSize: z.string().min(1, "Employee size is required").max(50),
-  message: z.string().min(10, "Message must be at least 10 characters").max(1000)
+  name: z.string().trim().min(2, "Name must be at least 2 characters").max(100),
+  companyName: z.string().trim().min(2, "Company name must be at least 2 characters").max(100),
+  email: z.string().trim().email("Invalid email address"),
+  phoneNumber: z.string().trim().optional().or(z.literal("")),
+  employeeSize: z.string().trim().min(1, "Employee size is required").max(50),
+  message: z.string().trim().min(10, "Message must be at least 10 characters").max(1000)
 });
 type ContactFormData = z.infer<typeof contactSchema>;
 const Contact = () => {
@@ -27,8 +28,15 @@ const Contact = () => {
     },
     reset
   } = useForm<ContactFormData>({
-    resolver: zodResolver(contactSchema)
+    resolver: zodResolver(contactSchema),
+    mode: "onChange",
+    reValidateMode: "onChange"
   });
+  useEffect(() => {
+    console.log('[Contact Form] Current errors:', errors);
+    console.log('[Contact Form] Form is valid:', Object.keys(errors).length === 0);
+  }, [errors]);
+
   const onSubmit = (data: ContactFormData) => {
     console.log("Form submitted:", data);
     toast.success("Thank you! We'll get back to you within 24 hours.");
@@ -86,36 +94,36 @@ const Contact = () => {
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-3 sm:space-y-6">
                   <div className="space-y-1 sm:space-y-2">
                     <Label htmlFor="name">Full Name *</Label>
-                    <Input id="name" placeholder="John Doe" {...register("name")} className={errors.name ? "border-destructive" : ""} />
+                    <Input id="name" data-field="name" placeholder="John Doe" {...register("name")} className={errors.name ? "border-destructive" : ""} />
                     {errors.name && <p className="text-sm text-destructive">{errors.name.message}</p>}
                   </div>
 
                   <div className="space-y-1 sm:space-y-2">
                     <Label htmlFor="companyName">Company Name *</Label>
-                    <Input id="companyName" placeholder="Acme Inc." {...register("companyName")} className={errors.companyName ? "border-destructive" : ""} />
+                    <Input id="companyName" data-field="companyName" placeholder="Acme Inc." {...register("companyName")} className={errors.companyName ? "border-destructive" : ""} />
                     {errors.companyName && <p className="text-sm text-destructive">{errors.companyName.message}</p>}
                   </div>
 
                   <div className="space-y-1 sm:space-y-2">
                     <Label htmlFor="email">Email Address *</Label>
-                    <Input id="email" type="email" placeholder="john@company.com" {...register("email")} className={errors.email ? "border-destructive" : ""} />
+                    <Input id="email" data-field="email" type="email" placeholder="john@company.com" {...register("email")} className={errors.email ? "border-destructive" : ""} />
                     {errors.email && <p className="text-sm text-destructive">{errors.email.message}</p>}
                   </div>
 
                   <div className="space-y-1 sm:space-y-2">
                     <Label htmlFor="phoneNumber">Phone Number (Optional)</Label>
-                    <Input id="phoneNumber" type="tel" placeholder="+1 (555) 123-4567" {...register("phoneNumber")} />
+                    <Input id="phoneNumber" data-field="phoneNumber" type="tel" placeholder="+1 (555) 123-4567" {...register("phoneNumber")} />
                   </div>
 
                   <div className="space-y-1 sm:space-y-2">
                     <Label htmlFor="employeeSize">Employee Size *</Label>
-                    <Input id="employeeSize" placeholder="e.g., 50-100 employees" {...register("employeeSize")} className={errors.employeeSize ? "border-destructive" : ""} />
+                    <Input id="employeeSize" data-field="employeeSize" placeholder="e.g., 50-100 employees" {...register("employeeSize")} className={errors.employeeSize ? "border-destructive" : ""} />
                     {errors.employeeSize && <p className="text-sm text-destructive">{errors.employeeSize.message}</p>}
                   </div>
 
                   <div className="space-y-1 sm:space-y-2">
                     <Label htmlFor="message">Message *</Label>
-                    <Textarea id="message" placeholder="Tell us about your project or ask us anything..." rows={3} {...register("message")} className={errors.message ? "border-destructive" : ""} />
+                    <Textarea id="message" data-field="message" placeholder="Tell us about your project or ask us anything..." rows={3} {...register("message")} className={errors.message ? "border-destructive" : ""} />
                     {errors.message && <p className="text-sm text-destructive">{errors.message.message}</p>}
                   </div>
 
