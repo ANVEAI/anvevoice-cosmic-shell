@@ -214,34 +214,99 @@ const findElementByTextWithContext = (
 
 const findFieldByHint = (hint: string): HTMLInputElement | HTMLTextAreaElement | null => {
   const hintLower = hint.toLowerCase();
+  console.log(`[findFieldByHint] Searching for hint: "${hint}"`);
 
-  // Try by name attribute
-  let field = document.querySelector(`[name*="${hintLower}"]`) as HTMLInputElement | HTMLTextAreaElement;
-  if (field) return field;
+  const isValidField = (element: HTMLElement | null): element is HTMLInputElement | HTMLTextAreaElement => {
+    if (!element) return false;
+    if (!(element instanceof HTMLInputElement || element instanceof HTMLTextAreaElement)) return false;
+    
+    // Check if visible
+    const style = window.getComputedStyle(element);
+    if (style.display === 'none' || style.visibility === 'hidden' || style.opacity === '0') {
+      console.log(`[findFieldByHint] ✗ Field found but hidden: id="${element.id}"`);
+      return false;
+    }
+    
+    // Check if not disabled
+    if (element.hasAttribute('disabled') || element.getAttribute('aria-disabled') === 'true') {
+      console.log(`[findFieldByHint] ✗ Field found but disabled: id="${element.id}"`);
+      return false;
+    }
+    
+    return true;
+  };
 
-  // Try by id
+  // PRIORITY 1: Exact data-field match (most reliable for voice commands)
+  let field = document.querySelector(`[data-field="${hintLower}"]`) as HTMLInputElement | HTMLTextAreaElement;
+  if (isValidField(field)) {
+    console.log(`[findFieldByHint] ✓ Found exact match via data-field: id="${field.id}", name="${field.name}"`);
+    return field;
+  }
+
+  // PRIORITY 2: Exact id match
+  field = document.getElementById(hintLower) as HTMLInputElement | HTMLTextAreaElement;
+  if (isValidField(field)) {
+    console.log(`[findFieldByHint] ✓ Found exact match via id: id="${field.id}"`);
+    return field;
+  }
+
+  // PRIORITY 3: Exact name match
+  field = document.querySelector(`[name="${hintLower}"]`) as HTMLInputElement | HTMLTextAreaElement;
+  if (isValidField(field)) {
+    console.log(`[findFieldByHint] ✓ Found exact match via name: id="${field.id}", name="${field.name}"`);
+    return field;
+  }
+
+  // PRIORITY 4: Partial data-field match (fallback for similar names)
+  field = document.querySelector(`[data-field*="${hintLower}"]`) as HTMLInputElement | HTMLTextAreaElement;
+  if (isValidField(field)) {
+    console.log(`[findFieldByHint] ✓ Found partial match via data-field: id="${field.id}", data-field="${field.getAttribute('data-field')}"`);
+    return field;
+  }
+
+  // PRIORITY 5: Partial id match
   field = document.querySelector(`[id*="${hintLower}"]`) as HTMLInputElement | HTMLTextAreaElement;
-  if (field) return field;
+  if (isValidField(field)) {
+    console.log(`[findFieldByHint] ✓ Found partial match via id: id="${field.id}"`);
+    return field;
+  }
 
-  // Try by placeholder
+  // PRIORITY 6: Partial name match
+  field = document.querySelector(`[name*="${hintLower}"]`) as HTMLInputElement | HTMLTextAreaElement;
+  if (isValidField(field)) {
+    console.log(`[findFieldByHint] ✓ Found partial match via name: id="${field.id}", name="${field.name}"`);
+    return field;
+  }
+
+  // PRIORITY 7: Placeholder match
   field = document.querySelector(`[placeholder*="${hintLower}" i]`) as HTMLInputElement | HTMLTextAreaElement;
-  if (field) return field;
+  if (isValidField(field)) {
+    console.log(`[findFieldByHint] ✓ Found match via placeholder: id="${field.id}", placeholder="${field.placeholder}"`);
+    return field;
+  }
 
-  // Try by label text
+  // PRIORITY 8: Label text match
   const labels = document.querySelectorAll("label");
   for (const label of labels) {
     if (label.textContent?.toLowerCase().includes(hintLower)) {
       const forAttr = label.getAttribute("for");
       if (forAttr) {
         field = document.getElementById(forAttr) as HTMLInputElement | HTMLTextAreaElement;
-        if (field) return field;
+        if (isValidField(field)) {
+          console.log(`[findFieldByHint] ✓ Found match via label: id="${field.id}", label="${label.textContent?.trim()}"`);
+          return field;
+        }
       }
       // Try next input sibling
       field = label.querySelector("input, textarea") as HTMLInputElement | HTMLTextAreaElement;
-      if (field) return field;
+      if (isValidField(field)) {
+        console.log(`[findFieldByHint] ✓ Found match via label sibling: id="${field.id}"`);
+        return field;
+      }
     }
   }
 
+  console.log(`[findFieldByHint] ✗ No matching field found for hint: "${hint}"`);
   return null;
 };
 
