@@ -113,17 +113,7 @@ export const VerticalNavigation = () => {
         </div>
 
         {/* Theme Toggle */}
-        <motion.button onClick={toggleTheme} className="w-10 h-10 rounded-lg bg-slate-900/50 border border-primary/30 flex items-center justify-center text-primary hover:bg-primary/10 transition-colors" whileTap={{
-        scale: 0.95
-      }}>
-          <motion.div animate={{
-          rotate: theme === 'light' ? 45 : 0
-        }} transition={{
-          duration: 0.3
-        }}>
-            {theme === 'light' ? <X className="w-5 h-5" /> : <Plus className="w-5 h-5" />}
-          </motion.div>
-        </motion.button>
+        
       </motion.div>
 
       {/* Mobile Menu Overlay */}
