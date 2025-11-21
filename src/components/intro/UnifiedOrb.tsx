@@ -187,7 +187,7 @@ export const UnifiedOrb = ({
             scale: 1.05
           }} whileTap={{
             scale: 0.95
-          }} className="absolute left-1/2 -translate-x-1/2 -ml-[6px] w-14 h-14 sm:w-16 sm:h-16 bg-background/10 backdrop-blur-md rounded-full border border-primary/30 hover:border-primary/60 hover:bg-primary/10 transition-all flex items-center justify-center py-0 px-0">
+          }} className="absolute inset-x-0 mx-auto w-14 h-14 sm:w-16 sm:h-16 bg-background/10 backdrop-blur-md rounded-full border border-primary/30 hover:border-primary/60 hover:bg-primary/10 transition-all flex items-center justify-center py-0 px-0">
             <AnimatePresence mode="wait">
               {isActive ? <motion.div key="cross" initial={{
                 scale: 0,
@@ -201,8 +201,8 @@ export const UnifiedOrb = ({
               }} transition={{
                 duration: 0.18
               }}>
-                      <X className="w-6 h-6 sm:w-7 sm:h-7 text-primary" />
-                    </motion.div> : <motion.div key="mic" initial={{
+                <X className="w-6 h-6 sm:w-7 sm:h-7 text-primary" />
+              </motion.div> : <motion.div key="mic" initial={{
                 scale: 0,
                 rotate: 90
               }} animate={{
@@ -214,12 +214,12 @@ export const UnifiedOrb = ({
               }} transition={{
                 duration: 0.18
               }}>
-                      <Mic className="w-6 h-6 sm:w-7 sm:h-7 text-primary" />
-                    </motion.div>}
-                </AnimatePresence>
-              </motion.button>}
-          </AnimatePresence>
-        </div>
-      </motion.div>
-    </>;
+                <Mic className="w-6 h-6 sm:w-7 sm:h-7 text-primary" />
+              </motion.div>}
+            </AnimatePresence>
+          </motion.button>}
+        </AnimatePresence>
+      </div>
+    </motion.div>
+  </>;
 };
