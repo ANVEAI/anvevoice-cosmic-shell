@@ -114,8 +114,8 @@ const WaitingList = () => {
                   <Input
                     id="website"
                     data-field="website"
-                    type="url"
-                    placeholder="https://yourcompany.com"
+                    type="text"
+                    placeholder="yourcompany.com"
                     {...register("website")}
                     className={errors.website ? "border-destructive" : ""}
                   />
