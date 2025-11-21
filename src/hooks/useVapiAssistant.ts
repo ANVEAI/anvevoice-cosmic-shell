@@ -22,7 +22,7 @@ export const useVapiAssistant = () => {
 
     // Event listeners
     vapi.on('call-start', () => {
-      console.log('[VAPI] Call started');
+      console.log('[ANVE] Call started');
       setIsActive(true);
       toast({
         title: "🎙️ Voice Assistant Active",
@@ -31,7 +31,7 @@ export const useVapiAssistant = () => {
     });
 
     vapi.on('call-end', () => {
-      console.log('[VAPI] Call ended');
+      console.log('[ANVE] Call ended');
       setIsActive(false);
       setIsSpeaking(false);
       toast({
@@ -41,17 +41,17 @@ export const useVapiAssistant = () => {
     });
 
     vapi.on('speech-start', () => {
-      console.log('[VAPI] Assistant speaking');
+      console.log('[ANVE] Assistant speaking');
       setIsSpeaking(true);
     });
 
     vapi.on('speech-end', () => {
-      console.log('[VAPI] Assistant stopped speaking');
+      console.log('[ANVE] Assistant stopped speaking');
       setIsSpeaking(false);
     });
 
     vapi.on('error', (error) => {
-      console.error('[VAPI] Error:', error);
+      console.error('[ANVE] Error:', error);
       toast({
         title: "Voice Assistant Error",
         description: error.message || 'An error occurred',
@@ -62,7 +62,7 @@ export const useVapiAssistant = () => {
     });
 
     vapi.on('message', (message: any) => {
-      console.log('[VAPI] Message:', message);
+      console.log('[ANVE] Message:', message);
       
       // Handle client-side function calls
       if (message.type === 'function-call' && message.functionCall) {
@@ -70,7 +70,7 @@ export const useVapiAssistant = () => {
         
         if (functionCall.name === 'get_page_context') {
           try {
-            console.log('[VAPI] Executing client-side get_page_context');
+            console.log('[ANVE] Executing client-side get_page_context');
             const result = domActions.get_page_context(functionCall.parameters || {});
             
             // Return result via callback in message
@@ -80,9 +80,9 @@ export const useVapiAssistant = () => {
               });
             }
             
-            console.log('[VAPI] get_page_context result:', result);
+            console.log('[ANVE] get_page_context result:', result);
           } catch (error) {
-            console.error('[VAPI] Error executing get_page_context:', error);
+            console.error('[ANVE] Error executing get_page_context:', error);
             if (message.callback) {
               message.callback({
                 error: error instanceof Error ? error.message : 'Unknown error',
@@ -110,10 +110,10 @@ export const useVapiAssistant = () => {
     }
 
     try {
-      console.log('[VAPI] Starting assistant:', assistantId);
+      console.log('[ANVE] Starting assistant:', assistantId);
       await vapiRef.current?.start(assistantId);
     } catch (error) {
-      console.error('[VAPI] Failed to start assistant:', error);
+      console.error('[ANVE] Failed to start assistant:', error);
       toast({
         title: "Failed to Start",
         description: "Could not activate voice assistant",
@@ -123,7 +123,7 @@ export const useVapiAssistant = () => {
   };
 
   const stopAssistant = () => {
-    console.log('[VAPI] Stopping assistant');
+    console.log('[ANVE] Stopping assistant');
     vapiRef.current?.stop();
   };
 
