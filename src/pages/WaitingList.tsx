@@ -14,8 +14,7 @@ const waitingListSchema = z.object({
   email: z.string().trim().email("Invalid email address"),
   phoneNumber: z.string().trim().min(1, "Phone number is required").max(50),
   website: z.string().trim().min(1, "Website is required").max(255),
-  employeeSize: z.string().trim().min(1, "Employee size is required").max(50),
-  comments: z.string().trim().max(1000).optional().or(z.literal(""))
+  employeeSize: z.string().trim().min(1, "Employee size is required").max(50)
 });
 
 type WaitingListFormData = z.infer<typeof waitingListSchema>;
@@ -136,17 +135,6 @@ const WaitingList = () => {
                   {errors.employeeSize && (
                     <p className="text-sm text-destructive">{errors.employeeSize.message}</p>
                   )}
-                </div>
-
-                <div className="space-y-1 sm:space-y-2">
-                  <Label htmlFor="comments">Any Comments/Feedbacks (Optional)</Label>
-                  <Textarea
-                    id="comments"
-                    data-field="comments"
-                    placeholder="Tell us what you're looking for..."
-                    rows={4}
-                    {...register("comments")}
-                  />
                 </div>
 
                 <Button type="submit" size="lg" className="w-full">
