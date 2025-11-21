@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Home, Grid3x3, PlayCircle, DollarSign, Heart, Plus, X, Menu, Gift } from 'lucide-react';
+import { Home, Grid3x3, PlayCircle, DollarSign, Heart, Plus, X, Menu, Gift, ListChecks } from 'lucide-react';
 import { NavLink } from './NavLink';
 import { useTheme } from '@/hooks/useTheme';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -11,6 +11,7 @@ const navItems = [
   { icon: PlayCircle, label: 'Demo', path: '/demo' },
   { icon: DollarSign, label: 'Pricing', path: '/offers' },
   { icon: Gift, label: 'Try Offer', path: '/try-offer' },
+  { icon: ListChecks, label: 'Waiting List', path: '/waiting-list' },
   { icon: Heart, label: 'Contact', path: '/contact' },
 ];
 
