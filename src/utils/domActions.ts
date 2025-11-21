@@ -237,7 +237,7 @@ const findFieldByHint = (hint: string): HTMLInputElement | HTMLTextAreaElement |
   };
 
   // PRIORITY 1: Exact data-field match (most reliable for voice commands)
-  let field = document.querySelector(`[data-field="${hintLower}"]`) as HTMLInputElement | HTMLTextAreaElement;
+  let field = document.querySelector(`[data-field="${hintLower}" i]`) as HTMLInputElement | HTMLTextAreaElement;
   if (isValidField(field)) {
     console.log(`[findFieldByHint] ✓ Found exact match via data-field: id="${field.id}", name="${field.name}"`);
     return field;
@@ -258,7 +258,7 @@ const findFieldByHint = (hint: string): HTMLInputElement | HTMLTextAreaElement |
   }
 
   // PRIORITY 4: Partial data-field match (fallback for similar names)
-  field = document.querySelector(`[data-field*="${hintLower}"]`) as HTMLInputElement | HTMLTextAreaElement;
+  field = document.querySelector(`[data-field*="${hintLower}" i]`) as HTMLInputElement | HTMLTextAreaElement;
   if (isValidField(field)) {
     console.log(`[findFieldByHint] ✓ Found partial match via data-field: id="${field.id}", data-field="${field.getAttribute('data-field')}"`);
     return field;
