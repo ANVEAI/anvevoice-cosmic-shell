@@ -4,7 +4,7 @@ import { NavLink } from './NavLink';
 import { useTheme } from '@/hooks/useTheme';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { motion, AnimatePresence } from 'framer-motion';
-import logo from '@/assets/anvevoice-logo.png';
+import logo from '@/assets/anvevoice-logo-navbar.png';
 const navItems = [{
   icon: Home,
   label: 'Home',
