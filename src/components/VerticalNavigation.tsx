@@ -4,7 +4,7 @@ import { NavLink } from './NavLink';
 import { useTheme } from '@/hooks/useTheme';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { motion, AnimatePresence } from 'framer-motion';
-import logo from '@/assets/anvevoice-logo-navbar.png';
+import mobileLogo from '@/assets/anvevoice-mobile-logo.png';
 import desktopLogo from '@/assets/anvevoice-orb-logo.png';
 const navItems = [{
   icon: Home,
@@ -101,7 +101,7 @@ export const VerticalNavigation = () => {
             {isOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </motion.button>
 
-          <motion.img src={logo} alt="AnveVoice" className="w-10 h-10 rounded-full" initial={{
+          <motion.img src={mobileLogo} alt="AnveVoice" className="w-10 h-10 rounded-full" initial={{
           opacity: 0,
           scale: 0.8
         }} animate={{
