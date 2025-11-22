@@ -1,3 +1,4 @@
+# Allow all standard crawlers
 User-agent: Googlebot
 Allow: /
 
@@ -10,5 +11,40 @@ Allow: /
 User-agent: facebookexternalhit
 Allow: /
 
+# Explicitly ALLOW AI Bots (AEO Strategy)
+# OpenAI (ChatGPT)
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+# Anthropic (Claude)
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+# Google (Gemini / Bard / Vertex AI)
+User-agent: Google-Extended
+Allow: /
+
+# Common Crawl (Used by many smaller models)
+User-agent: CCBot
+Allow: /
+
+# Perplexity AI (Critical for real-time answers)
+User-agent: PerplexityBot
+Allow: /
+
+# Apple Intelligence
+User-agent: Applebot-Extended
+Allow: /
+
+# Allow all other bots
 User-agent: *
 Allow: /
+
+# Sitemap location
+Sitemap: https://anvevoice.lovable.app/sitemap.xml
