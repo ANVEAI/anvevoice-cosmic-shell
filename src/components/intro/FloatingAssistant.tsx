@@ -27,10 +27,10 @@ export const FloatingAssistant = () => {
   }), []);
 
   // Listen for commands from VAPI webhook via Realtime
-  useVapiCommands(actionHandlers, callId);
+  useVapiCommands(actionHandlers, callId, isActive);
   
   // Handle client-side function execution (get_page_context)
-  useClientSideFunctions(callId);
+  useClientSideFunctions(callId, isActive);
 
   const handleClick = () => {
     if (isActive) {
