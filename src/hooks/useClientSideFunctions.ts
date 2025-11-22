@@ -6,16 +6,14 @@ import * as domActions from '@/utils/domActions';
  * Hook to handle client-side function execution for VAPI
  * Listens for function requests from webhook and sends results back
  */
-export const useClientSideFunctions = (callId: string | null, isActive: boolean) => {
+export const useClientSideFunctions = (sessionId: string, isActive: boolean) => {
   useEffect(() => {
-    const channels: any[] = [];
+    if (!isActive || !sessionId) {
+      console.log('[Client Functions] Not active or no sessionId, waiting...');
+      return;
+    }
 
     const handleFunctionRequest = async (payload: any) => {
-      if (!isActive) {
-        console.log('[Client Functions] Ignoring request - assistant not active in this tab');
-        return;
-      }
-
       console.log('[Client Functions] Processing function request:', payload);
       const { functionName, parameters, requestId } = payload;
 
@@ -24,11 +22,8 @@ export const useClientSideFunctions = (callId: string | null, isActive: boolean)
           const result = domActions.get_page_context(parameters || {});
           console.log('[Client Functions] Executed get_page_context:', result);
 
-          // Send response back through appropriate channel
-          const responseChannelName = callId 
-            ? `vapi-function-responses-${callId}`
-            : 'vapi-function-responses-global';
-          
+          // Send response back through session-specific channel
+          const responseChannelName = `vapi-function-responses-${sessionId}`;
           const responseChannel = supabase.channel(responseChannelName);
           await responseChannel.send({
             type: 'broadcast',
@@ -45,10 +40,7 @@ export const useClientSideFunctions = (callId: string | null, isActive: boolean)
         } catch (error) {
           console.error('[Client Functions] Error executing get_page_context:', error);
           
-          const responseChannelName = callId 
-            ? `vapi-function-responses-${callId}`
-            : 'vapi-function-responses-global';
-          
+          const responseChannelName = `vapi-function-responses-${sessionId}`;
           const responseChannel = supabase.channel(responseChannelName);
           await responseChannel.send({
             type: 'broadcast',
@@ -65,49 +57,30 @@ export const useClientSideFunctions = (callId: string | null, isActive: boolean)
       }
     };
 
-    // Always subscribe to global fallback
-    console.log('[Client Functions] Setting up global request listener');
-    const globalRequestChannel = supabase.channel('vapi-function-requests-global');
-    globalRequestChannel
+    // Subscribe ONLY to session-specific channel
+    const requestChannelName = `vapi-function-requests-${sessionId}`;
+    console.log('[Client Functions] Subscribing to:', requestChannelName);
+    
+    const requestChannel = supabase.channel(requestChannelName);
+    const responseChannel = supabase.channel(`vapi-function-responses-${sessionId}`);
+
+    requestChannel
       .on('broadcast', { event: 'function-request' }, ({ payload }: any) => {
-        console.log('[Client Functions] Received request on global channel:', payload);
+        console.log('[Client Functions] Received request:', payload);
         handleFunctionRequest(payload);
       })
       .subscribe((status) => {
-        console.log('[Client Functions] Global request channel status:', status);
+        console.log('[Client Functions] Request channel status:', status);
       });
-    channels.push(globalRequestChannel);
-
-    // If we have callId, also subscribe to session-specific channel
-    if (callId) {
-      const requestChannelName = `vapi-function-requests-${callId}`;
-      console.log('[Client Functions] Setting up session-specific listener for:', requestChannelName);
-      
-      const requestChannel = supabase.channel(requestChannelName);
-      const responseChannel = supabase.channel(`vapi-function-responses-${callId}`);
-
-      requestChannel
-        .on('broadcast', { event: 'function-request' }, ({ payload }: any) => {
-          console.log('[Client Functions] Received request on session channel:', payload);
-          handleFunctionRequest(payload);
-        })
-        .subscribe((status) => {
-          console.log('[Client Functions] Session request channel status:', status);
-        });
-      
-      responseChannel.subscribe((status) => {
-        console.log('[Client Functions] Session response channel status:', status);
-      });
-      
-      channels.push(requestChannel);
-      channels.push(responseChannel);
-    } else {
-      console.log('[Client Functions] No callId yet, using global channel only');
-    }
+    
+    responseChannel.subscribe((status) => {
+      console.log('[Client Functions] Response channel status:', status);
+    });
 
     return () => {
-      console.log('[Client Functions] Cleaning up all listeners');
-      channels.forEach(ch => supabase.removeChannel(ch));
+      console.log('[Client Functions] Cleaning up listeners');
+      supabase.removeChannel(requestChannel);
+      supabase.removeChannel(responseChannel);
     };
-  }, [callId, isActive]);
+  }, [sessionId, isActive]);
 };

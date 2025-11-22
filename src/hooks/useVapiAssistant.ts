@@ -1,26 +1,14 @@
-import { useEffect, useRef, useState, useCallback } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Vapi from '@vapi-ai/web';
 import { useToast } from '@/hooks/use-toast';
 import * as domActions from '@/utils/domActions';
-import { useVapiSessionDiscovery } from './useVapiSessionDiscovery';
 
 export const useVapiAssistant = () => {
   const vapiRef = useRef<Vapi | null>(null);
   const [isActive, setIsActive] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
-  const [callId, setCallId] = useState<string | null>(null);
+  const [sessionId] = useState(() => crypto.randomUUID()); // Generate unique session ID
   const { toast } = useToast();
-
-  // Callback for session discovery
-  const handleCallIdReceived = useCallback((receivedCallId: string) => {
-    if (!callId) {
-      console.log('[ANVE] Captured callId from session discovery:', receivedCallId);
-      setCallId(receivedCallId);
-    }
-  }, [callId]);
-
-  // Subscribe to session discovery
-  useVapiSessionDiscovery(isActive, handleCallIdReceived);
 
   useEffect(() => {
     // Initialize VAPI
@@ -47,7 +35,6 @@ export const useVapiAssistant = () => {
       console.log('[ANVE] Call ended');
       setIsActive(false);
       setIsSpeaking(false);
-      setCallId(null);
       toast({
         title: "Voice Assistant Stopped",
         description: "Click the orb to start again",
@@ -77,12 +64,6 @@ export const useVapiAssistant = () => {
 
     vapi.on('message', (message: any) => {
       console.log('[ANVE] Message:', message);
-      
-      // Capture callId from message
-      if (message.call?.id && !callId) {
-        console.log('[ANVE] Captured call ID:', message.call.id);
-        setCallId(message.call.id);
-      }
       
       // Handle client-side function calls
       if (message.type === 'function-call' && message.functionCall) {
@@ -130,8 +111,12 @@ export const useVapiAssistant = () => {
     }
 
     try {
-      console.log('[ANVE] Starting assistant:', assistantId);
-      await vapiRef.current?.start(assistantId);
+      console.log('[ANVE] Starting assistant with sessionId:', sessionId);
+      await vapiRef.current?.start(assistantId, {
+        variableValues: {
+          sessionId: sessionId
+        }
+      });
     } catch (error) {
       console.error('[ANVE] Failed to start assistant:', error);
       toast({
@@ -152,6 +137,6 @@ export const useVapiAssistant = () => {
     stopAssistant,
     isActive,
     isSpeaking,
-    callId,
+    sessionId,
   };
 };

@@ -17,25 +17,11 @@ serve(async (req) => {
     
     console.log('[VAPI Webhook] Received:', JSON.stringify(message, null, 2));
 
-    // Extract callId and broadcast session-init to global discovery channel
-    const callId = message.call?.id;
-    if (callId) {
-      const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
-      const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
-      const supabase = createClient(supabaseUrl, supabaseKey);
-      
-      const discoveryChannel = supabase.channel('vapi-session-discovery');
-      await discoveryChannel.send({
-        type: 'broadcast',
-        event: 'session-init',
-        payload: {
-          callId: callId,
-          timestamp: new Date().toISOString(),
-        },
-      });
-      console.log(`[VAPI Webhook] Broadcasted session-init with callId: ${callId}`);
-      await supabase.removeChannel(discoveryChannel);
-    }
+    // Extract sessionId from assistantOverrides
+    const sessionId = message.call?.metadata?.sessionId || 
+                     message.call?.assistantOverrides?.variableValues?.sessionId;
+    
+    console.log('[VAPI Webhook] Session ID:', sessionId);
 
     // Handle different message types
     if (message.type === 'tool-calls') {
@@ -72,6 +58,12 @@ async function handleToolCalls(message: any, req: Request) {
 
   console.log(`[VAPI Webhook] Processing ${toolCalls.length} tool call(s)`);
 
+  // Extract sessionId from assistantOverrides
+  const sessionId = message.call?.metadata?.sessionId || 
+                   message.call?.assistantOverrides?.variableValues?.sessionId;
+  
+  console.log('[VAPI Webhook] Session ID in handleToolCalls:', sessionId);
+
   // Initialize Supabase client
   const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
   const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
@@ -94,13 +86,11 @@ async function handleToolCalls(message: any, req: Request) {
 
       // Special handling for get_page_context - request from frontend
       if (functionName === 'get_page_context') {
-        const callId = message.call?.id;
-        
-        if (!callId) {
-          console.warn('[VAPI Webhook] No callId for get_page_context');
+        if (!sessionId) {
+          console.warn('[VAPI Webhook] No sessionId for get_page_context');
           results.push({
             toolCallId: toolCall.id,
-            error: 'No callId available for session isolation',
+            error: 'No sessionId available for session isolation',
           });
           continue;
         }
@@ -109,12 +99,9 @@ async function handleToolCalls(message: any, req: Request) {
         
         const requestId = `${toolCall.id}-${Date.now()}`;
         
-        // Broadcast to both session-specific and global channels
-        const requestChannels = [
-          `vapi-function-requests-${callId}`,
-          'vapi-function-requests-global'
-        ];
-        const responseChannelName = `vapi-function-responses-${callId}`;
+        // Use ONLY session-specific channels
+        const requestChannelName = `vapi-function-requests-${sessionId}`;
+        const responseChannelName = `vapi-function-responses-${sessionId}`;
         const responseChannel = supabase.channel(responseChannelName);
         
         // Subscribe to response channel first
@@ -134,22 +121,20 @@ async function handleToolCalls(message: any, req: Request) {
           });
         });
         
-        // Request page context from frontend via both channels
-        for (const channelName of requestChannels) {
-          const requestChannel = supabase.channel(channelName);
-          await requestChannel.send({
-            type: 'broadcast',
-            event: 'function-request',
-            payload: {
-              requestId,
-              functionName: 'get_page_context',
-              parameters: functionArgs,
-              toolCallId: toolCall.id,
-            },
-          });
-          console.log(`[VAPI Webhook] Sent request to ${channelName}`);
-          await supabase.removeChannel(requestChannel);
-        }
+        // Request page context from frontend via session-specific channel
+        const requestChannel = supabase.channel(requestChannelName);
+        await requestChannel.send({
+          type: 'broadcast',
+          event: 'function-request',
+          payload: {
+            requestId,
+            functionName: 'get_page_context',
+            parameters: functionArgs,
+            toolCallId: toolCall.id,
+          },
+        });
+        console.log(`[VAPI Webhook] Sent request to ${requestChannelName}`);
+        await supabase.removeChannel(requestChannel);
         
         try {
           // Wait for response from frontend
@@ -172,41 +157,34 @@ async function handleToolCalls(message: any, req: Request) {
         }
       } else {
         // Regular function - broadcast to frontend via Realtime
-        const callId = message.call?.id;
-        
-        if (!callId) {
-          console.warn('[VAPI Webhook] No callId for command:', functionName);
+        if (!sessionId) {
+          console.warn('[VAPI Webhook] No sessionId for command:', functionName);
           results.push({
             toolCallId: toolCall.id,
-            error: 'No callId available for session isolation',
+            error: 'No sessionId available for session isolation',
           });
           continue;
         }
         
-        // Broadcast to both session-specific and global channels
-        const channelNames = [
-          `vapi-commands-${callId}`,
-          'vapi-commands-global'
-        ];
+        // Broadcast ONLY to session-specific channel
+        const channelName = `vapi-commands-${sessionId}`;
         
         const payload = {
           function: functionName,
           parameters: functionArgs,
-          callId: callId,
+          callId: sessionId, // Use sessionId for validation
           toolCallId: toolCall.id,
           timestamp: new Date().toISOString(),
         };
         
-        for (const channelName of channelNames) {
-          const channel = supabase.channel(channelName);
-          await channel.send({
-            type: 'broadcast',
-            event: 'function-call',
-            payload,
-          });
-          console.log(`[VAPI Webhook] Broadcasted ${functionName} to ${channelName}`);
-          await supabase.removeChannel(channel);
-        }
+        const channel = supabase.channel(channelName);
+        await channel.send({
+          type: 'broadcast',
+          event: 'function-call',
+          payload,
+        });
+        console.log(`[VAPI Webhook] Broadcasted ${functionName} to ${channelName}`);
+        await supabase.removeChannel(channel);
         
         results.push({
           toolCallId: toolCall.id,

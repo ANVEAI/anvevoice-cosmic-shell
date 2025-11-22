@@ -12,7 +12,7 @@ export const FloatingAssistant = () => {
   
   // Don't render when orb is centered
   if (isCentered) return null;
-  const { startAssistant, stopAssistant, isActive, isSpeaking, callId } = useVapiAssistant();
+  const { startAssistant, stopAssistant, isActive, isSpeaking, sessionId } = useVapiAssistant();
 
   // DOM Actions mapping for VAPI commands
   const actionHandlers = useMemo(() => ({
@@ -27,10 +27,10 @@ export const FloatingAssistant = () => {
   }), []);
 
   // Listen for commands from VAPI webhook via Realtime
-  useVapiCommands(actionHandlers, callId, isActive);
+  useVapiCommands(actionHandlers, sessionId, isActive);
   
   // Handle client-side function execution (get_page_context)
-  useClientSideFunctions(callId, isActive);
+  useClientSideFunctions(sessionId, isActive);
 
   const handleClick = () => {
     if (isActive) {
