@@ -74,11 +74,24 @@ async function handleToolCalls(message: any, req: Request) {
 
       // Special handling for get_page_context - request from frontend
       if (functionName === 'get_page_context') {
+        const callId = message.call?.id;
+        
+        if (!callId) {
+          console.warn('[VAPI Webhook] No callId for get_page_context');
+          results.push({
+            toolCallId: toolCall.id,
+            error: 'No callId available for session isolation',
+          });
+          continue;
+        }
+        
         console.log('[VAPI Webhook] Requesting page context from frontend...');
         
         const requestId = `${toolCall.id}-${Date.now()}`;
-        const requestChannel = supabase.channel('vapi-function-requests');
-        const responseChannel = supabase.channel('vapi-function-responses');
+        const requestChannelName = `vapi-function-requests-${callId}`;
+        const responseChannelName = `vapi-function-responses-${callId}`;
+        const requestChannel = supabase.channel(requestChannelName);
+        const responseChannel = supabase.channel(responseChannelName);
         
         // Subscribe to response channel first
         await responseChannel.subscribe();
@@ -131,7 +144,19 @@ async function handleToolCalls(message: any, req: Request) {
         }
       } else {
         // Regular function - broadcast to frontend via Realtime
-        const channel = supabase.channel('vapi-commands');
+        const callId = message.call?.id;
+        
+        if (!callId) {
+          console.warn('[VAPI Webhook] No callId for command:', functionName);
+          results.push({
+            toolCallId: toolCall.id,
+            error: 'No callId available for session isolation',
+          });
+          continue;
+        }
+        
+        const channelName = `vapi-commands-${callId}`;
+        const channel = supabase.channel(channelName);
         
         await channel.send({
           type: 'broadcast',
@@ -139,13 +164,13 @@ async function handleToolCalls(message: any, req: Request) {
           payload: {
             function: functionName,
             parameters: functionArgs,
-            callId: message.call?.id,
+            callId: callId,
             toolCallId: toolCall.id,
             timestamp: new Date().toISOString(),
           },
         });
 
-        console.log(`[VAPI Webhook] Broadcasted ${functionName} (${toolCall.id}) to frontend`);
+        console.log(`[VAPI Webhook] Broadcasted ${functionName} to ${channelName}`);
         
         results.push({
           toolCallId: toolCall.id,

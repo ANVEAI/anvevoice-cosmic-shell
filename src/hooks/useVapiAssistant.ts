@@ -7,6 +7,7 @@ export const useVapiAssistant = () => {
   const vapiRef = useRef<Vapi | null>(null);
   const [isActive, setIsActive] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
+  const [callId, setCallId] = useState<string | null>(null);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -34,6 +35,7 @@ export const useVapiAssistant = () => {
       console.log('[ANVE] Call ended');
       setIsActive(false);
       setIsSpeaking(false);
+      setCallId(null);
       toast({
         title: "Voice Assistant Stopped",
         description: "Click the orb to start again",
@@ -63,6 +65,12 @@ export const useVapiAssistant = () => {
 
     vapi.on('message', (message: any) => {
       console.log('[ANVE] Message:', message);
+      
+      // Capture callId from message
+      if (message.call?.id && !callId) {
+        console.log('[ANVE] Captured call ID:', message.call.id);
+        setCallId(message.call.id);
+      }
       
       // Handle client-side function calls
       if (message.type === 'function-call' && message.functionCall) {
@@ -132,5 +140,6 @@ export const useVapiAssistant = () => {
     stopAssistant,
     isActive,
     isSpeaking,
+    callId,
   };
 };

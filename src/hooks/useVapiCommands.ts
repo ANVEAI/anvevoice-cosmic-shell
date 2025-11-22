@@ -8,11 +8,17 @@ interface CommandPayload {
   timestamp: string;
 }
 
-export const useVapiCommands = (domActions: Record<string, Function>) => {
+export const useVapiCommands = (domActions: Record<string, Function>, callId: string | null) => {
   useEffect(() => {
-    console.log('[ANVE Commands] Setting up Realtime listener');
+    if (!callId) {
+      console.log('[ANVE Commands] No callId yet, waiting...');
+      return;
+    }
     
-    const channel = supabase.channel('vapi-commands');
+    const channelName = `vapi-commands-${callId}`;
+    console.log('[ANVE Commands] Setting up listener for:', channelName);
+    
+    const channel = supabase.channel(channelName);
 
     channel
       .on('broadcast', { event: 'function-call' }, ({ payload }: { payload: CommandPayload }) => {
@@ -35,8 +41,8 @@ export const useVapiCommands = (domActions: Record<string, Function>) => {
       });
 
     return () => {
-      console.log('[ANVE Commands] Cleaning up Realtime listener');
+      console.log('[ANVE Commands] Cleaning up listener for:', channelName);
       supabase.removeChannel(channel);
     };
-  }, [domActions]);
+  }, [domActions, callId]);
 };
