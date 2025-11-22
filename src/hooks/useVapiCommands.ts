@@ -10,15 +10,19 @@ interface CommandPayload {
 
 export const useVapiCommands = (
   domActions: Record<string, Function>,
-  callId: string | null,
+  sessionId: string,
   isActive: boolean
 ) => {
   useEffect(() => {
-    const channels: any[] = [];
-    
+    if (!isActive || !sessionId) {
+      console.log('[ANVE Commands] Not active or no sessionId, waiting...');
+      return;
+    }
+
     const executeAction = (payload: CommandPayload) => {
-      if (!isActive) {
-        console.log('[ANVE Commands] Ignoring command - assistant not active in this tab');
+      // Double-check sessionId matches for extra safety
+      if (payload.callId && payload.callId !== sessionId) {
+        console.warn('[ANVE Commands] Ignoring command for different session');
         return;
       }
 
@@ -35,41 +39,23 @@ export const useVapiCommands = (
       }
     };
     
-    // Always subscribe to global fallback channel
-    console.log('[ANVE Commands] Setting up global fallback listener');
-    const globalChannel = supabase.channel('vapi-commands-global');
-    globalChannel
+    // Subscribe ONLY to session-specific channel
+    const channelName = `vapi-commands-${sessionId}`;
+    console.log('[ANVE Commands] Subscribing to:', channelName);
+    
+    const channel = supabase.channel(channelName);
+    channel
       .on('broadcast', { event: 'function-call' }, ({ payload }: { payload: CommandPayload }) => {
-        console.log('[ANVE Commands] Received command on global channel:', payload);
+        console.log('[ANVE Commands] Received command:', payload);
         executeAction(payload);
       })
       .subscribe((status) => {
-        console.log('[ANVE Commands] Global channel status:', status);
+        console.log('[ANVE Commands] Channel status:', status);
       });
-    channels.push(globalChannel);
-    
-    // If we have callId, also subscribe to session-specific channel
-    if (callId) {
-      const channelName = `vapi-commands-${callId}`;
-      console.log('[ANVE Commands] Setting up session-specific listener for:', channelName);
-      
-      const sessionChannel = supabase.channel(channelName);
-      sessionChannel
-        .on('broadcast', { event: 'function-call' }, ({ payload }: { payload: CommandPayload }) => {
-          console.log('[ANVE Commands] Received command on session channel:', payload);
-          executeAction(payload);
-        })
-        .subscribe((status) => {
-          console.log('[ANVE Commands] Session channel status:', status);
-        });
-      channels.push(sessionChannel);
-    } else {
-      console.log('[ANVE Commands] No callId yet, using global channel only');
-    }
 
     return () => {
-      console.log('[ANVE Commands] Cleaning up all listeners');
-      channels.forEach(ch => supabase.removeChannel(ch));
+      console.log('[ANVE Commands] Cleaning up listener');
+      supabase.removeChannel(channel);
     };
-  }, [domActions, callId, isActive]);
+  }, [domActions, sessionId, isActive]);
 };
