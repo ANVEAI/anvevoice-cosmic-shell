@@ -3,6 +3,7 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Check, Sparkles, Zap, TrendingUp } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 const offers = [{
   id: 1,
   title: "Starter Plan",
@@ -35,6 +36,8 @@ const offers = [{
   gradient: "from-accent-foreground/10 to-primary/5"
 }];
 const Offers = () => {
+  const navigate = useNavigate();
+  
   return <div className="min-h-screen bg-gradient-hero">
       <section className="pt-10 sm:pt-32 pb-16 px-6">
         <div className="container mx-auto max-w-7xl">
@@ -95,7 +98,12 @@ const Offers = () => {
                         </li>)}
                     </ul>
 
-                    <Button className="w-full" size="lg" variant={index === 1 ? "default" : "outline"}>
+                    <Button 
+                      className="w-full" 
+                      size="lg" 
+                      variant={index === 1 ? "default" : "outline"}
+                      onClick={() => navigate("/waiting-list")}
+                    >
                       {offer.price === "Custom" ? "Contact Sales" : "Get Started"}
                     </Button>
                   </Card>

@@ -2,8 +2,11 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Check } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const TryOffer = () => {
+  const navigate = useNavigate();
+  
   return (
     <div className="min-h-screen bg-background">
       <section className="py-12 md:py-16 lg:py-24 px-4 md:px-6">
@@ -63,6 +66,7 @@ const TryOffer = () => {
                   <Button 
                     className="w-full shadow-glow hover:shadow-elevated"
                     size="lg"
+                    onClick={() => navigate("/waiting-list")}
                   >
                     Try Now
                   </Button>

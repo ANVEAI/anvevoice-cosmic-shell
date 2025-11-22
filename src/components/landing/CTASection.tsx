@@ -19,7 +19,7 @@ export const CTASection = () => {
         </h2>
         
         <Button
-          onClick={() => navigate("/offers")}
+          onClick={() => navigate("/waiting-list")}
           size="lg"
           className="text-lg px-8 py-6 shadow-glow hover:shadow-elevated transition-all duration-300"
         >
