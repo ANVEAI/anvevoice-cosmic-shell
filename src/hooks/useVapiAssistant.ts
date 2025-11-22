@@ -1,7 +1,8 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useCallback } from 'react';
 import Vapi from '@vapi-ai/web';
 import { useToast } from '@/hooks/use-toast';
 import * as domActions from '@/utils/domActions';
+import { useVapiSessionDiscovery } from './useVapiSessionDiscovery';
 
 export const useVapiAssistant = () => {
   const vapiRef = useRef<Vapi | null>(null);
@@ -9,6 +10,17 @@ export const useVapiAssistant = () => {
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [callId, setCallId] = useState<string | null>(null);
   const { toast } = useToast();
+
+  // Callback for session discovery
+  const handleCallIdReceived = useCallback((receivedCallId: string) => {
+    if (!callId) {
+      console.log('[ANVE] Captured callId from session discovery:', receivedCallId);
+      setCallId(receivedCallId);
+    }
+  }, [callId]);
+
+  // Subscribe to session discovery
+  useVapiSessionDiscovery(isActive, handleCallIdReceived);
 
   useEffect(() => {
     // Initialize VAPI

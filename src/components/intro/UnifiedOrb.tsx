@@ -42,8 +42,8 @@ export const UnifiedOrb = ({
     toggle_element: domActions.toggle_element,
     navigate_to_page: domActions.navigate_to_page
   }), []);
-  useVapiCommands(actionHandlers, callId);
-  useClientSideFunctions(callId);
+  useVapiCommands(actionHandlers, callId, isActive);
+  useClientSideFunctions(callId, isActive);
 
   const handleTapSpeak = (e?: React.MouseEvent) => {
     // prevent bubbled clicks (like clicking the inner button) from toggling twice
