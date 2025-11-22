@@ -6,12 +6,19 @@ import * as domActions from '@/utils/domActions';
  * Hook to handle client-side function execution for VAPI
  * Listens for function requests from webhook and sends results back
  */
-export const useClientSideFunctions = () => {
+export const useClientSideFunctions = (callId: string | null) => {
   useEffect(() => {
-    console.log('[Client Functions] Setting up client-side function handlers');
+    if (!callId) {
+      console.log('[Client Functions] No callId yet, waiting...');
+      return;
+    }
     
-    const requestChannel = supabase.channel('vapi-function-requests');
-    const responseChannel = supabase.channel('vapi-function-responses');
+    const requestChannelName = `vapi-function-requests-${callId}`;
+    const responseChannelName = `vapi-function-responses-${callId}`;
+    console.log('[Client Functions] Setting up handlers for:', requestChannelName);
+    
+    const requestChannel = supabase.channel(requestChannelName);
+    const responseChannel = supabase.channel(responseChannelName);
 
     // Listen for function requests from webhook
     requestChannel
@@ -64,9 +71,9 @@ export const useClientSideFunctions = () => {
     });
 
     return () => {
-      console.log('[Client Functions] Cleaning up');
+      console.log('[Client Functions] Cleaning up:', requestChannelName);
       supabase.removeChannel(requestChannel);
       supabase.removeChannel(responseChannel);
     };
-  }, []);
+  }, [callId]);
 };

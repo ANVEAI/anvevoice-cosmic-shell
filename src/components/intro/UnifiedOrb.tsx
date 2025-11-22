@@ -26,7 +26,8 @@ export const UnifiedOrb = ({
     startAssistant,
     stopAssistant,
     isActive,
-    isSpeaking
+    isSpeaking,
+    callId
   } = useVapiAssistant();
   const isMobile = useIsMobile();
   const orbSize = isMobile
@@ -41,8 +42,8 @@ export const UnifiedOrb = ({
     toggle_element: domActions.toggle_element,
     navigate_to_page: domActions.navigate_to_page
   }), []);
-  useVapiCommands(actionHandlers);
-  useClientSideFunctions();
+  useVapiCommands(actionHandlers, callId);
+  useClientSideFunctions(callId);
 
   const handleTapSpeak = (e?: React.MouseEvent) => {
     // prevent bubbled clicks (like clicking the inner button) from toggling twice
